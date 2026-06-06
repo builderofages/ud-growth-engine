@@ -22,7 +22,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 
 .navlinks a{white-space:nowrap;transition:.2s}.navlinks a:hover{color:#B32424}.navlinks .hot{color:#B32424;font-weight:700}
 .nav-cta{display:flex;align-items:center;gap:1rem;margin-left:1.4rem}
 .nav-phone{font-weight:700;color:var(--navy);font-size:.93rem;white-space:nowrap}
-.nav-cta .btn{padding:.7rem 1.25rem;font-size:.9rem}
+.nav-cta .btn{padding:.7rem 1.25rem;font-size:.9rem;white-space:nowrap}
 @media(max-width:1020px){.navlinks{display:none}.nav-phone{display:none}}
 .phero{position:relative;color:#fff;background:var(--navy);overflow:hidden}
 .phero .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.38}
