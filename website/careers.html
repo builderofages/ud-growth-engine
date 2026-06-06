@@ -148,6 +148,38 @@ if (window.UD_GA4) {
       <div class="field"><label>Do you have reliable transportation?</label>
         <select id="acar" required><option value="">Select…</option><option>Yes</option><option>No</option></select>
       </div>
+
+      <!-- SALES APTITUDE SCREEN (scored, invisible to applicant) -->
+      <div style="border-top:1.5px solid var(--line);margin:1.1rem 0 .9rem;padding-top:1rem">
+        <p style="font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.7rem">Quick judgment check — 3 scenarios, no wrong answers</p>
+      </div>
+      <div class="field"><label>A homeowner says "I need to talk to my spouse first." You:</label>
+        <select id="q1" required>
+          <option value="">Select…</option>
+          <option value="0">Leave a card and say you'll swing back sometime</option>
+          <option value="3">Ask what their spouse would want to know, answer it now, and book a time when both are home</option>
+          <option value="1">Offer a discount if they sign today</option>
+          <option value="0">Move to the next door — they're not serious</option>
+        </select>
+      </div>
+      <div class="field"><label>You knock 40 doors, get 0 inspections all day. You:</label>
+        <select id="q2" required>
+          <option value="">Select…</option>
+          <option value="1">Push through — keep knocking the same way, it's a numbers game</option>
+          <option value="3">Record your pitch, find what's losing people, adjust, and knock 40 more</option>
+          <option value="0">Ask the office for warmer leads</option>
+          <option value="0">Call it a day and reset tomorrow</option>
+        </select>
+      </div>
+      <div class="field"><label>The insurance adjuster approves less damage than you documented. You:</label>
+        <select id="q3" required>
+          <option value="">Select…</option>
+          <option value="0">Accept it — fighting adjusters burns relationships</option>
+          <option value="1">Tell the homeowner to call their insurer and complain</option>
+          <option value="3">File a supplement with photo evidence and code citations, and keep the homeowner informed</option>
+          <option value="0">Eat the difference to keep the job moving</option>
+        </select>
+      </div>
       <button class="btn btn-primary" type="submit">Submit Application →</button>
       <p class="fineprint">🔒 Confidential. We never share your info.</p>
     </form>
@@ -240,14 +272,16 @@ if (window.UD_GA4) {
   document.getElementById('yr').textContent=new Date().getFullYear();
   function submitApp(e){
     e.preventDefault();
-    const data={name:v('aname'),phone:v('aphone'),email:v('aemail'),exp:v('aexp'),car:v('acar'),ts:new Date().toISOString()};
+    const apt=(+v('q1'))+(+v('q2'))+(+v('q3'));
+    const tier=apt>=8?'A-PLAYER (interview within 24h)':apt>=5?'PROMISING (phone screen)':'WEAK (pass unless experienced)';
+    const data={name:v('aname'),phone:v('aphone'),email:v('aemail'),exp:v('aexp'),car:v('acar'),aptitude_score:apt+'/9',screen_verdict:tier,ts:new Date().toISOString()};
     // === INTEGRATION POINT: send to AI recruiting screener / ATS / GHL webhook ===
     
     // === LIVE LEAD DELIVERY ===
     // 1) FormSubmit -> email (active after one-time activation click)
     fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(Object.assign({_subject:'UD LEAD: '+(data.service||data.exp||'satellite quote'),_template:'table'},data))
+      body:JSON.stringify(Object.assign({_subject:'UD APPLICANT ['+tier.split(' ')[0]+']: '+data.name,_template:'table'},data))
     }).catch(function(){});
     // 2) Optional CRM webhook (paste GHL/ServiceTitan URL)
     var UD_WEBHOOK='';
