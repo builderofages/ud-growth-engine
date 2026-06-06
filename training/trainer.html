@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UD Sales Gym — AI Roleplay Trainer</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0A1626;--panel:#101F35;--panel2:#152841;--line:rgba(255,255,255,.09);--txt:#E7EEF9;--mut:#8FA4C4;--blue:#2F6BFF;--gold:#F5B82E;--green:#10B981;--red:#F87171;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+h1,h2,h3{font-family:'Sora';letter-spacing:-.02em}
+.wrap{width:min(1100px,94%);margin:0 auto}
+header{padding:1.1rem 0;border-bottom:1px solid var(--line)}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:.7rem}
+.brand img{height:36px;width:auto;max-width:none}
+.brand b{font-family:'Sora';font-size:1rem}
+.brand small{display:block;color:var(--mut);font-size:.66rem;letter-spacing:.14em}
+.streak{font-size:.8rem;color:var(--mut)}
+.streak b{color:var(--gold)}
+
+/* picker */
+.picker{padding:2.5rem 0}
+.picker h1{font-size:1.7rem;margin-bottom:.3rem}
+.picker p{color:var(--mut);max-width:60ch}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.6rem}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+.pc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem;cursor:pointer;transition:.25s}
+.pc:hover{transform:translateY(-4px);border-color:#3B82F6}
+.pc .av{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;margin-bottom:.8rem}
+.pc h3{font-size:1.02rem}
+.pc p{font-size:.8rem;color:var(--mut);margin-top:.3rem}
+.diff{display:inline-block;margin-top:.7rem;font-size:.66rem;font-weight:700;letter-spacing:.08em;padding:.22rem .6rem;border-radius:999px}
+.d1{background:rgba(16,185,129,.15);color:var(--green)}
+.d2{background:rgba(245,184,46,.15);color:var(--gold)}
+.d3{background:rgba(248,113,113,.15);color:var(--red)}
+
+/* arena */
+.arena{display:none;grid-template-columns:1fr 320px;gap:1rem;padding:1.4rem 0 2.5rem}
+@media(max-width:900px){.arena{grid-template-columns:1fr}}
+.chatbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;height:72vh;min-height:480px}
+.chathead{padding:.9rem 1.1rem;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.7rem}
+.chathead .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:1.1rem}
+.chathead b{font-size:.92rem}
+.chathead small{display:block;color:var(--mut);font-size:.72rem}
+.chathead .end{margin-left:auto;background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:.4rem .8rem;font-size:.76rem;font-weight:700;cursor:pointer}
+.msgs{flex:1;overflow-y:auto;padding:1.1rem;display:flex;flex-direction:column;gap:.7rem}
+.m{max-width:78%;padding:.7rem .95rem;border-radius:14px;font-size:.92rem;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+.m.them{background:var(--panel2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.m.me{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);align-self:flex-end;border-bottom-right-radius:4px}
+.m.sys{align-self:center;background:none;color:var(--mut);font-size:.74rem;max-width:95%;text-align:center}
+.inrow{display:flex;gap:.6rem;padding:.9rem;border-top:1px solid var(--line)}
+.inrow input{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;color:var(--txt);font-size:.95rem;font-family:inherit}
+.inrow input:focus{outline:none;border-color:var(--blue)}
+.inrow button{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);border:none;border-radius:12px;color:#fff;font-weight:700;padding:0 1.3rem;cursor:pointer;font-family:inherit}
+
+/* coach */
+.coach{display:flex;flex-direction:column;gap:.9rem}
+.cpanel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem}
+.cpanel h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:.7rem}
+.skill{display:flex;align-items:center;gap:.6rem;padding:.34rem 0;font-size:.84rem;color:var(--mut)}
+.skill.hit{color:var(--txt)}
+.skill .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.6rem;flex:none}
+.skill.hit .dot{background:var(--green);border-color:var(--green);color:#04120c}
+.scorebig{font-family:'Sora';font-size:2.6rem;font-weight:800;text-align:center}
+.scorebig small{display:block;font-size:.72rem;color:var(--mut);font-weight:400;letter-spacing:.1em}
+.tip{font-size:.8rem;color:#F5CB6A;background:rgba(245,184,46,.08);border:1px solid rgba(245,184,46,.25);border-radius:10px;padding:.6rem .8rem}
+
+/* report */
+.report{display:none;padding:2rem 0 3rem}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.4rem 0}
+@media(max-width:800px){.rg{grid-template-columns:1fr}}
+.rc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;text-align:center}
+.rc .v{font-family:'Sora';font-size:2rem;font-weight:800}
+.rc .l{color:var(--mut);font-size:.78rem}
+.fb{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;margin-bottom:.8rem}
+.fb h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:.6rem}
+.fb li{margin-left:1.1rem;font-size:.9rem;padding:.15rem 0}
+.btnrow{display:flex;gap:.8rem;margin-top:1.4rem;flex-wrap:wrap}
+.btn{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);border:none;border-radius:12px;color:#fff;font-weight:700;padding:.9rem 1.5rem;cursor:pointer;font-family:inherit;font-size:.93rem}
+.btn.ghost{background:var(--panel2);border:1px solid var(--line)}
+.note{font-size:.74rem;color:var(--mut);margin-top:1.2rem}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><img src="../website/assets/logo-white.png" alt="UD"/><div><b>SALES GYM</b><small>AI ROLEPLAY TRAINER · TRAINYOURAGENT</small></div></div>
+  <div class="streak">Reps today: <b id="reps0">0</b> · Best score: <b id="best0">—</b></div>
+</div></header>
+
+<!-- PICKER -->
+<section class="picker" id="picker"><div class="wrap">
+  <h1>Pick your opponent.</h1>
+  <p>Real homeowners, real objections. Type what you'd actually say at the door — the AI responds to <i>your</i> words, the coach panel scores you live, and you get a full breakdown at the end. 8/10 to pass.</p>
+  <div class="cards">
+    <div class="pc" onclick="start('door')"><div class="av" style="background:rgba(47,107,255,.15)">🚪</div><h3>Busy Brenda</h3><p>Answers the door annoyed. You have 15 seconds before it closes.</p><span class="diff d1">WARM-UP · DOOR KNOCK</span></div>
+    <div class="pc" onclick="start('skeptic')"><div class="av" style="background:rgba(245,184,46,.15)">🤨</div><h3>Skeptical Sam</h3><p>"My roof is fine." Has heard every roofer pitch. Hates pressure.</p><span class="diff d2">INTERMEDIATE · OBJECTIONS</span></div>
+    <div class="pc" onclick="start('insurance')"><div class="av" style="background:rgba(16,185,129,.15)">🛡️</div><h3>Worried Wanda</h3><p>Has damage but terrified of premiums, scams, and paperwork.</p><span class="diff d2">INTERMEDIATE · INSURANCE</span></div>
+    <div class="pc" onclick="start('closer')"><div class="av" style="background:rgba(248,113,113,.15)">🧊</div><h3>Stone-Cold Steve</h3><p>"I need to talk to my wife and get three more quotes." The final boss.</p><span class="diff d3">ADVANCED · THE CLOSE</span></div>
+  </div>
+  <p class="note">⚙️ Engine: built-in intent engine (works offline). Paste a TrainYourAgent/LLM endpoint in CONFIG inside this file for full free-form voice-level roleplay.</p>
+</div></section>
+
+<!-- ARENA -->
+<section class="arena" id="arena"><div class="wrap" style="display:contents">
+  <div class="chatbox">
+    <div class="chathead"><span class="av" id="pav">🚪</span><div><b id="pname">—</b><small id="pdesc">—</small></div><button class="end" onclick="finish()">End session</button></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="inrow"><input id="inp" placeholder="Say it like you're on the porch…" autocomplete="off"/><button onclick="send()">Send</button></div>
+  </div>
+  <div class="coach">
+    <div class="cpanel"><h2>Live Score</h2><div class="scorebig" id="score">0<small>OUT OF 10</small></div></div>
+    <div class="cpanel"><h2>Skills checklist</h2><div id="skills"></div></div>
+    <div class="cpanel"><h2>Coach whisper</h2><div class="tip" id="tip">Open with your name + company + a reason you're on their street.</div></div>
+  </div>
+</div></section>
+
+<!-- REPORT -->
+<section class="report" id="report"><div class="wrap">
+  <h1 id="rtitle">Session report</h1>
+  <div class="rg">
+    <div class="rc"><div class="v" id="rscore">—</div><div class="l">Final score</div></div>
+    <div class="rc"><div class="v" id="rturns">—</div><div class="l">Exchanges</div></div>
+    <div class="rc"><div class="v" id="rresult">—</div><div class="l">Outcome</div></div>
+  </div>
+  <div class="fb"><h3>✅ What you did well</h3><ul id="rgood"></ul></div>
+  <div class="fb"><h3>🎯 Fix these next round</h3><ul id="rbad"></ul></div>
+  <div class="btnrow">
+    <button class="btn" onclick="retry()">Run it back</button>
+    <button class="btn ghost" onclick="backToPicker()">Choose another opponent</button>
+    <button class="btn ghost" onclick="dl()">Download transcript</button>
+  </div>
+</div></section>
+
+<script>
+/* ================= CONFIG =================
+   LLM_ENDPOINT: paste a TrainYourAgent / LLM proxy URL to switch from the
+   built-in intent engine to full free-form roleplay. POST {persona, history}
+   -> {reply}. Leave "" for offline engine. */
+const LLM_ENDPOINT = "";
+
+/* ============ INTENT DETECTORS ============ */
+const INTENTS = {
+  intro:      /\b(i'?m|my name|this is)\b.*\b(united developers|ud)\b|\bunited developers\b/i,
+  reason:     /\b(storm|hail|wind|neighbors?|street|area|inspect)/i,
+  permission: /\b(mind if|can i|could i|would it be ok|quick look|take a look|10 minutes|20 minutes|free)\b/i,
+  freeValue:  /\b(free|no obligation|no cost|photo report|nothing to lose)\b/i,
+  empathy:    /\b(understand|totally fair|makes sense|i hear you|great question|good question|of course)\b/i,
+  insurance:  /\b(insurance|claim|deductible|adjuster|carrier|covered|act of god)\b/i,
+  premium:    /\b(act of god|premium|rate|surcharge|regional)\b/i,
+  legit:      /\b(licensed|mhic|bbb|gaf|reviews?|131|certified|bonded)\b/i,
+  noPressure: /\b(no pressure|won'?t push|tell you straight|honest|if there'?s no damage)\b/i,
+  bookAsk:    /\b(book|schedule|come (by|out)|set (up|a time)|tomorrow|today|morning|afternoon|what time|calendar)\b/i,
+  spouse:     /\b(both|together|you and your (wife|husband|spouse)|with your (wife|husband)|on the call|tonight at)\b/i,
+  takeaway:   /\b(close your file|last (check|time)|won'?t bother|hold (a|your) slot)\b/i,
+  price:      /\b(insurance (covers|pays)|deductible only|scope|carrier sets)\b/i
+};
+function detect(t){ const hits=[]; for(const k in INTENTS) if(INTENTS[k].test(t)) hits.push(k); return hits; }
+
+/* ============ PERSONAS (stage machines) ============ */
+const P = {
+ door: { av:"🚪", name:"Busy Brenda", desc:"Door knock · making dinner · 15s fuse",
+  skills:[["intro","Intro: name + company"],["reason","Reason you're there (storm/neighbors)"],["permission","Asked permission, low friction"],["freeValue","Made it free / no-obligation"],["bookAsk","Asked for the booking"]],
+  open:"*opens door 6 inches* Yes? I'm in the middle of making dinner.",
+  stages:[
+   {need:["intro","reason"], pass:"*opens door a bit more* Okay… United Developers. We did have that storm Tuesday. What is it you want?", fail:"Look, I don't buy anything at the door. Who ARE you?", tip:"Name + company + the storm reason. Fast."},
+   {need:["permission","freeValue"], pass:"Free, huh. And you're not going to pressure me into anything? I've heard that before.", fail:"I don't have time for a pitch. Dinner's burning.", tip:"Lower the wall: free inspection, no obligation, takes 20 minutes, she doesn't even need to be home."},
+   {need:["noPressure","empathy"], pass:"…Fine. You seem straight with me. When would you even do this?", fail:"Hmm. You sound like the last guy who 'wasn't selling anything.'", tip:"Empathize + promise honesty: 'If there's no damage I'll tell you straight and be gone.'"},
+   {need:["bookAsk"], pass:"Tomorrow morning works I guess. Before 10. Don't be late.", fail:"I'll think about it. *starts closing door*", tip:"ASK for the slot. Give two options: morning or afternoon.", final:true}
+  ]},
+ skeptic: { av:"🤨", name:"Skeptical Sam", desc:"'My roof is fine' · pitch-proof veteran",
+  skills:[["intro","Intro + reason"],["empathy","Agreed before countering"],["reason","Explained hidden damage"],["legit","Proof: licensed/reviews/GAF"],["freeValue","Free + photos either way"],["bookAsk","Asked for booking"]],
+  open:"Let me stop you right there — my roof is FINE. You guys come through every year.",
+  stages:[
+   {need:["empathy"], pass:"Hm. At least you're not arguing with me. Go on.", fail:"See, you're not even listening. My roof. Is. Fine.", tip:"Don't fight it. Agree first: 'Totally fair — most look fine from the ground.'"},
+   {need:["reason"], pass:"Hidden damage, sure. That's what they all say. Why should I believe YOU?", fail:"That's vague. Sounds like a sales line.", tip:"Explain WHY ground looks lie: hail bruising shows up top, leaks 18 months later."},
+   {need:["legit"], pass:"GAF-certified… 131 reviews… okay, you're at least a real company. But what's this cost me?", fail:"Anyone can say they're licensed. Prove it.", tip:"Drop credentials: MHIC license, A+ BBB, GAF factory-certified, 131+ Google reviews."},
+   {need:["freeValue"], pass:"Free with photos either way? …What's the catch?", fail:"'Free' always has a catch with you people.", tip:"Free inspection + photo report he KEEPS, damage or not. No catch — say what's in it for UD honestly."},
+   {need:["noPressure","bookAsk"], pass:"You know what, fine. Saturday morning. If you find nothing, I want that in writing.", fail:"I'll 'think about it.' You know what that means.", tip:"Honesty close + ask: 'If it's clean, I'll tell you straight. Saturday morning or afternoon?'", final:true}
+  ]},
+ insurance: { av:"🛡️", name:"Worried Wanda", desc:"Has damage · terrified of claims & scams",
+  skills:[["empathy","Calmed the fear first"],["insurance","Explained claim process simply"],["premium","Premium myth: Act of God"],["price","Deductible-only math"],["legit","Trust signals"],["bookAsk","Booked next step"]],
+  open:"My neighbor said I should get my roof looked at after the hail, but honestly these insurance things terrify me. Won't my rates explode? Is this even legit?",
+  stages:[
+   {need:["empathy"], pass:"Thank you… everyone just pitches at me. Okay. So how does this actually work?", fail:"You went straight into selling. That's exactly what scares me.", tip:"Feelings first. 'Completely understandable — let me take the scary parts off the table.'"},
+   {need:["insurance"], pass:"Okay… inspect, document, you meet the adjuster. And my premium?", fail:"That sounded complicated. See, this is why I avoid it.", tip:"3 steps, plain words: free inspection → we document & file with you → we meet the adjuster."},
+   {need:["premium"], pass:"'Act of God'… so it's not counted against me personally. Nobody ever explained that. What would I actually pay?", fail:"You dodged the premium question. That's my biggest fear.", tip:"Storm claims are 'Act of God' — premiums move by region, not your claim. New roof can even help."},
+   {need:["price"], pass:"Just my deductible?? On a whole roof? …And how do I know you're not one of those storm-chaser scams?", fail:"You're being fuzzy about money. Fuzzy money talk = scam to me.", tip:"The math: carrier pays the scope, she pays only her deductible. Name a real number range."},
+   {need:["legit","bookAsk"], pass:"Local office, real license, 131 reviews… okay. Yes. Come Thursday — and you'll be there for the adjuster part, right?", fail:"Maybe. Let me ask my neighbor first…", tip:"Local addresses + licenses + reviews, then ASK for the inspection slot.", final:true}
+  ]},
+ closer: { av:"🧊", name:"Stone-Cold Steve", desc:"End of pitch · 'wife + 3 quotes' wall",
+  skills:[["empathy","Validated, didn't argue"],["spouse","Spouse: meeting w/ BOTH"],["price","Quotes: apples-to-apples frame"],["insurance","Insurance scope sets price"],["takeaway","Takeaway / urgency close"],["bookAsk","Locked a concrete time"]],
+  open:"Look, good presentation. But I never sign anything same-day. I need to talk to my wife, and I'll be getting three more quotes. Leave your card.",
+  stages:[
+   {need:["empathy"], pass:"At least you're not doing the high-pressure thing. Alright, talk.", fail:"And THERE'S the pushback. Every. Single. Time. We're done.", tip:"Agree: 'Smart — this is a big decision.' Never argue with the wall."},
+   {need:["spouse"], pass:"A call with both of us tonight… that's actually reasonable. But I'm still getting other quotes.", fail:"Don't try to talk me out of my wife, friend.", tip:"Don't fight the spouse — include her: '10-minute call tonight with you both so you decide together. 6 or 7?'"},
+   {need:["price","insurance"], pass:"Huh. So if insurance sets the scope… the 'cheaper' quote just means they cut corners on MY roof?", fail:"Price is price. Cheapest wins. That's how I buy.", tip:"Reframe quotes: on a claim, the carrier's scope sets the price — 'cheaper' = scope or materials cut."},
+   {need:["takeaway"], pass:"Whoa, hold on — you'd close my file? When's the cutoff?", fail:"'Limited slots,' sure. Heard that one.", tip:"Honest takeaway: 'If it's a no, I'll close your file and you keep the report. But install slots this month are real.'"},
+   {need:["bookAsk","spouse"], pass:"…Alright. Tonight at 7, me and Karen, ten minutes. You've got one shot.", fail:"Leave the card. *card goes in the junk drawer*", tip:"Lock it: exact time, both spouses, one concrete next step.", final:true}
+  ]}
+};
+
+/* ============ ENGINE ============ */
+let cur=null, stage=0, hits=new Set(), turns=0, log=[], misses=0, persona="";
+const $=id=>document.getElementById(id);
+function start(key){
+  persona=key; cur=P[key]; stage=0; hits=new Set(); turns=0; log=[]; misses=0;
+  $("picker").style.display="none"; $("report").style.display="none"; $("arena").style.display="grid";
+  $("pav").textContent=cur.av; $("pname").textContent=cur.name; $("pdesc").textContent=cur.desc;
+  $("msgs").innerHTML=""; renderSkills(); setScore();
+  say("sys","Session started — speak naturally, like you're really there.");
+  say("them",cur.open); $("tip").textContent=cur.stages[0].tip; $("inp").focus();
+}
+function renderSkills(){
+  $("skills").innerHTML=cur.skills.map(([k,l])=>`<div class="skill" id="sk-${k}"><span class="dot">✓</span>${l}</div>`).join("");
+  hits.forEach(k=>{const el=$("sk-"+k);if(el)el.classList.add("hit");});
+}
+function setScore(){
+  const got=cur.skills.filter(([k])=>hits.has(k)).length;
+  const sc=Math.round(got/cur.skills.length*10);
+  $("score").innerHTML=sc+"<small>OUT OF 10</small>"; return sc;
+}
+function say(who,txt){
+  const d=document.createElement("div"); d.className="m "+who; d.textContent=txt;
+  $("msgs").appendChild(d); $("msgs").scrollTop=1e9; if(who!=="sys")log.push((who==="me"?"REP: ":cur.name.toUpperCase()+": ")+txt);
+}
+function send(){
+  const t=$("inp").value.trim(); if(!t||!cur)return; $("inp").value="";
+  say("me",t); turns++;
+  const found=detect(t);
+  found.forEach(k=>{ if(cur.skills.some(([s])=>s===k)){hits.add(k);const el=$("sk-"+k);if(el)el.classList.add("hit");} });
+  const st=cur.stages[stage];
+  const passed=st.need.some(n=>found.includes(n));
+  setScore();
+  setTimeout(()=>{
+    if(passed){
+      say("them",st.pass);
+      if(st.final){ setTimeout(finish,900); return; }
+      stage++; $("tip").textContent=cur.stages[stage].tip;
+    } else {
+      misses++;
+      say("them",st.fail);
+      if(misses>=5){ say("sys","The door closed. Session over."); setTimeout(finish,900); return; }
+      $("tip").textContent="Still on this beat → "+st.tip;
+    }
+  }, 450+Math.random()*500);
+}
+$("inp")?.addEventListener("keydown",e=>{if(e.key==="Enter")send();});
+function finish(){
+  const sc=setScore(); const won=stage>=cur.stages.length-1&&sc>=6;
+  $("arena").style.display="none"; $("report").style.display="block";
+  $("rtitle").textContent="Session report — "+cur.name;
+  $("rscore").textContent=sc+"/10"; $("rscore").style.color=sc>=8?"#10B981":sc>=5?"#F5B82E":"#F87171";
+  $("rturns").textContent=turns; $("rresult").textContent=won?"BOOKED ✅":"WALKED ❌";
+  const good=cur.skills.filter(([k])=>hits.has(k)).map(([,l])=>`<li>${l}</li>`).join("")||"<li>You showed up. That's something.</li>";
+  const bad=cur.skills.filter(([k])=>!hits.has(k)).map(([k,l])=>`<li>${l} — drill: ${INTENTS[k].source.split("|")[0].replace(/\\b|\(|\)/g,"").slice(0,60)}…</li>`).join("")||"<li>Clean run. Raise the difficulty.</li>";
+  $("rgood").innerHTML=good; $("rbad").innerHTML=bad;
+  // streak
+  const s=JSON.parse(localStorage.getItem("udgym")||'{"n":0,"best":0}'); s.n++; s.best=Math.max(s.best,sc);
+  localStorage.setItem("udgym",JSON.stringify(s)); paintStreak();
+}
+function retry(){start(persona)}
+function backToPicker(){$("report").style.display="none";$("picker").style.display="block";paintStreak()}
+function dl(){
+  const blob=new Blob([`UD SALES GYM TRANSCRIPT — ${cur.name}\n${new Date().toLocaleString()}\nScore: ${setScore()}/10\n\n`+log.join("\n")],{type:"text/plain"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ud-gym-transcript.txt";a.click();
+}
+function paintStreak(){const s=JSON.parse(localStorage.getItem("udgym")||'{"n":0,"best":0}');$("reps0").textContent=s.n;$("best0").textContent=s.best?s.best+"/10":"—";}
+paintStreak();
+</script>
+</body>
+</html>
