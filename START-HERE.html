@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UD Growth Engine — Operations Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{--navy:#0a2540;--blue:#1463ff;--ice:#eef4ff;--ink:#0b1727;--line:#e3e9f4;--green:#16a34a;--amber:#d97706;--red:#dc2626;--shadow:0 18px 50px -18px rgba(10,37,64,.35)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:#f5f8fd;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Plus Jakarta Sans','Inter',sans-serif;letter-spacing:-.02em;line-height:1.12}
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1240px,94%);margin:0 auto}
+
+  .top{background:linear-gradient(135deg,#071c33,#0a2540 55%,#0d3a73);color:#fff;padding:2.2rem 0 2rem}
+  .top .wrap{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
+  .top h1{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:800}
+  .top .sub{color:#9fb6dd;font-size:.95rem;margin-top:.3rem}
+  .top .stamp{text-align:right;font-size:.82rem;color:#9fb6dd}
+  .top .stamp b{display:block;color:#7fb0ff;font-size:1.05rem;font-family:'Plus Jakarta Sans'}
+
+  .bar{background:#0d2e4f;color:#cfe0ff;font-size:.88rem;padding:.55rem 0}
+  .bar .wrap{display:flex;gap:2rem;flex-wrap:wrap}
+  .bar b{color:#fff}
+
+  main{padding:2.2rem 0 3rem}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.2rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.5rem;box-shadow:0 6px 24px -16px rgba(10,37,64,.25)}
+  .card h2{font-size:1.05rem;color:var(--navy);display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem}
+  .span12{grid-column:span 12}.span8{grid-column:span 8}.span6{grid-column:span 6}.span4{grid-column:span 4}
+  @media(max-width:980px){.span8,.span6,.span4{grid-column:span 12}}
+
+  /* systems table */
+  table{width:100%;border-collapse:collapse;font-size:.92rem}
+  th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#7a86a3;padding:.5rem .6rem;border-bottom:1px solid var(--line)}
+  td{padding:.7rem .6rem;border-bottom:1px solid #eef1f8;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .sys{font-weight:700;color:var(--navy)}
+  .sys small{display:block;font-weight:500;color:#7a86a3}
+  .st{display:inline-flex;align-items:center;gap:.35rem;font-weight:700;font-size:.78rem;padding:.25rem .7rem;border-radius:999px;white-space:nowrap}
+  .st.built{background:#ecfdf5;color:var(--green)}
+  .st.key{background:#fffbeb;color:var(--amber)}
+  .st.todo{background:#fef2f2;color:var(--red)}
+  .open{font-weight:700;color:var(--blue);font-size:.85rem;white-space:nowrap}
+
+  /* model */
+  .lever{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid #eef1f8}
+  .lever:last-child{border-bottom:none}
+  .lever .n{font-weight:700;color:var(--navy);font-size:.95rem}
+  .lever .n small{display:block;font-weight:500;color:#7a86a3;font-size:.8rem}
+  .lever .v{font-family:'Plus Jakarta Sans';font-weight:800;color:var(--blue);white-space:nowrap}
+  .total{background:var(--navy);color:#fff;border-radius:12px;padding:.9rem 1rem;display:flex;justify-content:space-between;align-items:center;margin-top:.9rem}
+  .total .v{color:#7fb0ff;font-family:'Plus Jakarta Sans';font-weight:900;font-size:1.3rem}
+
+  /* checklist */
+  .chk{list-style:none}
+  .chk li{display:flex;gap:.7rem;padding:.55rem 0;border-bottom:1px solid #eef1f8;font-size:.93rem;align-items:flex-start}
+  .chk li:last-child{border-bottom:none}
+  .chk input{margin-top:.3rem;width:16px;height:16px;accent-color:var(--blue)}
+  .chk b{color:var(--navy)}
+  .chk .who{margin-left:auto;font-size:.72rem;font-weight:700;color:#7a86a3;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;padding-top:.25rem}
+
+  /* phases */
+  .phase{display:flex;gap:.9rem;padding:.75rem 0;border-bottom:1px solid #eef1f8;align-items:flex-start}
+  .phase:last-child{border-bottom:none}
+  .phase .d{flex:none;width:86px;font-weight:800;color:var(--blue);font-family:'Plus Jakarta Sans';font-size:.88rem}
+  .phase p{font-size:.92rem;color:#3b4660}
+  .phase b{color:var(--navy)}
+
+  footer{color:#7a86a3;font-size:.8rem;text-align:center;padding:0 0 2.5rem}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <div>
+    <h1>UD Growth Engine — Operations Hub</h1>
+    <div class="sub">United Developers · Built &amp; operated by TrainYourAgent · Target: $10M → $20M</div>
+  </div>
+  <div class="stamp">STATUS<b>BUILD PHASE — DAY 1</b></div>
+</div></div>
+
+<div class="bar"><div class="wrap">
+  <span>Systems built: <b>8</b></span>
+  <span>Blocked on access: <b>5 items</b> (see Go-Live)</span>
+  <span>Next milestone: <b>Site + AI receptionist live</b></span>
+  <span>Owner: <b>Alexander / TrainYourAgent</b></span>
+</div></div>
+
+<main><div class="wrap"><div class="grid">
+
+  <!-- SYSTEMS -->
+  <div class="card span8">
+    <h2>⚙️ Systems &amp; Status</h2>
+    <table>
+      <tr><th>System</th><th>Status</th><th>To go live</th><th></th></tr>
+      <tr>
+        <td class="sys">Website + Storm Funnel<small>3-step lead capture, mobile-first</small></td>
+        <td><span class="st built">● BUILT</span></td>
+        <td>Point udroofing.com DNS / upload to host; wire form webhook</td>
+        <td><a class="open" href="website/index.html" target="_blank">Open ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">🛰️ Satellite Roof Quote<small>address → roof measurements → instant estimate</small></td>
+        <td><span class="st key">● NEEDS API KEY</span></td>
+        <td>Google Cloud key (Geocoding + Solar + Static Maps) → CONFIG block. Demo mode works now.</td>
+        <td><a class="open" href="website/roof-quote.html" target="_blank">Open ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Careers / Hiring Funnel<small>rep recruiting page + AI screener intake</small></td>
+        <td><span class="st built">● BUILT</span></td>
+        <td>Publish + post job links (Indeed/FB); wire applicant webhook</td>
+        <td><a class="open" href="website/careers.html" target="_blank">Open ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">AI Receptionist (Agent 1)<small>24/7 answer + qualify + book</small></td>
+        <td><span class="st key">● PROMPTS READY</span></td>
+        <td>Deploy on TrainYourAgent; connect phone overflow + calendar</td>
+        <td><a class="open" href="ai-agents/AI-Agent-Deployment-Pack.md" target="_blank">Prompts ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Follow-Up / Nurture (Agent 2)<small>speed-to-lead + storm reactivation</small></td>
+        <td><span class="st key">● PROMPTS READY</span></td>
+        <td>CRM access (GHL/ServiceTitan) + 10DLC texting number</td>
+        <td><a class="open" href="ai-agents/AI-Agent-Deployment-Pack.md" target="_blank">Prompts ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Sales Training Simulator (Agent 3)<small>2–4 wk ramp + call coaching</small></td>
+        <td><span class="st key">● PROMPTS READY</span></td>
+        <td>Deploy on TYA; enroll current reps week 1</td>
+        <td><a class="open" href="training/Sales-Rep-Playbook.md" target="_blank">Playbook ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Recruiting Screener (Agent 4)<small>auto-screen + book interviews</small></td>
+        <td><span class="st key">● PROMPTS READY</span></td>
+        <td>Deploy on TYA; connect careers form</td>
+        <td><a class="open" href="ai-agents/AI-Agent-Deployment-Pack.md" target="_blank">Prompts ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Report Factory<small>storm ZIP → personalized roof reports + QR print batch</small></td>
+        <td><span class="st built">● BUILT</span></td>
+        <td>Run with address list; add API key for live measurements</td>
+        <td><a class="open" href="tools/report-factory/README.md" target="_blank">Tool ↗</a></td>
+      </tr>
+      <tr>
+        <td class="sys">Demand Engine<small>LSA, Search, Meta, storm triggers, SEO, reviews</small></td>
+        <td><span class="st todo">● NEEDS AD ACCOUNTS</span></td>
+        <td>Google/Meta ad account access + budget sign-off (~$12–19K/mo start)</td>
+        <td><a class="open" href="growth/Lead-Gen-and-Social-System.md" target="_blank">System ↗</a></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- MODEL -->
+  <div class="card span4">
+    <h2>📈 The Model ($10M → $20M)</h2>
+    <div class="lever"><div class="n">Stop the leak<small>AI answers 100% of calls + instant follow-up</small></div><div class="v">+$1.5M</div></div>
+    <div class="lever"><div class="n">Close rate 30% → 40%<small>training academy + AI call coaching</small></div><div class="v">+$3.9M</div></div>
+    <div class="lever"><div class="n">+50% lead volume &amp; 15–20 reps<small>demand engine + satellite tool + hiring machine</small></div><div class="v">+$4.8M</div></div>
+    <div class="total"><span>Run-rate target</span><span class="v">~$20.2M</span></div>
+    <p style="font-size:.78rem;color:#7a86a3;margin-top:.7rem">Bottoms-up @ $14K avg job, 1,440 jobs/yr. Constraint: production capacity must scale with sales. Full math → <a href="Master-Growth-Plan-and-Revenue-Model.md" style="color:var(--blue);font-weight:700">Master Plan ↗</a></p>
+  </div>
+
+  <!-- GO LIVE CHECKLIST -->
+  <div class="card span6">
+    <h2>🔓 Go-Live Checklist (what's blocking)</h2>
+    <ul class="chk">
+      <li><input type="checkbox"/><span><b>Website hosting/DNS access</b> — upload new site to udroofing.com (or stage on subdomain first)</span><span class="who">UD</span></li>
+      <li><input type="checkbox"/><span><b>Google Cloud API key</b> — enable Geocoding, Solar, Static Maps → paste into roof-quote.html CONFIG</span><span class="who">TYA</span></li>
+      <li><input type="checkbox"/><span><b>Phone system access</b> — set AI receptionist on overflow/after-hours for (240) 880-2108</span><span class="who">UD + TYA</span></li>
+      <li><input type="checkbox"/><span><b>CRM credentials</b> — GHL / ServiceTitan / current stack for booking + lead routing webhooks</span><span class="who">UD</span></li>
+      <li><input type="checkbox"/><span><b>Ad accounts + budget sign-off</b> — Google &amp; Meta access, ~$12–19K/mo starting spend</span><span class="who">UD</span></li>
+      <li><input type="checkbox"/><span><b>Real numbers</b> — avg job value, monthly leads, close rate → locks the model to actuals</span><span class="who">UD</span></li>
+      <li><input type="checkbox"/><span><b>10DLC texting registration</b> — compliant SMS for follow-up agent</span><span class="who">TYA</span></li>
+    </ul>
+  </div>
+
+  <!-- EXECUTION TIMELINE -->
+  <div class="card span6">
+    <h2>🗓️ Execution Timeline</h2>
+    <div class="phase"><div class="d">DAY 1–3</div><p><b>Stage the site</b> on a live URL, deploy AI receptionist in test mode, collect the 5 access items, lock real numbers into the model.</p></div>
+    <div class="phase"><div class="d">DAY 4–7</div><p><b>Go live:</b> new site + satellite tool + AI receptionist on after-hours. Missed-call text-back on. Review engine on. First measurable wins captured.</p></div>
+    <div class="phase"><div class="d">WK 2</div><p><b>Training + hiring:</b> current reps into the simulator; careers funnel live + job posts up; recruiting screener answering applicants.</p></div>
+    <div class="phase"><div class="d">WK 3–4</div><p><b>Demand on:</b> LSA + Search + Meta launch; storm-trigger automation armed; first report-factory batch printed for an active ZIP.</p></div>
+    <div class="phase"><div class="d">WK 5+</div><p><b>Scale loop:</b> weekly scoreboard review → kill losers, scale winners, graduate rep cohorts, track run-rate vs. $20M path.</p></div>
+  </div>
+
+  <!-- SCOREBOARD -->
+  <div class="card span12">
+    <h2>📊 Weekly Scoreboard (fill every Friday — this is the proof of value)</h2>
+    <table>
+      <tr><th>Week</th><th>Calls answered %</th><th>Leads (by source)</th><th>Booked inspections</th><th>Close %</th><th>Signed $</th><th>Collected $</th><th>Reps ramping</th><th>Run-rate vs $20M</th></tr>
+      <tr><td><b>Baseline</b></td><td>?</td><td>?</td><td>?</td><td>~30%</td><td>—</td><td>—</td><td>—</td><td>$10M</td></tr>
+      <tr><td>W1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>W2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>W3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>W4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    <p style="font-size:.8rem;color:#7a86a3;margin-top:.6rem">Baseline row first — without it, no lift is provable. Get these numbers from UD in the Day 1–3 window.</p>
+  </div>
+
+</div></div></main>
+
+<footer><div class="wrap">UD Growth Engine · TrainYourAgent · All assets in this folder — website/, ai-agents/, training/, growth/, tools/</div></footer>
+</body>
+</html>
