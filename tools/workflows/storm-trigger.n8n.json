@@ -1,0 +1,108 @@
+{
+  "name": "UD Storm Trigger — NWS hail/wind → Ops blast",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [ { "field": "hours", "hoursInterval": 1 } ] }
+      },
+      "name": "Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://api.weather.gov/alerts/active?area=MD",
+        "options": { "timeout": 15000 },
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [ { "name": "User-Agent", "value": "UD-StormOps (office@udroofing.com)" } ] }
+      },
+      "name": "NWS Alerts (MD)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, -80]
+    },
+    {
+      "parameters": {
+        "url": "https://api.weather.gov/alerts/active?area=VA",
+        "options": { "timeout": 15000 },
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [ { "name": "User-Agent", "value": "UD-StormOps (office@udroofing.com)" } ] }
+      },
+      "name": "NWS Alerts (VA)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge MD+VA alerts, keep hail/severe-thunderstorm/high-wind events touching UD territory\nconst TARGET = ['Montgomery','Frederick','Howard','Prince George','Fairfax','Arlington','Alexandria','Loudoun'];\nconst KEY = /(severe thunderstorm|hail|high wind|tornado)/i;\nconst out = [];\nfor (const item of $input.all()) {\n  const feats = item.json.features || [];\n  for (const f of feats) {\n    const p = f.properties || {};\n    const area = p.areaDesc || '';\n    if (!KEY.test(p.event || '')) continue;\n    if (!TARGET.some(c => area.includes(c))) continue;\n    out.push({ json: {\n      event: p.event,\n      severity: p.severity,\n      headline: p.headline,\n      areas: area,\n      onset: p.onset,\n      expires: p.expires,\n      hail: (p.parameters && p.parameters.maxHailSize) ? p.parameters.maxHailSize[0] : null,\n      wind: (p.parameters && p.parameters.maxWindGust) ? p.parameters.maxWindGust[0] : null,\n      id: p.id\n    }});\n  }\n}\nreturn out;"
+      },
+      "name": "Filter: UD Territory + Hail/Wind",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 0]
+    },
+    {
+      "parameters": {
+        "conditions": { "number": [ { "value1": "={{ $items().length }}", "operation": "larger", "value2": 0 } ] }
+      },
+      "name": "Any storms?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.UD_OPS_WEBHOOK }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({type:'storm_alert', alerts: $items().map(i=>i.json)}) }}"
+      },
+      "name": "→ Ops webhook (Slack/SMS/CRM)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, -100],
+      "notes": "Set env UD_OPS_WEBHOOK to your GHL/Slack/Twilio webhook. Payload: storm alerts for UD counties."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.UD_FACTORY_WEBHOOK }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({type:'run_report_factory', storm: $items()[0].json.headline, areas: $items()[0].json.areas, ts: new Date().toISOString()}) }}"
+      },
+      "name": "→ Report Factory trigger",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 60],
+      "notes": "Endpoint that kicks off tools/report-factory for the affected ZIPs (and your Meta/Google geo-burst automation)."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.UD_REACTIVATION_WEBHOOK }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({type:'storm_reactivation', areas: $items()[0].json.areas, template:'storm_alert_zip', consentOnly:true}) }}"
+      },
+      "name": "→ Agent 2: storm reactivation (consented list only)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 220],
+      "notes": "Fires Agent 2 sequence B for past customers/leads WITH SMS consent in the hit counties. consentOnly must stay true (TCPA)."
+    }
+  ],
+  "connections": {
+    "Every Hour": { "main": [ [ { "node": "NWS Alerts (MD)", "type": "main", "index": 0 }, { "node": "NWS Alerts (VA)", "type": "main", "index": 0 } ] ] },
+    "NWS Alerts (MD)": { "main": [ [ { "node": "Filter: UD Territory + Hail/Wind", "type": "main", "index": 0 } ] ] },
+    "NWS Alerts (VA)": { "main": [ [ { "node": "Filter: UD Territory + Hail/Wind", "type": "main", "index": 0 } ] ] },
+    "Filter: UD Territory + Hail/Wind": { "main": [ [ { "node": "Any storms?", "type": "main", "index": 0 } ] ] },
+    "Any storms?": { "main": [ [ { "node": "→ Ops webhook (Slack/SMS/CRM)", "type": "main", "index": 0 }, { "node": "→ Report Factory trigger", "type": "main", "index": 0 }, { "node": "→ Agent 2: storm reactivation (consented list only)", "type": "main", "index": 0 } ], [] ] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "instanceId": "ud-growth-engine" }
+}
