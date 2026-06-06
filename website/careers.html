@@ -28,6 +28,8 @@
   .logo .mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;color:#fff}
 
   .hero{background:linear-gradient(160deg,#071c33,#0a2540 50%,#0d3a73);color:#fff;position:relative;overflow:hidden}
+  .hero .photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1900&q=75&auto=format&fit=crop') center/cover;opacity:.5}
+  .hero .veil{position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,28,51,.97) 0%,rgba(10,37,64,.9) 45%,rgba(10,37,64,.6) 100%)}
   .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(20,99,255,.35),transparent 45%)}
   .hero-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;padding:4rem 0}
   .hero h1{font-size:clamp(2.2rem,4.4vw,3.5rem);font-weight:800;margin:1rem 0}
@@ -101,7 +103,7 @@
 </nav></div></header>
 
 <!-- HERO -->
-<div class="hero"><div class="wrap"><div class="hero-grid">
+<div class="hero"><div class="photo"></div><div class="veil"></div><div class="wrap"><div class="hero-grid" style="position:relative">
   <div>
     <span class="eyebrow">★ Now Hiring · DMV Territory</span>
     <h1>Sell roofs. <span>Change your income.</span> We hand you the leads.</h1>
