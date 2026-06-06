@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://udroofing.com/sitemap.xml
