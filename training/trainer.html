@@ -103,9 +103,9 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
   <div style="margin-top:1.8rem;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.3rem">
     <h3 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:.7rem">🎙 Voice Mode — talk to them out loud (live ElevenLabs agents)</h3>
     <div style="display:flex;gap:.7rem;flex-wrap:wrap">
-      <a style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600" href="https://elevenlabs.io/app/talk-to?agent_id=agent_4101ktf0jy4mfq5s05ff8zn3ac5v" target="_blank" rel="noopener">🤨 Spar with Sam — voice</a>
-      <a style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600" href="https://elevenlabs.io/app/talk-to?agent_id=agent_3901ktf31dnyffz99cvxtctmw01e" target="_blank" rel="noopener">🛡️ Spar with Wanda — voice</a>
-      <a style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600" href="https://elevenlabs.io/app/talk-to?agent_id=agent_6601ktf32t32eyev14dcseyetnrw" target="_blank" rel="noopener">🧊 Spar with Steve — voice</a>
+      <button class="vbtn" data-agent="agent_4101ktf0jy4mfq5s05ff8zn3ac5v" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🤨 Spar with Sam — voice</button>
+      <button class="vbtn" data-agent="agent_3901ktf31dnyffz99cvxtctmw01e" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🛡️ Spar with Wanda — voice</button>
+      <button class="vbtn" data-agent="agent_6601ktf32t32eyev14dcseyetnrw" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🧊 Spar with Steve — voice</button>
     </div>
     <p style="font-size:.72rem;color:var(--mut);margin-top:.6rem">Say "end session" mid-conversation to get your coach's scorecard. (Agents must be set public/shareable in the ElevenLabs dashboard for these links.)</p>
   </div>
@@ -278,6 +278,22 @@ function dl(){
 }
 function paintStreak(){const s=JSON.parse(localStorage.getItem("udgym")||'{"n":0,"best":0}');$("reps0").textContent=s.n;$("best0").textContent=s.best?s.best+"/10":"—";}
 paintStreak();
+</script>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script>
+// In-page voice sparring: clicking a persona swaps the embedded ElevenLabs agent
+document.querySelectorAll('.vbtn').forEach(function(b){
+  b.addEventListener('click', function(){
+    var old=document.querySelector('elevenlabs-convai'); if(old) old.remove();
+    var w=document.createElement('elevenlabs-convai');
+    w.setAttribute('agent-id', b.dataset.agent);
+    document.body.appendChild(w);
+    document.querySelectorAll('.vbtn').forEach(function(x){x.style.outline='';});
+    b.style.outline='2px solid #C53030';
+    b.textContent=b.textContent.replace(' — voice',' — LIVE (mic bottom-right)');
+    setTimeout(function(){b.textContent=b.textContent.replace(' — LIVE (mic bottom-right)',' — voice');},6000);
+  });
+});
 </script>
 </body>
 </html>
