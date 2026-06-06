@@ -1,0 +1,33 @@
+name: Fetch brand assets
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download UD brand images
+        run: |
+          mkdir -p website/assets
+          cd website/assets
+          dl(){ curl -sL --retry 3 -o "$2" "$1" && echo "OK $2 ($(stat -c%s "$2") bytes)"; }
+          dl "https://uniteddevelopersmdva.com/wp-content/uploads/2025/09/united-developers-2.png" logo-white.png
+          dl "https://udroofing.com/wp-content/uploads/2025/07/resize-roof-h.png" roof.png
+          dl "https://udroofing.com/wp-content/uploads/2025/07/resize-siding-h.png" siding.png
+          dl "https://udroofing.com/wp-content/uploads/2025/07/gutter-resize-1.png" gutter.png
+          dl "https://udroofing.com/wp-content/uploads/2025/06/window-installation.jpg" window.jpg
+          dl "https://udroofing.com/wp-content/uploads/2025/06/interior-painting.jpg" painting.jpg
+          dl "https://udroofing.com/wp-content/uploads/2025/07/resize-roofing-1.png" metal.png
+          dl "https://udroofing.com/wp-content/uploads/2026/01/about-us.png" about.png
+          dl "https://udroofing.com/wp-content/uploads/2025/07/home-page.jpg" og.jpg
+          dl "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2000&q=80&auto=format&fit=crop" hero-home.jpg
+          dl "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1900&q=75&auto=format&fit=crop" hero-careers.jpg
+          ls -la
+      - name: Commit assets
+        run: |
+          git config user.name "ud-assets-bot"
+          git config user.email "actions@github.com"
+          git add website/assets
+          git commit -m "Add self-hosted brand assets" || echo "nothing to commit"
+          git push
