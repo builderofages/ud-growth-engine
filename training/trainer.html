@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#0A1626;--panel:#101F35;--panel2:#152841;--line:rgba(255,255,255,.09);--txt:#E7EEF9;--mut:#8FA4C4;--blue:#2F6BFF;--gold:#F5B82E;--green:#10B981;--red:#F87171;--r:16px}
+:root{--bg:#0A1626;--panel:#101F35;--panel2:#152841;--line:rgba(255,255,255,.09);--txt:#E7EEF9;--mut:#8FA4C4;--blue:#C53030;--gold:#F5B82E;--green:#10B981;--red:#F87171;--r:16px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
 h1,h2,h3{font-family:'Sora';letter-spacing:-.02em}
@@ -27,7 +27,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.6rem}
 @media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
 .pc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem;cursor:pointer;transition:.25s}
-.pc:hover{transform:translateY(-4px);border-color:#3B82F6}
+.pc:hover{transform:translateY(-4px);border-color:#D04545}
 .pc .av{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;margin-bottom:.8rem}
 .pc h3{font-size:1.02rem}
 .pc p{font-size:.8rem;color:var(--mut);margin-top:.3rem}
@@ -49,12 +49,12 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
 .m{max-width:78%;padding:.7rem .95rem;border-radius:14px;font-size:.92rem;animation:pop .25s ease}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
 .m.them{background:var(--panel2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
-.m.me{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);align-self:flex-end;border-bottom-right-radius:4px}
+.m.me{background:linear-gradient(180deg,#C53030,#9B1C1C);align-self:flex-end;border-bottom-right-radius:4px}
 .m.sys{align-self:center;background:none;color:var(--mut);font-size:.74rem;max-width:95%;text-align:center}
 .inrow{display:flex;gap:.6rem;padding:.9rem;border-top:1px solid var(--line)}
 .inrow input{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;color:var(--txt);font-size:.95rem;font-family:inherit}
 .inrow input:focus{outline:none;border-color:var(--blue)}
-.inrow button{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);border:none;border-radius:12px;color:#fff;font-weight:700;padding:0 1.3rem;cursor:pointer;font-family:inherit}
+.inrow button{background:linear-gradient(180deg,#C53030,#9B1C1C);border:none;border-radius:12px;color:#fff;font-weight:700;padding:0 1.3rem;cursor:pointer;font-family:inherit}
 
 /* coach */
 .coach{display:flex;flex-direction:column;gap:.9rem}
@@ -79,7 +79,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
 .fb h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:.6rem}
 .fb li{margin-left:1.1rem;font-size:.9rem;padding:.15rem 0}
 .btnrow{display:flex;gap:.8rem;margin-top:1.4rem;flex-wrap:wrap}
-.btn{background:linear-gradient(180deg,#2F6BFF,#1D4ED8);border:none;border-radius:12px;color:#fff;font-weight:700;padding:.9rem 1.5rem;cursor:pointer;font-family:inherit;font-size:.93rem}
+.btn{background:linear-gradient(180deg,#C53030,#9B1C1C);border:none;border-radius:12px;color:#fff;font-weight:700;padding:.9rem 1.5rem;cursor:pointer;font-family:inherit;font-size:.93rem}
 .btn.ghost{background:var(--panel2);border:1px solid var(--line)}
 .note{font-size:.74rem;color:var(--mut);margin-top:1.2rem}
 </style>
@@ -95,7 +95,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
   <h1>Pick your opponent.</h1>
   <p>Real homeowners, real objections. Type what you'd actually say at the door — the AI responds to <i>your</i> words, the coach panel scores you live, and you get a full breakdown at the end. 8/10 to pass.</p>
   <div class="cards">
-    <div class="pc" onclick="start('door')"><div class="av" style="background:rgba(47,107,255,.15)">🚪</div><h3>Busy Brenda</h3><p>Answers the door annoyed. You have 15 seconds before it closes.</p><span class="diff d1">WARM-UP · DOOR KNOCK</span></div>
+    <div class="pc" onclick="start('door')"><div class="av" style="background:rgba(197,48,48,.15)">🚪</div><h3>Busy Brenda</h3><p>Answers the door annoyed. You have 15 seconds before it closes.</p><span class="diff d1">WARM-UP · DOOR KNOCK</span></div>
     <div class="pc" onclick="start('skeptic')"><div class="av" style="background:rgba(245,184,46,.15)">🤨</div><h3>Skeptical Sam</h3><p>"My roof is fine." Has heard every roofer pitch. Hates pressure.</p><span class="diff d2">INTERMEDIATE · OBJECTIONS</span></div>
     <div class="pc" onclick="start('insurance')"><div class="av" style="background:rgba(16,185,129,.15)">🛡️</div><h3>Worried Wanda</h3><p>Has damage but terrified of premiums, scams, and paperwork.</p><span class="diff d2">INTERMEDIATE · INSURANCE</span></div>
     <div class="pc" onclick="start('closer')"><div class="av" style="background:rgba(248,113,113,.15)">🧊</div><h3>Stone-Cold Steve</h3><p>"I need to talk to my wife and get three more quotes." The final boss.</p><span class="diff d3">ADVANCED · THE CLOSE</span></div>
