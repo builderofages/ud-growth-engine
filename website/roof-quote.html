@@ -256,7 +256,18 @@ function claimReport(e){
   e.preventDefault();
   const lead = {...scanData, name:document.getElementById('cname').value, phone:document.getElementById('cphone').value, source:"satellite-roof-quote", ts:new Date().toISOString()};
   if(LEAD_WEBHOOK){ fetch(LEAD_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)}).catch(()=>{}); }
-  console.log("SATELLITE LEAD →", lead);
+  
+    // === LIVE LEAD DELIVERY ===
+    // 1) FormSubmit -> email (active after one-time activation click)
+    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(Object.assign({_subject:'UD LEAD: '+(data.service||data.exp||'satellite quote'),_template:'table'},data))
+    }).catch(function(){});
+    // 2) Optional CRM webhook (paste GHL/ServiceTitan URL)
+    var UD_WEBHOOK='';
+    if(UD_WEBHOOK){fetch(UD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+
+    console.log("SATELLITE LEAD →", lead);
   document.getElementById('claimForm').style.display='none';
   document.getElementById('claimOk').style.display='block';
   return false;

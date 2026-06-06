@@ -503,6 +503,17 @@ if (window.UD_GA4) {
     e.preventDefault();
     const data={zip:v('zip'),service:v('service'),name:v('name'),phone:v('phone'),address:v('address'),time:v('time'),storm:v('storm'),source:'website-funnel',ts:new Date().toISOString()};
     // === INTEGRATION POINT: POST to TrainYourAgent receptionist / CRM webhook ===
+    
+    // === LIVE LEAD DELIVERY ===
+    // 1) FormSubmit -> email (active after one-time activation click)
+    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(Object.assign({_subject:'UD LEAD: '+(data.service||data.exp||'satellite quote'),_template:'table'},data))
+    }).catch(function(){});
+    // 2) Optional CRM webhook (paste GHL/ServiceTitan URL)
+    var UD_WEBHOOK='';
+    if(UD_WEBHOOK){fetch(UD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+
     console.log('LEAD CAPTURED →',data);
     document.getElementById('leadForm').style.display='none';
     document.getElementById('success').style.display='block';
