@@ -17,7 +17,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
 @media(max-width:760px){.topbar .right{display:none}}
 header{position:sticky;top:0;z-index:50;background:rgba(8,27,48,.82);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid rgba(255,255,255,.08)}
 nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
-.logo img{height:46px;width:auto}
+.logo img{height:46px;width:auto;max-width:none;flex:none}
 .navlinks{display:flex;gap:1.6rem;align-items:center;font-weight:500;font-size:.91rem;color:#C5D4EC}
 .navlinks a{white-space:nowrap;transition:.2s}.navlinks a:hover{color:#fff}.navlinks .hot{color:#7FB3FF;font-weight:600}
 .nav-cta{display:flex;align-items:center;gap:1rem;margin-left:1.4rem}
