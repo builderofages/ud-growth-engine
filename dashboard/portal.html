@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Project — United Developers Client Portal</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#081B30;--ink:#0E1B2C;--body:#4A5872;--blue:#2563EB;--ice:#EFF5FF;--line:#E4EAF4;--gold:#F5B82E;--green:#10B981;--r:18px;--sh:0 14px 44px -18px rgba(8,27,48,.3)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#F5F8FD;color:var(--ink);line-height:1.55}
+h1,h2,h3{font-family:'Sora';letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(880px,93%);margin:0 auto}
+.top{background:var(--navy);color:#fff;padding:1rem 0}
+.top .wrap{display:flex;justify-content:space-between;align-items:center}
+.top img{height:40px}
+.top .who{font-size:.85rem;color:#B7C9E5}
+.hero{background:linear-gradient(135deg,var(--navy),#10325E);color:#fff;padding:2.2rem 0 4.5rem}
+.hero h1{font-size:1.6rem}.hero p{color:#B7C9E5;font-size:.95rem;margin-top:.3rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:1.5rem;margin-bottom:1rem}
+.stack{margin-top:-3rem;padding-bottom:3rem}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;margin:1rem 0 .5rem}
+.stp{text-align:center;font-size:.68rem;color:#8C97AF;font-weight:600}
+.stp .dot{width:30px;height:30px;border-radius:50%;background:var(--ice);color:#8C97AF;display:grid;place-items:center;margin:0 auto .35rem;font-weight:700;border:2px solid var(--line)}
+.stp.done .dot{background:var(--green);border-color:var(--green);color:#fff}
+.stp.now .dot{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 5px rgba(37,99,235,.15)}
+.stp.now{color:var(--blue)}
+.statusbig{display:flex;align-items:center;gap:1rem;background:var(--ice);border-radius:14px;padding:1rem 1.2rem;margin-top:.8rem}
+.statusbig .ic{font-size:1.7rem}
+.statusbig b{color:var(--navy)}
+.row{display:flex;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid #EEF1F8;font-size:.92rem}
+.row:last-child{border-bottom:none}
+.row .l{color:var(--body)}.row .r{font-weight:600;color:var(--navy);text-align:right}
+.doc{display:flex;align-items:center;gap:.8rem;padding:.7rem 0;border-bottom:1px solid #EEF1F8;font-size:.92rem}
+.doc:last-child{border-bottom:none}
+.doc .ic{width:38px;height:38px;border-radius:10px;background:var(--ice);display:grid;place-items:center}
+.doc small{display:block;color:#8C97AF;font-size:.75rem}
+.doc .dl{margin-left:auto;color:var(--blue);font-weight:700;font-size:.85rem}
+.msg{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;margin-bottom:.6rem;font-size:.9rem}
+.msg time{display:block;color:#8C97AF;font-size:.72rem;margin-bottom:.15rem}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:.5rem;background:linear-gradient(180deg,#2F6BFF,#1D4ED8);color:#fff;font-weight:600;border:none;border-radius:12px;padding:.85rem 1.4rem;font-size:.95rem;cursor:pointer;font-family:inherit;width:100%}
+.note{background:rgba(245,184,46,.1);border:1px solid rgba(245,184,46,.4);border-radius:12px;padding:.8rem 1rem;font-size:.78rem;color:#7A5A00;margin-top:1rem}
+h2.sec{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:#8C97AF;margin:0 0 .8rem}
+@media(max-width:640px){.steps{grid-template-columns:repeat(3,1fr);row-gap:.9rem}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <img src="https://uniteddevelopersmdva.com/wp-content/uploads/2025/09/united-developers-2.png" alt="United Developers"/>
+  <span class="who">Welcome back, <b style="color:#fff">Sample Homeowner</b></span>
+</div></div>
+<div class="hero"><div class="wrap">
+  <h1>Your roof project, live.</h1>
+  <p>204 E Deer Park Dr, Gaithersburg MD 20877 · Claim #SF-2026-48211 · State Farm</p>
+</div></div>
+
+<div class="stack"><div class="wrap">
+
+  <div class="card">
+    <h2 class="sec">Project status</h2>
+    <div class="steps">
+      <div class="stp done"><span class="dot">✓</span>Inspection</div>
+      <div class="stp done"><span class="dot">✓</span>Claim filed</div>
+      <div class="stp done"><span class="dot">✓</span>Adjuster met</div>
+      <div class="stp now"><span class="dot">4</span>Approved</div>
+      <div class="stp"><span class="dot">5</span>Install</div>
+      <div class="stp"><span class="dot">6</span>Final &amp; warranty</div>
+    </div>
+    <div class="statusbig"><span class="ic">🎉</span><div><b>Great news — your claim was approved.</b><br/><span style="color:var(--body);font-size:.9rem">Your install is being scheduled. Expected window: <b>June 12–14</b>. Most roofs are done in one day.</span></div></div>
+  </div>
+
+  <div class="card">
+    <h2 class="sec">Your numbers — plain English</h2>
+    <div class="row"><span class="l">Approved claim total (RCV)</span><span class="r">$18,940</span></div>
+    <div class="row"><span class="l">First insurance check (ACV) — received</span><span class="r">$11,210 ✓</span></div>
+    <div class="row"><span class="l">Second check (depreciation, after install)</span><span class="r">$6,730</span></div>
+    <div class="row"><span class="l"><b>You pay (your deductible)</b></span><span class="r" style="color:var(--green)">$1,000 — that's it</span></div>
+  </div>
+
+  <div class="card">
+    <h2 class="sec">Documents &amp; photos</h2>
+    <div class="doc"><span class="ic">📷</span><div>Inspection photo report<small>14 photos · June 2</small></div><a class="dl" href="#">View</a></div>
+    <div class="doc"><span class="ic">📄</span><div>Insurance scope of work<small>State Farm · June 4</small></div><a class="dl" href="#">View</a></div>
+    <div class="doc"><span class="ic">📝</span><div>Signed agreement<small>June 4</small></div><a class="dl" href="#">View</a></div>
+    <div class="doc"><span class="ic">🛡</span><div>Warranty certificate<small>Issued after final inspection</small></div><span class="dl" style="color:#8C97AF">Pending</span></div>
+  </div>
+
+  <div class="card">
+    <h2 class="sec">Updates from your team</h2>
+    <div class="msg"><time>Today 9:14 AM · United Developers</time>Materials ordered — GAF Timberline HDZ, Charcoal. Delivery scheduled the morning of your install. 🏠</div>
+    <div class="msg"><time>June 4 · United Developers</time>Your adjuster approved the full scope including drip edge. You pay only your $1,000 deductible.</div>
+    <button class="btn">💬 Message my project manager</button>
+    <div class="note">🔒 <b>Preview build with sample data.</b> The production portal requires secure magic-link sign-in (see SECURITY.md) — each homeowner sees only their own project.</div>
+  </div>
+
+</div></div>
+</body>
+</html>

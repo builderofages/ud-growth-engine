@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UD Staff Command — United Developers</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0A1626;--panel:#101F35;--panel2:#152841;--line:rgba(255,255,255,.08);--txt:#E7EEF9;--mut:#8FA4C4;--blue:#2F6BFF;--gold:#F5B82E;--green:#10B981;--red:#F87171;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;font-size:.93rem}
+h1,h2,h3{font-family:'Sora';letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:#08121F;border-right:1px solid var(--line);padding:1.3rem 1rem;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:.6rem;margin-bottom:1.8rem}
+.brand img{height:36px}
+.brand small{display:block;color:var(--mut);font-size:.68rem;letter-spacing:.12em}
+.snav a{display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;border-radius:10px;color:var(--mut);font-weight:500;margin-bottom:.2rem;font-size:.9rem}
+.snav a.on,.snav a:hover{background:var(--panel2);color:#fff}
+.lockchip{margin-top:2rem;background:rgba(245,184,46,.08);border:1px solid rgba(245,184,46,.3);border-radius:12px;padding:.8rem;font-size:.74rem;color:#F5CB6A}
+main{padding:1.6rem 2rem}
+.tophead{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:.8rem}
+.tophead h1{font-size:1.4rem}
+.tophead .sub{color:var(--mut);font-size:.85rem}
+.pill{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:.45rem 1rem;font-size:.8rem;color:var(--mut)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-bottom:1.3rem}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem}
+.kpi .v{font-family:'Sora';font-size:1.55rem;font-weight:800}
+.kpi .d{font-size:.74rem;color:var(--mut);margin-top:.1rem}
+.kpi .t{font-size:.72rem;font-weight:700}
+.up{color:var(--green)}.down{color:var(--red)}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.app{grid-template-columns:1fr}aside{display:none}}
+.cols{display:grid;grid-template-columns:1.5fr 1fr;gap:.9rem}
+@media(max-width:1100px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;margin-bottom:.9rem}
+.panel h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;color:var(--mut);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;padding:.4rem .5rem;border-bottom:1px solid var(--line)}
+td{padding:.6rem .5rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-size:.68rem;font-weight:700;padding:.2rem .6rem;border-radius:999px}
+.tag.new{background:rgba(47,107,255,.15);color:#7FB3FF}
+.tag.urgent{background:rgba(248,113,113,.15);color:var(--red)}
+.tag.booked{background:rgba(16,185,129,.13);color:var(--green)}
+.tag.claim{background:rgba(245,184,46,.13);color:var(--gold)}
+.tag.install{background:rgba(168,85,247,.15);color:#C48BFA}
+.src{color:var(--mut);font-size:.72rem}
+.money{font-weight:700;color:#fff}
+.bar{height:7px;border-radius:99px;background:var(--panel2);overflow:hidden;margin-top:.35rem}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),#7FB3FF)}
+.rep{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.rep:last-child{border-bottom:none}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.78rem;color:#fff;flex:none}
+.rep .nm{font-weight:600;font-size:.86rem}
+.rep .st{color:var(--mut);font-size:.72rem}
+.rep .amt{margin-left:auto;font-weight:700;font-size:.88rem}
+.feed div{padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.84rem}
+.feed time{color:var(--mut);font-size:.7rem;display:block}
+.btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(180deg,#2F6BFF,#1D4ED8);color:#fff;font-weight:600;border:none;border-radius:10px;padding:.55rem 1rem;font-size:.82rem;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand"><img src="https://uniteddevelopersmdva.com/wp-content/uploads/2025/09/united-developers-2.png" alt="UD"/><div><small>STAFF&nbsp;COMMAND</small></div></div>
+  <nav class="snav">
+    <a class="on" href="#">⌂ Overview</a>
+    <a href="#leads">⚡ Leads</a>
+    <a href="#pipeline">▤ Pipeline</a>
+    <a href="#claims">🛡 Claims</a>
+    <a href="#reps">👥 Reps & Ramp</a>
+    <a href="#storm">🌩 Storm Ops</a>
+    <a href="portal.html">→ Client Portal</a>
+  </nav>
+  <div class="lockchip">🔒 <b>Preview build.</b> Production access requires sign-in (SSO + MFA) once the secure backend is connected — see SECURITY.md. Data below is sample data.</div>
+</aside>
+<main>
+  <div class="tophead">
+    <div><h1>Good morning, UD.</h1><div class="sub">Saturday, June 6 · Storm watch: <b style="color:var(--gold)">Hail risk Mon–Tue, Montgomery Co.</b></div></div>
+    <span class="pill">⌁ AI Receptionist: <b style="color:var(--green)">LIVE</b> · answered 11 calls overnight</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">38</div><div class="d">New leads this week</div><div class="t up">▲ 31% vs last wk</div></div>
+    <div class="kpi"><div class="v">22</div><div class="d">Booked inspections</div><div class="t up">▲ 18%</div></div>
+    <div class="kpi"><div class="v">37%</div><div class="d">Close rate (30-day)</div><div class="t up">▲ from 30% baseline</div></div>
+    <div class="kpi"><div class="v">$214K</div><div class="d">Signed this month</div><div class="t up">▲ on pace $20M run-rate path</div></div>
+    <div class="kpi"><div class="v">$96K</div><div class="d">Collected this month</div><div class="t down">▼ 2 RCV checks pending</div></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="panel" id="leads">
+        <h2>Live Lead Feed <button class="btn">+ Add lead</button></h2>
+        <table>
+          <tr><th>Lead</th><th>Source</th><th>Status</th><th>Est. value</th><th>Next step</th></tr>
+          <tr><td><b>M. Okafor</b><br/><span class="src">Gaithersburg 20877</span></td><td class="src">🛰 Satellite tool</td><td><span class="tag urgent">URGENT · leak</span></td><td class="money">$15.5K</td><td>Inspection today 2:00p — Rep: D.K.</td></tr>
+          <tr><td><b>S. Alvarez</b><br/><span class="src">Silver Spring 20902</span></td><td class="src">AI receptionist (after-hours)</td><td><span class="tag booked">BOOKED</span></td><td class="money">$13.2K</td><td>Mon 9:30a — confirm via SMS ✓</td></tr>
+          <tr><td><b>T. Nguyen</b><br/><span class="src">Rockville 20850</span></td><td class="src">Google LSA</td><td><span class="tag new">NEW</span></td><td class="money">$12.8K</td><td>AI follow-up seq running (T+1hr)</td></tr>
+          <tr><td><b>R. & P. Shah</b><br/><span class="src">Bethesda 20814</span></td><td class="src">Door — report in hand</td><td><span class="tag claim">CLAIM FILED</span></td><td class="money">$18.9K</td><td>Adjuster meet Wed 11a — Rep: J.M.</td></tr>
+          <tr><td><b>L. Carter</b><br/><span class="src">Alexandria 22314</span></td><td class="src">Meta storm ad</td><td><span class="tag install">INSTALL FRI</span></td><td class="money">$14.1K</td><td>Crew A · materials delivered ✓</td></tr>
+        </table>
+      </div>
+
+      <div class="panel" id="pipeline">
+        <h2>Pipeline by Stage</h2>
+        <table>
+          <tr><th>Stage</th><th style="width:45%">Volume</th><th>Count</th><th>Value</th></tr>
+          <tr><td>New / contacted</td><td><div class="bar"><i style="width:88%"></i></div></td><td>31</td><td class="money">$412K</td></tr>
+          <tr><td>Inspection booked</td><td><div class="bar"><i style="width:62%"></i></div></td><td>22</td><td class="money">$291K</td></tr>
+          <tr><td>Claim filed / adjuster</td><td><div class="bar"><i style="width:40%"></i></div></td><td>14</td><td class="money">$203K</td></tr>
+          <tr><td>Approved / signed</td><td><div class="bar"><i style="width:30%"></i></div></td><td>11</td><td class="money">$158K</td></tr>
+          <tr><td>Install scheduled</td><td><div class="bar"><i style="width:22%"></i></div></td><td>7</td><td class="money">$96K</td></tr>
+        </table>
+      </div>
+
+      <div class="panel" id="claims">
+        <h2>Claims Watchlist</h2>
+        <table>
+          <tr><th>Property</th><th>Carrier</th><th>Stage</th><th>Action</th></tr>
+          <tr><td>204 E Deer Park Dr</td><td class="src">State Farm</td><td><span class="tag claim">SUPPLEMENT</span></td><td>Submit drip-edge supplement — due Mon</td></tr>
+          <tr><td>9 Walker Ave</td><td class="src">Allstate</td><td><span class="tag booked">ACV RECEIVED</span></td><td>Schedule install; RCV after completion</td></tr>
+          <tr><td>501 S Frederick Ave</td><td class="src">Erie</td><td><span class="tag urgent">STALLED 12d</span></td><td>AI drafted homeowner status text — review & send</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel" id="reps">
+        <h2>Rep Leaderboard (June)</h2>
+        <div class="rep"><span class="av" style="background:linear-gradient(135deg,#2F6BFF,#7C3AED)">DK</span><div><div class="nm">Darius K.</div><div class="st">Ramp W4 ✓ · close 41%</div></div><div class="amt">$86K</div></div>
+        <div class="rep"><span class="av" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">JM</span><div><div class="nm">Jess M.</div><div class="st">Veteran · close 38%</div></div><div class="amt">$71K</div></div>
+        <div class="rep"><span class="av" style="background:linear-gradient(135deg,#10B981,#2563EB)">AT</span><div><div class="nm">Andre T.</div><div class="st">Ramp W2 — drill: objections</div></div><div class="amt">$24K</div></div>
+        <div class="rep"><span class="av" style="background:linear-gradient(135deg,#64748B,#334155)">NEW</span><div><div class="nm">2 candidates</div><div class="st">AI-screened · interviews Tue</div></div><div class="amt">—</div></div>
+      </div>
+
+      <div class="panel" id="storm">
+        <h2>Storm Ops</h2>
+        <div class="feed">
+          <div><time>06:10 · NOAA trigger</time>⛈ Hail ≥1" possible Mon — ZIPs 20877, 20874, 20850 staged for geo-burst ads + report factory.</div>
+          <div><time>Yesterday</time>🛰 Report factory: 8 personalized roof reports generated for Brookes Ave route. 3 QR scans → 1 booked.</div>
+          <div><time>Yesterday</time>📬 42 door cards printed for Walker Ave route (Crew: D.K.).</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>AI Agents</h2>
+        <div class="feed">
+          <div><time>Receptionist</time>11 calls answered overnight · 4 booked · 1 urgent escalated ✓</div>
+          <div><time>Follow-up</time>23 nurture texts sent · 6 replies · 2 bookings</div>
+          <div><time>Training</time>Andre T. scored 6/10 on close drill — assigned "spouse objection" rep ×3</div>
+          <div><time>Recruiting</time>5 applicants screened · 2 passed · interviews booked Tue 10a/11a</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+</body>
+</html>
