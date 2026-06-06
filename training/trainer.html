@@ -85,65 +85,14 @@ header .wrap{display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <div class="brand"><img src="../website/assets/logo-white.png" alt="UD"/><div><b>SALES GYM</b><small>AI ROLEPLAY TRAINER · TRAINYOURAGENT</small></div></div>
-  <div class="streak">Reps today: <b id="reps0">0</b> · Best score: <b id="best0">—</b></div>
-</div></header>
-
-<!-- PICKER -->
-<section class="picker" id="picker"><div class="wrap">
-  <h1>Pick your opponent.</h1>
-  <p>Real homeowners, real objections. Type what you'd actually say at the door — the AI responds to <i>your</i> words, the coach panel scores you live, and you get a full breakdown at the end. 8/10 to pass.</p>
-  <div class="cards">
-    <div class="pc" onclick="start('door')"><div class="av" style="background:rgba(197,48,48,.15)">🚪</div><h3>Busy Brenda</h3><p>Answers the door annoyed. You have 15 seconds before it closes.</p><span class="diff d1">WARM-UP · DOOR KNOCK</span></div>
-    <div class="pc" onclick="start('skeptic')"><div class="av" style="background:rgba(245,184,46,.15)">🤨</div><h3>Skeptical Sam</h3><p>"My roof is fine." Has heard every roofer pitch. Hates pressure.</p><span class="diff d2">INTERMEDIATE · OBJECTIONS</span></div>
-    <div class="pc" onclick="start('insurance')"><div class="av" style="background:rgba(16,185,129,.15)">🛡️</div><h3>Worried Wanda</h3><p>Has damage but terrified of premiums, scams, and paperwork.</p><span class="diff d2">INTERMEDIATE · INSURANCE</span></div>
-    <div class="pc" onclick="start('closer')"><div class="av" style="background:rgba(248,113,113,.15)">🧊</div><h3>Stone-Cold Steve</h3><p>"I need to talk to my wife and get three more quotes." The final boss.</p><span class="diff d3">ADVANCED · THE CLOSE</span></div>
-  </div>
-  <div style="margin-top:1.8rem;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.3rem">
-    <h3 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:.7rem">🎙 Voice Mode — talk to them out loud (live ElevenLabs agents)</h3>
-    <div style="display:flex;gap:.7rem;flex-wrap:wrap">
-      <button class="vbtn" data-agent="agent_4101ktf0jy4mfq5s05ff8zn3ac5v" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🤨 Spar with Sam — voice</button>
-      <button class="vbtn" data-agent="agent_3901ktf31dnyffz99cvxtctmw01e" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🛡️ Spar with Wanda — voice</button>
-      <button class="vbtn" data-agent="agent_6601ktf32t32eyev14dcseyetnrw" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">🧊 Spar with Steve — voice</button>
-    </div>
-    <p style="font-size:.72rem;color:var(--mut);margin-top:.6rem">Say "end session" mid-conversation to get your coach's scorecard. (Agents must be set public/shareable in the ElevenLabs dashboard for these links.)</p>
-  </div>
-  <p class="note">⚙️ Text engine above works offline. Voice mode runs on live ElevenLabs agents.</p>
-</div></section>
-
-<!-- ARENA -->
-<section class="arena" id="arena"><div class="wrap" style="display:contents">
-  <div class="chatbox">
-    <div class="chathead"><span class="av" id="pav">🚪</span><div><b id="pname">—</b><small id="pdesc">—</small></div><button class="end" onclick="finish()">End session</button></div>
-    <div class="msgs" id="msgs"></div>
-    <div class="inrow"><input id="inp" placeholder="Say it like you're on the porch…" autocomplete="off"/><button onclick="send()">Send</button></div>
-  </div>
-  <div class="coach">
-    <div class="cpanel"><h2>Live Score</h2><div class="scorebig" id="score">0<small>OUT OF 10</small></div></div>
-    <div class="cpanel"><h2>Skills checklist</h2><div id="skills"></div></div>
-    <div class="cpanel"><h2>Coach whisper</h2><div class="tip" id="tip">Open with your name + company + a reason you're on their street.</div></div>
-  </div>
-</div></section>
-
-<!-- REPORT -->
-<section class="report" id="report"><div class="wrap">
-  <h1 id="rtitle">Session report</h1>
-  <div class="rg">
-    <div class="rc"><div class="v" id="rscore">—</div><div class="l">Final score</div></div>
-    <div class="rc"><div class="v" id="rturns">—</div><div class="l">Exchanges</div></div>
-    <div class="rc"><div class="v" id="rresult">—</div><div class="l">Outcome</div></div>
-  </div>
-  <div class="fb"><h3>✅ What you did well</h3><ul id="rgood"></ul></div>
-  <div class="fb"><h3>🎯 Fix these next round</h3><ul id="rbad"></ul></div>
-  <div class="btnrow">
-    <button class="btn" onclick="retry()">Run it back</button>
-    <button class="btn ghost" onclick="backToPicker()">Choose another opponent</button>
-    <button class="btn ghost" onclick="dl()">Download transcript</button>
-  </div>
-</div></section>
-
-<script>
+<header><div class="wrap"><div class="brand"><img src="../website/assets/logo-white.png" alt="UD"/><div><b>SALES GYM</b><small>AI ROLEPLAY TRAINER · TRAINYOURAGENT</small></div></div><div class="streak">Reps today: <b id="reps0">0</b> · Best score: <b id="best0">—</b></div>
+</div></header><!-- PICKER -->
+<section class="picker" id="picker"><div class="wrap"><h1>Pick your opponent.</h1><p>Real homeowners, real objections. Type what you'd actually say at the door — the AI responds to <i>your</i> words, the coach panel scores you live, and you get a full breakdown at the end. 8/10 to pass.</p><div class="cards"><div class="pc" onclick="start('door')"><div class="av" style="background:rgba(197,48,48,.15)"></div><h3>Busy Brenda</h3><p>Answers the door annoyed. You have 15 seconds before it closes.</p><span class="diff d1">WARM-UP · DOOR KNOCK</span></div><div class="pc" onclick="start('skeptic')"><div class="av" style="background:rgba(245,184,46,.15)"></div><h3>Skeptical Sam</h3><p>"My roof is fine." Has heard every roofer pitch. Hates pressure.</p><span class="diff d2">INTERMEDIATE · OBJECTIONS</span></div><div class="pc" onclick="start('insurance')"><div class="av" style="background:rgba(16,185,129,.15)"></div><h3>Worried Wanda</h3><p>Has damage but terrified of premiums, scams, and paperwork.</p><span class="diff d2">INTERMEDIATE · INSURANCE</span></div><div class="pc" onclick="start('closer')"><div class="av" style="background:rgba(248,113,113,.15)"></div><h3>Stone-Cold Steve</h3><p>"I need to talk to my wife and get three more quotes." The final boss.</p><span class="diff d3">ADVANCED · THE CLOSE</span></div></div><div style="margin-top:1.8rem;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem 1.3rem"><h3 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:.7rem">Voice Mode — talk to them out loud (live ElevenLabs agents)</h3><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button class="vbtn" data-agent="agent_4101ktf0jy4mfq5s05ff8zn3ac5v" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">Spar with Sam — voice</button><button class="vbtn" data-agent="agent_3901ktf31dnyffz99cvxtctmw01e" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">Spar with Wanda — voice</button><button class="vbtn" data-agent="agent_6601ktf32t32eyev14dcseyetnrw" style="background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:.6rem 1rem;font-size:.85rem;font-weight:600;color:inherit;cursor:pointer;font-family:inherit">Spar with Steve — voice</button></div><p style="font-size:.72rem;color:var(--mut);margin-top:.6rem">Say "end session" mid-conversation to get your coach's scorecard. (Agents must be set public/shareable in the ElevenLabs dashboard for these links.)</p></div><p class="note">Text engine above works offline. Voice mode runs on live ElevenLabs agents.</p>
+</div></section><!-- ARENA -->
+<section class="arena" id="arena"><div class="wrap" style="display:contents"><div class="chatbox"><div class="chathead"><span class="av" id="pav"></span><div><b id="pname">—</b><small id="pdesc">—</small></div><button class="end" onclick="finish()">End session</button></div><div class="msgs" id="msgs"></div><div class="inrow"><input id="inp" placeholder="Say it like you're on the porch…" autocomplete="off"/><button onclick="send()">Send</button></div></div><div class="coach"><div class="cpanel"><h2>Live Score</h2><div class="scorebig" id="score">0<small>OUT OF 10</small></div></div><div class="cpanel"><h2>Skills checklist</h2><div id="skills"></div></div><div class="cpanel"><h2>Coach whisper</h2><div class="tip" id="tip">Open with your name + company + a reason you're on their street.</div></div></div>
+</div></section><!-- REPORT -->
+<section class="report" id="report"><div class="wrap"><h1 id="rtitle">Session report</h1><div class="rg"><div class="rc"><div class="v" id="rscore">—</div><div class="l">Final score</div></div><div class="rc"><div class="v" id="rturns">—</div><div class="l">Exchanges</div></div><div class="rc"><div class="v" id="rresult">—</div><div class="l">Outcome</div></div></div><div class="fb"><h3>What you did well</h3><ul id="rgood"></ul></div><div class="fb"><h3>Fix these next round</h3><ul id="rbad"></ul></div><div class="btnrow"><button class="btn" onclick="retry()">Run it back</button><button class="btn ghost" onclick="backToPicker()">Choose another opponent</button><button class="btn ghost" onclick="dl()">Download transcript</button></div>
+</div></section><script>
 /* ================= CONFIG =================
    LLM_ENDPOINT: paste a TrainYourAgent / LLM proxy URL to switch from the
    built-in intent engine to full free-form roleplay. POST {persona, history}
@@ -170,7 +119,7 @@ function detect(t){ const hits=[]; for(const k in INTENTS) if(INTENTS[k].test(t)
 
 /* ============ PERSONAS (stage machines) ============ */
 const P = {
- door: { av:"🚪", name:"Busy Brenda", desc:"Door knock · making dinner · 15s fuse",
+ door: { av:"", name:"Busy Brenda", desc:"Door knock · making dinner · 15s fuse",
   skills:[["intro","Intro: name + company"],["reason","Reason you're there (storm/neighbors)"],["permission","Asked permission, low friction"],["freeValue","Made it free / no-obligation"],["bookAsk","Asked for the booking"]],
   open:"*opens door 6 inches* Yes? I'm in the middle of making dinner.",
   stages:[
@@ -179,7 +128,7 @@ const P = {
    {need:["noPressure","empathy"], pass:"…Fine. You seem straight with me. When would you even do this?", fail:"Hmm. You sound like the last guy who 'wasn't selling anything.'", tip:"Empathize + promise honesty: 'If there's no damage I'll tell you straight and be gone.'"},
    {need:["bookAsk"], pass:"Tomorrow morning works I guess. Before 10. Don't be late.", fail:"I'll think about it. *starts closing door*", tip:"ASK for the slot. Give two options: morning or afternoon.", final:true}
   ]},
- skeptic: { av:"🤨", name:"Skeptical Sam", desc:"'My roof is fine' · pitch-proof veteran",
+ skeptic: { av:"", name:"Skeptical Sam", desc:"'My roof is fine' · pitch-proof veteran",
   skills:[["intro","Intro + reason"],["empathy","Agreed before countering"],["reason","Explained hidden damage"],["legit","Proof: licensed/reviews/GAF"],["freeValue","Free + photos either way"],["bookAsk","Asked for booking"]],
   open:"Let me stop you right there — my roof is FINE. You guys come through every year.",
   stages:[
@@ -189,17 +138,17 @@ const P = {
    {need:["freeValue"], pass:"Free with photos either way? …What's the catch?", fail:"'Free' always has a catch with you people.", tip:"Free inspection + photo report he KEEPS, damage or not. No catch — say what's in it for UD honestly."},
    {need:["noPressure","bookAsk"], pass:"You know what, fine. Saturday morning. If you find nothing, I want that in writing.", fail:"I'll 'think about it.' You know what that means.", tip:"Honesty close + ask: 'If it's clean, I'll tell you straight. Saturday morning or afternoon?'", final:true}
   ]},
- insurance: { av:"🛡️", name:"Worried Wanda", desc:"Has damage · terrified of claims & scams",
+ insurance: { av:"", name:"Worried Wanda", desc:"Has damage · terrified of claims & scams",
   skills:[["empathy","Calmed the fear first"],["insurance","Explained claim process simply"],["premium","Premium myth: Act of God"],["price","Deductible-only math"],["legit","Trust signals"],["bookAsk","Booked next step"]],
   open:"My neighbor said I should get my roof looked at after the hail, but honestly these insurance things terrify me. Won't my rates explode? Is this even legit?",
   stages:[
    {need:["empathy"], pass:"Thank you… everyone just pitches at me. Okay. So how does this actually work?", fail:"You went straight into selling. That's exactly what scares me.", tip:"Feelings first. 'Completely understandable — let me take the scary parts off the table.'"},
-   {need:["insurance"], pass:"Okay… inspect, document, you meet the adjuster. And my premium?", fail:"That sounded complicated. See, this is why I avoid it.", tip:"3 steps, plain words: free inspection → we document & file with you → we meet the adjuster."},
+   {need:["insurance"], pass:"Okay… inspect, document, you meet the adjuster. And my premium?", fail:"That sounded complicated. See, this is why I avoid it.", tip:"3 steps, plain words: free inspection  we document & file with you  we meet the adjuster."},
    {need:["premium"], pass:"'Act of God'… so it's not counted against me personally. Nobody ever explained that. What would I actually pay?", fail:"You dodged the premium question. That's my biggest fear.", tip:"Storm claims are 'Act of God' — premiums move by region, not your claim. New roof can even help."},
    {need:["price"], pass:"Just my deductible?? On a whole roof? …And how do I know you're not one of those storm-chaser scams?", fail:"You're being fuzzy about money. Fuzzy money talk = scam to me.", tip:"The math: carrier pays the scope, she pays only her deductible. Name a real number range."},
    {need:["legit","bookAsk"], pass:"Local office, real license, 131 reviews… okay. Yes. Come Thursday — and you'll be there for the adjuster part, right?", fail:"Maybe. Let me ask my neighbor first…", tip:"Local addresses + licenses + reviews, then ASK for the inspection slot.", final:true}
   ]},
- closer: { av:"🧊", name:"Stone-Cold Steve", desc:"End of pitch · 'wife + 3 quotes' wall",
+ closer: { av:"", name:"Stone-Cold Steve", desc:"End of pitch · 'wife + 3 quotes' wall",
   skills:[["empathy","Validated, didn't argue"],["spouse","Spouse: meeting w/ BOTH"],["price","Quotes: apples-to-apples frame"],["insurance","Insurance scope sets price"],["takeaway","Takeaway / urgency close"],["bookAsk","Locked a concrete time"]],
   open:"Look, good presentation. But I never sign anything same-day. I need to talk to my wife, and I'll be getting three more quotes. Leave your card.",
   stages:[
@@ -252,7 +201,7 @@ function send(){
       misses++;
       say("them",st.fail);
       if(misses>=5){ say("sys","The door closed. Session over."); setTimeout(finish,900); return; }
-      $("tip").textContent="Still on this beat → "+st.tip;
+      $("tip").textContent="Still on this beat  "+st.tip;
     }
   }, 450+Math.random()*500);
 }
@@ -262,7 +211,7 @@ function finish(){
   $("arena").style.display="none"; $("report").style.display="block";
   $("rtitle").textContent="Session report — "+cur.name;
   $("rscore").textContent=sc+"/10"; $("rscore").style.color=sc>=8?"#10B981":sc>=5?"#F5B82E":"#F87171";
-  $("rturns").textContent=turns; $("rresult").textContent=won?"BOOKED ✅":"WALKED ❌";
+  $("rturns").textContent=turns; $("rresult").textContent=won?"BOOKED ":"WALKED ";
   const good=cur.skills.filter(([k])=>hits.has(k)).map(([,l])=>`<li>${l}</li>`).join("")||"<li>You showed up. That's something.</li>";
   const bad=cur.skills.filter(([k])=>!hits.has(k)).map(([k,l])=>`<li>${l} — drill: ${INTENTS[k].source.split("|")[0].replace(/\\b|\(|\)/g,"").slice(0,60)}…</li>`).join("")||"<li>Clean run. Raise the difficulty.</li>";
   $("rgood").innerHTML=good; $("rbad").innerHTML=bad;
