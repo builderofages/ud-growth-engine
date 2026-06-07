@@ -31,6 +31,12 @@ jobs:
           dl "https://udroofing.com/wp-content/uploads/2025/07/metal-roof-1.jpg" job-metal-1.jpg
           dl "https://udroofing.com/wp-content/uploads/2025/07/metal-roof-2-1.jpg" job-metal-2.jpg
           dl "https://udroofing.com/wp-content/uploads/2025/07/metal-roof-3.jpg" job-metal-3.jpg
+          dl "https://uniteddevelopersmdva.com/wp-content/uploads/elementor/thumbs/bbb1-r7v7h70rzn890242lof68tzuciro5qik38fd2htuq8.png" badge-bbb.png
+          dl "https://uniteddevelopersmdva.com/wp-content/uploads/elementor/thumbs/gaf-1-r7v7hxc9b08a151ubzsq6ncqzb5y59f1iuoyi8qtw0.png" badge-gaf.png
+          dl "https://uniteddevelopersmdva.com/wp-content/uploads/elementor/thumbs/tamko-pro--r7v7j7eclvzbu16xv1pg2tqc36uxmfhw16nr0sujf4.png" badge-tamko.png
+          dl "https://uniteddevelopersmdva.com/wp-content/uploads/2025/06/osha-certified.webp" badge-osha.webp
+          dl "https://udroofing.com/wp-content/uploads/2021/06/logo-google.png" logo-google.png
+          dl "https://udroofing.com/wp-content/uploads/2021/06/yelp.png" logo-yelp.png
           ls -la
       - name: Commit assets
         run: |
