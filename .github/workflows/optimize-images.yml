@@ -13,15 +13,17 @@ jobs:
           cd website/assets
           for f in job-*.jpg og.jpg window.jpg painting.jpg; do
             [ -f "$f" ] || continue
+            file "$f" | grep -qi 'JPEG' || { echo "SKIP non-jpeg $f"; continue; }
             before=$(stat -c%s "$f")
-            mogrify -resize '1600x1600>' -quality 80 -strip "$f"
+            mogrify -resize '1600x1600>' -quality 80 -strip "$f" || { echo "FAIL $f"; continue; }
             after=$(stat -c%s "$f")
             echo "$f: $before -> $after"
           done
           for f in roof.png siding.png gutter.png metal.png about.png; do
             [ -f "$f" ] || continue
+            file "$f" | grep -qi 'PNG' || { echo "SKIP non-png $f"; continue; }
             before=$(stat -c%s "$f")
-            mogrify -resize '1400x1400>' -strip "$f"
+            mogrify -resize '1400x1400>' -strip "$f" || { echo "FAIL $f"; continue; }
             after=$(stat -c%s "$f")
             echo "$f: $before -> $after"
           done

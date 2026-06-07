@@ -1,0 +1,26 @@
+name: Restore good assets
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore photos from last good commit
+        run: |
+          git checkout 03534240df -- website/assets
+          # remove any files that are secretly HTML error pages
+          cd website/assets
+          for f in *; do
+            head -c2 "$f" | grep -q '<!' && { echo "removing HTML imposter: $f"; rm "$f"; } || true
+          done
+      - name: Commit
+        run: |
+          git config user.name "ud-assets-bot"
+          git config user.email "actions@github.com"
+          git add -A website/assets
+          git commit -m "Restore valid image assets from good commit; purge HTML imposters" || echo "nothing to commit"
+          git push

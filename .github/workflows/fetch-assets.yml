@@ -11,7 +11,9 @@ jobs:
         run: |
           mkdir -p website/assets
           cd website/assets
-          dl(){ curl -sL --retry 3 -o "$2" "$1" && echo "OK $2 ($(stat -c%s "$2") bytes)"; }
+          UA='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36'
+          dl(){ curl -fsL --retry 2 -A "$UA" -o "/tmp/dl.bin" "$1" || { echo "FAIL fetch $2"; return 0; }
+                if head -c2 /tmp/dl.bin | grep -q '<!'; then echo "REJECT html $2"; else cp /tmp/dl.bin "$2"; echo "OK $2 ($(stat -c%s "$2") bytes)"; fi; }
           dl "https://uniteddevelopersmdva.com/wp-content/uploads/2025/09/united-developers-2.png" logo-white.png
           dl "https://udroofing.com/wp-content/uploads/2025/07/resize-roof-h.png" roof.png
           dl "https://udroofing.com/wp-content/uploads/2025/07/resize-siding-h.png" siding.png
