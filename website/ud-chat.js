@@ -103,7 +103,28 @@
   var input = panel.querySelector('.udc-in');
   var sendBtn = panel.querySelector('.udc-send');
 
-  var ws = null, wsReady = false, typingEl = null, greeted = false;
+  var ws = null, wsReady = false, typingEl = null;
+  var hist = []; try { hist = JSON.parse(sessionStorage.getItem('udcHist') || '[]'); } catch (_) {}
+  var greeted = hist.length > 0;
+  var leadSent = sessionStorage.getItem('udcLead') === '1';
+
+  function persist(w, t) {
+    hist.push({ w: w, t: t });
+    if (hist.length > 40) hist = hist.slice(-40);
+    try { sessionStorage.setItem('udcHist', JSON.stringify(hist)); } catch (_) {}
+  }
+  function captureLead(text) {
+    if (leadSent) return;
+    var m = text.match(/(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/);
+    if (!m) return;
+    leadSent = true; try { sessionStorage.setItem('udcLead', '1'); } catch (_) {}
+    var transcript = hist.slice(-14).map(function (x) { return (x.w === 'u' ? 'Visitor: ' : NAME + ': ') + x.t; }).join('\n');
+    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com', { method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ _subject: 'UD CHAT LEAD: phone captured by ' + NAME, _template: 'table',
+        phone: m[1], agent: NAME, page: location.pathname, transcript: transcript, ts: new Date().toISOString() })
+    }).catch(function () {});
+  }
 
   function el(cls, txt) { var d = document.createElement('div'); d.className = cls; if (txt) d.textContent = txt; return d; }
   function scrollDn() { body.scrollTop = body.scrollHeight; }
@@ -121,7 +142,9 @@
     row.appendChild(av); row.appendChild(el('udc-m a', t));
     body.appendChild(row); scrollDn();
   }
+  function agentSayP(t) { agentSay(t); persist('a', t); }
   function userSay(t) { body.appendChild(el('udc-m u', t)); scrollDn(); }
+  function userSayP(t) { userSay(t); persist('u', t); captureLead(t); }
 
   function chips() {
     var wrap = el('udc-chips');
@@ -147,7 +170,7 @@
       if (d.type === 'conversation_initiation_metadata') { wsReady = true; cb && cb(); }
       else if (d.type === 'agent_response') {
         var t = d.agent_response_event && d.agent_response_event.agent_response;
-        if (t) { if (!greeted) { greeted = true; agentSay(t); chips(); } else { agentSay(t); } }
+        if (t) { if (!greeted) { greeted = true; agentSayP(t); chips(); } else { agentSayP(t); } }
       }
       else if (d.type === 'ping') { ws.send(JSON.stringify({ type: 'pong', event_id: d.ping_event.event_id })); }
     };
@@ -157,13 +180,18 @@
 
   function send(text) {
     text = (text || '').trim(); if (!text) return;
-    userSay(text); showTyping();
+    userSayP(text); showTyping();
     var fire = function () { ws.send(JSON.stringify({ type: 'user_message', text: text })); };
     if (wsReady) fire(); else connect(fire);
   }
 
+  var restored = false;
   launch.onclick = function () {
     launch.style.display = 'none'; panel.classList.add('open');
+    if (greeted && !restored) {
+      restored = true;
+      hist.forEach(function (x) { x.w === 'u' ? userSay(x.t) : agentSay(x.t); });
+    }
     if (!greeted) { showTyping(); connect(); }
     setTimeout(function () { input.focus(); }, 280);
   };
@@ -173,4 +201,32 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.onclick(); }
   });
   input.addEventListener('input', function () { input.style.height = ''; input.style.height = Math.min(input.scrollHeight, 96) + 'px'; });
+
+  /* ---- mobile sticky action bar ---- */
+  var isCareers = location.pathname.indexOf('careers') > -1;
+  var barCss = ''
+    + '.udc-bar{display:none}'
+    + '@media(max-width:640px){'
+    + '.udc-bar{position:fixed;left:0;right:0;bottom:0;z-index:9989;display:flex;gap:.55rem;padding:.6rem .75rem calc(.6rem + env(safe-area-inset-bottom));'
+    + 'background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid rgba(8,27,48,.09);box-shadow:0 -12px 32px -16px rgba(8,27,48,.3)}'
+    + '.udc-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;border-radius:12px;padding:.85rem .5rem;'
+    + 'font:700 .9rem Inter,system-ui,sans-serif;text-decoration:none;letter-spacing:-.01em}'
+    + '.udc-bar .c{background:#0E2A4D;color:#fff}'
+    + '.udc-bar .q{background:linear-gradient(160deg,#C53030,#9B1C1C);color:#fff;box-shadow:0 8px 18px -8px rgba(155,28,28,.6)}'
+    + '.udc-bar svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}'
+    + '.udc-launch{bottom:calc(78px + env(safe-area-inset-bottom)) !important;right:14px}'
+    + '.udc-panel{bottom:calc(78px + env(safe-area-inset-bottom)) !important;height:min(540px,calc(100vh - 150px))}'
+    + '}';
+  var bst = document.createElement('style'); bst.textContent = barCss; document.head.appendChild(bst);
+  var bar = document.createElement('div'); bar.className = 'udc-bar';
+  var phoneSvg = '<svg viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>';
+  bar.innerHTML = isCareers
+    ? '<a class="c" href="tel:+12408802108">' + phoneSvg + 'Call Us</a><a class="q" href="#apply">Apply Now</a>'
+    : '<a class="c" href="tel:+12408802108">' + phoneSvg + 'Call Now</a><a class="q" href="' + (location.pathname.indexOf('/areas/') > -1 ? '../' : '') + 'index.html#quote">Free Inspection</a>';
+  document.body.appendChild(bar);
+
+  /* ---- lazy-load below-fold images ---- */
+  document.querySelectorAll('img').forEach(function (im) {
+    if (!im.closest('header') && im.getBoundingClientRect().top > window.innerHeight) im.loading = 'lazy';
+  });
 })();
