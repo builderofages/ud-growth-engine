@@ -204,6 +204,7 @@
 
   /* ---- mobile sticky action bar ---- */
   var isCareers = location.pathname.indexOf('careers') > -1;
+  var inAreas = /\/(areas|services)\//.test(location.pathname);
   var barCss = ''
     + '.udc-bar{display:none}'
     + '@media(max-width:640px){'
@@ -222,7 +223,7 @@
   var phoneSvg = '<svg viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>';
   bar.innerHTML = isCareers
     ? '<a class="c" href="tel:+12408802108">' + phoneSvg + 'Call Us</a><a class="q" href="#apply">Apply Now</a>'
-    : '<a class="c" href="tel:+12408802108">' + phoneSvg + 'Call Now</a><a class="q" href="' + (location.pathname.indexOf('/areas/') > -1 ? '../' : '') + 'index.html#quote">Free Inspection</a>';
+    : '<a class="c" href="tel:+12408802108">' + phoneSvg + 'Call Now</a><a class="q" href="' + (inAreas ? '../' : '') + 'index.html#quote">Free Inspection</a>';
   document.body.appendChild(bar);
 
   /* ---- lazy-load below-fold images ---- */
