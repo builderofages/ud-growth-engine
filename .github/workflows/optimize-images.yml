@@ -1,0 +1,34 @@
+name: Optimize images
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compress photos
+        run: |
+          sudo apt-get install -y imagemagick >/dev/null 2>&1 || true
+          cd website/assets
+          for f in job-*.jpg og.jpg window.jpg painting.jpg; do
+            [ -f "$f" ] || continue
+            before=$(stat -c%s "$f")
+            mogrify -resize '1600x1600>' -quality 80 -strip "$f"
+            after=$(stat -c%s "$f")
+            echo "$f: $before -> $after"
+          done
+          for f in roof.png siding.png gutter.png metal.png about.png; do
+            [ -f "$f" ] || continue
+            before=$(stat -c%s "$f")
+            mogrify -resize '1400x1400>' -strip "$f"
+            after=$(stat -c%s "$f")
+            echo "$f: $before -> $after"
+          done
+      - name: Commit
+        run: |
+          git config user.name "ud-assets-bot"
+          git config user.email "actions@github.com"
+          git add website/assets
+          git commit -m "Compress and strip image assets for performance" || echo "nothing to commit"
+          git push
