@@ -41,6 +41,8 @@ Save, commit, done. The whole site re-points instantly. No other file needs touc
 
 > First time an inbox is used, FormSubmit sends a one-time activation email to that address. Click the link once and delivery is live forever. So when you switch `LEAD_EMAIL` to `office@udroofing.com`, the first test lead triggers an activation email UD must click once.
 
+**Keep the automated Notion pipeline fed after the switch.** The lead-sync automation reads a *connected* Gmail inbox. When you move `LEAD_EMAIL` to the company inbox, also set `LEAD_CC: "trainyouragent@gmail.com"` (the connected inbox) so every lead still lands there and keeps auto-filing into Notion. Two lines total — `LEAD_EMAIL` and `LEAD_CC` — and the whole pipeline keeps running. (Alternatively, connect the company Gmail as the source inbox and point the automation at it.)
+
 If UD uses a CRM (GoHighLevel, JobNimbus, ServiceTitan, Zapier), paste its inbound webhook into `CRM_WEBHOOK` in the same file and every lead also flows straight into the CRM — automatically, with zero per-form wiring.
 
 ---
