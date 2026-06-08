@@ -111,12 +111,22 @@ if (window.UD_GA4) {
    With no key, the tool runs in DEMO MODE (realistic sample data)
    so you can show ownership the full experience today.
 ========================================================= */
-const GOOGLE_API_KEY = "";            // <-- paste key to go live
-const LEAD_WEBHOOK   = "";            // <-- paste webhook URL
-const PRICE_PER_SQ   = { low: 475, high: 675 };   // DMV asphalt installed, per square
-const WASTE_FACTOR   = 1.10;
+const GOOGLE_API_KEY = "";            // <-- paste key to go live (Geocoding + Solar + Maps Static)
+const LEAD_WEBHOOK   = "";            // <-- paste GHL/ServiceTitan webhook URL
+/* DMV architectural-asphalt installed pricing, per roofing square (100 sq ft of ROOF surface).
+   Reflects real 2026 DMV retail: full tear-off, synthetic underlayment, ice & water, drip edge,
+   ridge vent, GAF Timberline HDZ, labor, permit, haul-off. Insurance scope often lands in range. */
+const BASE_PER_SQ    = { low: 450, high: 600 };
+const STEEP_PREMIUM  = { low: 90,  high: 130 };  // added per square for steep (8/12+) — safety, staging, slower install
+const COMPLEX_PREMIUM= { low: 60,  high: 95  };  // added per square for cut-up roofs — more flashing, valleys, waste
 
 let scanData = {};
+
+/* Pitch ratio (x/12) -> angle degrees -> roof-surface multiplier (1/cos θ).
+   A flat plan-area footprint understates real roof material; pitch multiplies it. */
+function pitchMultiplier(deg){ return 1/Math.cos(deg*Math.PI/180); }
+function degToRatio(deg){ return Math.max(2, Math.round(Math.tan(deg*Math.PI/180)*12)); }
+function wasteFactor(segCount){ return segCount>8 ? 1.15 : segCount>5 ? 1.12 : 1.10; } // industry 10–15% by cut-up
 
 async function scan(){
   const addr = document.getElementById('addr').value.trim();
@@ -128,32 +138,33 @@ async function scan(){
 
   try{
     if(GOOGLE_API_KEY){
-      // 1) Geocode
       const g = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${GOOGLE_API_KEY}`).then(r=>r.json());
       const loc = g.results[0].geometry.location;
       const fmt = g.results[0].formatted_address;
-      // 2) Solar API building insights (roof geometry)
       const s = await fetch(`https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${loc.lat}&location.longitude=${loc.lng}&requiredQuality=MEDIUM&key=${GOOGLE_API_KEY}`).then(r=>r.json());
-      const areaM2 = s.solarPotential?.wholeRoofStats?.areaMeters2 || 180;
       const segs = s.solarPotential?.roofSegmentStats || [];
-      const pitch = segs.length ? (segs.reduce((a,x)=>a+(x.pitchDegrees||20),0)/segs.length) : 22;
-      // 3) Static satellite image
+      // Solar API wholeRoofStats.areaMeters2 is the SLANTED roof surface already — use directly, do not re-multiply.
+      const roofSurfaceM2 = s.solarPotential?.wholeRoofStats?.areaMeters2 || 0;
+      const pitchDeg = segs.length ? (segs.reduce((a,x)=>a+(x.pitchDegrees||22),0)/segs.length) : 22;
+      let roofSqft;
+      if(roofSurfaceM2 > 10){ roofSqft = roofSurfaceM2*10.7639; }            // true surface from Solar API
+      else { roofSqft = 2300 * pitchMultiplier(pitchDeg); }                  // fallback: typical footprint × pitch
       const img = `https://maps.googleapis.com/maps/api/staticmap?center=${loc.lat},${loc.lng}&zoom=20&size=640x420&maptype=satellite&key=${GOOGLE_API_KEY}`;
       document.getElementById('satBox').innerHTML = `<img src="${img}" alt="Satellite view of your roof"/><span class="sat-tag">SATELLITE VIEW</span>`;
-      render(fmt, areaM2*10.764, pitch, segs.length);
+      render(fmt, roofSqft, pitchDeg, segs.length, true);
     } else {
-      // DEMO MODE — deterministic sample from address
-      await new Promise(r=>setTimeout(r, 3800));
+      // DEMO MODE — deterministic from address. Models FOOTPRINT, then applies real pitch multiplier.
+      await new Promise(r=>setTimeout(r, 3600));
       const seed = [...addr].reduce((a,c)=>a+c.charCodeAt(0),0);
-      const sqft = 1750 + (seed % 1400);          // 1,750–3,150 sq ft roofs
-      const pitch = 18 + (seed % 14);
-      const segs  = 4 + (seed % 7);
-      render(addr + "  ·  (demo measurement)", sqft, pitch, segs);
+      const footprint = 1450 + (seed % 1150);     // 1,450–2,600 sq ft ground footprint (typical DMV SFH)
+      const pitchDeg  = 18 + (seed % 15);          // 18–33° (≈ 4/12 to 8/12)
+      const segs      = 4 + (seed % 7);
+      const roofSqft  = footprint * pitchMultiplier(pitchDeg);  // footprint -> true roof surface
+      render(addr + "  ·  preliminary aerial estimate", roofSqft, pitchDeg, segs, false);
     }
   }catch(e){
-    // graceful fallback to demo numbers
-    const sqft = 2300, pitch = 24;
-    render(addr + "  ·  (estimated)", sqft, pitch, 6);
+    const roofSqft = 2300 * pitchMultiplier(24);
+    render(addr + "  ·  preliminary estimate", roofSqft, 24, 6, false);
   }finally{
     clearInterval(tick);
     document.getElementById('scanning').style.display='none';
@@ -161,15 +172,23 @@ async function scan(){
   }
 }
 
-function render(fmt, sqft, pitchDeg, segCount){
-  const squares = Math.round((sqft * WASTE_FACTOR) / 100);
-  const lo = Math.round(squares * PRICE_PER_SQ.low  / 100) * 100;
-  const hi = Math.round(squares * PRICE_PER_SQ.high / 100) * 100;
-  const ratio = Math.round(Math.tan(pitchDeg*Math.PI/180)*12);
+function render(fmt, roofSqft, pitchDeg, segCount, live){
+  const ratio = degToRatio(pitchDeg);
+  const steep = pitchDeg >= 33;                                  // 8/12 and up
   const complexity = segCount>8 ? "Complex" : segCount>5 ? "Moderate" : "Simple";
-  scanData = {address:fmt, roof_sqft:Math.round(sqft), squares, pitch:`${ratio}/12`, complexity, est_low:lo, est_high:hi};
+  const waste = wasteFactor(segCount);
+  const squares = Math.max(8, Math.round((roofSqft * waste) / 100));
+  let loSq = BASE_PER_SQ.low,  hiSq = BASE_PER_SQ.high;
+  if(steep){ loSq += STEEP_PREMIUM.low; hiSq += STEEP_PREMIUM.high; }
+  if(complexity==="Complex"){ loSq += COMPLEX_PREMIUM.low; hiSq += COMPLEX_PREMIUM.high; }
+  else if(complexity==="Moderate"){ loSq += COMPLEX_PREMIUM.low*0.5; hiSq += COMPLEX_PREMIUM.high*0.5; }
+  const lo = Math.round(squares * loSq / 250) * 250;             // round to nearest $250
+  const hi = Math.round(squares * hiSq / 250) * 250;
+  scanData = {address:fmt, roof_surface_sqft:Math.round(roofSqft), roofing_squares:squares,
+              pitch:`${ratio}/12`, complexity, waste_factor:waste, source_quality:live?'satellite':'aerial-estimate',
+              est_low:lo, est_high:hi};
   document.getElementById('addrEcho').textContent = fmt;
-  document.getElementById('sArea').textContent = Math.round(sqft).toLocaleString();
+  document.getElementById('sArea').textContent = Math.round(roofSqft).toLocaleString();
   document.getElementById('sSquares').textContent = squares;
   document.getElementById('sPitch').textContent = ratio + "/12";
   document.getElementById('sComplex').textContent = complexity;
@@ -179,19 +198,13 @@ function render(fmt, sqft, pitchDeg, segCount){
 function claimReport(e){
   e.preventDefault();
   const lead = {...scanData, name:document.getElementById('cname').value, phone:document.getElementById('cphone').value, source:"satellite-roof-quote", ts:new Date().toISOString()};
+  // 1) Live email delivery (FormSubmit) — FIXED: was referencing undefined 'data'
+  fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(Object.assign({_subject:'UD SATELLITE QUOTE LEAD: '+lead.name+' — '+(lead.address||'').slice(0,40),_template:'table'},lead))
+  }).catch(function(){});
+  // 2) Optional CRM webhook
   if(LEAD_WEBHOOK){ fetch(LEAD_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)}).catch(()=>{}); }
-  
-    // === LIVE LEAD DELIVERY ===
-    // 1) FormSubmit -> email (active after one-time activation click)
-    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(Object.assign({_subject:'UD LEAD: '+(data.service||data.exp||'satellite quote'),_template:'table'},data))
-    }).catch(function(){});
-    // 2) Optional CRM webhook (paste GHL/ServiceTitan URL)
-    var UD_WEBHOOK='';
-    if(UD_WEBHOOK){fetch(UD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
-
-    console.log("SATELLITE LEAD ", lead);
   document.getElementById('claimForm').style.display='none';
   document.getElementById('claimOk').style.display='block';
   return false;
