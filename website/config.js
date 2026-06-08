@@ -17,7 +17,9 @@ window.UD_CONFIG = {
   // --- Lead delivery (where every form on the site sends to) ---
   LEAD_EMAIL:    "trainyouragent@gmail.com",   // FormSubmit inbox (swap to office@udroofing.com after activation)
   LEAD_CC:       "",   // optional: also copy a second inbox on every lead (e.g. "sales@udroofing.com")
-  AUTORESPONSE: "Thanks for reaching out to United Developers — we've got your request and a roofing specialist will call you shortly from (240) 880-2108. If it's urgent storm damage, call us now at (240) 880-2108 and we'll get a free 24-hour inspection on the calendar. — United Developers / UD Roofing (MHIC #111971 · VA #2705183185)",
+  // AUTORESPONSE is OFF during testing so the site never auto-emails real people.
+  // At launch, paste the confirmation message below and it instantly emails every lead who gives an email. Leave "" to keep it off.
+  AUTORESPONSE: "",  // e.g. "Thanks for reaching out to United Developers — a specialist will call you shortly from (240) 880-2108."
   CRM_WEBHOOK:   "",   // GoHighLevel / ServiceTitan / JobNimbus / Zapier inbound webhook URL
   SMS_WEBHOOK:   "",   // optional: webhook that fires an instant SMS auto-reply to the lead
 
