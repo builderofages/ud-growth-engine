@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UD Storm Radar — Live Lead Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#081B30;--navy2:#0C2440;--ink:#0E1B2C;--body:#4A5872;--red:#C53030;--red-d:#9B1C1C;--line:#E4EAF4;--ice:#FBF1F1;--green:#10B981;--amber:#F5B82E;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#EEF2F9;color:var(--ink);line-height:1.5}
+.bar{background:linear-gradient(135deg,#0E2A4D,#081B30);color:#fff;padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10;box-shadow:0 8px 28px -18px rgba(0,0,0,.6)}
+.bar::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C53030,#E89A9A 55%,#C53030)}
+.bar h1{font:800 1.15rem/1 'Sora',sans-serif;letter-spacing:-.02em}
+.bar .live{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#9DB3D6;margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,.25);animation:p 2s infinite}
+@keyframes p{50%{box-shadow:0 0 0 7px rgba(16,185,129,0)}}
+.wrap{max-width:1100px;margin:0 auto;padding:1.4rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.4rem}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.2rem 1.3rem;box-shadow:0 8px 24px -18px rgba(8,27,48,.3)}
+.kpi .n{font:800 2rem/1 'Sora',sans-serif;color:var(--navy);letter-spacing:-.03em}
+.kpi .l{font-size:.78rem;color:var(--body);margin-top:.3rem;font-weight:500}
+.kpi.hot .n{color:var(--red)}
+.sec{font:700 1.05rem/1 'Sora',sans-serif;color:var(--navy);margin:1.6rem 0 .9rem;display:flex;align-items:center;gap:.5rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:.85rem;box-shadow:0 6px 20px -16px rgba(8,27,48,.3);border-left:5px solid var(--line)}
+.card.sev3{border-left-color:var(--red)}
+.card.sev2{border-left-color:var(--amber)}
+.card.sev1{border-left-color:#7FB3FF}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.card .ev{font:700 1.02rem/1.2 'Sora',sans-serif;color:var(--navy)}
+.card .badge{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.28rem .7rem;border-radius:999px;white-space:nowrap}
+.b-hot{background:var(--ice);color:var(--red-d)}
+.b-warm{background:#FFF6E0;color:#9A6800}
+.b-watch{background:#EAF2FF;color:#2C5B8A}
+.card .area{color:var(--body);font-size:.9rem;margin:.5rem 0 .65rem}
+.card .row{display:flex;gap:1.4rem;flex-wrap:wrap;font-size:.85rem;color:var(--ink)}
+.card .row b{color:var(--navy)}
+.card .val{margin-top:.7rem;padding-top:.7rem;border-top:1px dashed var(--line);font-size:.88rem;color:var(--body)}
+.card .val strong{color:var(--green)}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:16px;padding:2.4rem;text-align:center;color:var(--body)}
+.empty .big{font:700 1.1rem 'Sora',sans-serif;color:var(--navy);margin-bottom:.4rem}
+.foot{text-align:center;color:#8C97AF;font-size:.76rem;padding:1.5rem;line-height:1.6}
+.btn{display:inline-block;background:linear-gradient(180deg,#C53030,#9B1C1C);color:#fff;text-decoration:none;font-weight:600;font-size:.85rem;padding:.6rem 1.1rem;border-radius:11px;margin-top:.7rem}
+.reload{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font:600 .76rem Inter;padding:.4rem .8rem;border-radius:9px}
+.reload:hover{background:rgba(255,255,255,.2)}
+.disc{background:#FFF8E6;border:1px solid #F0DFA8;border-radius:12px;padding:.8rem 1rem;font-size:.78rem;color:#7A5E12;margin-bottom:1.2rem}
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>UD Storm Radar</h1>
+  <span style="font-size:.8rem;color:#C5D4EC">Live DMV lead intelligence</span>
+  <span class="live"><span class="dot"></span><span id="ts">connecting to NWS…</span> <button class="reload" onclick="load()">Refresh</button></span>
+</div>
+
+<div class="wrap">
+  <div class="disc">Internal ops tool. Pulls live National Weather Service alerts for UD's service counties, scores each by roof-claim potential, and ranks today's canvass priorities. Damage estimates are planning figures, not guarantees.</div>
+
+  <div class="kpis">
+    <div class="kpi hot"><div class="n" id="k-active">—</div><div class="l">Active storm alerts in territory</div></div>
+    <div class="kpi"><div class="n" id="k-hail">—</div><div class="l">With hail / damaging wind</div></div>
+    <div class="kpi"><div class="n" id="k-homes">—</div><div class="l">Est. homes in alert zones</div></div>
+    <div class="kpi"><div class="n" id="k-rev">—</div><div class="l">Est. claim revenue in play</div></div>
+  </div>
+
+  <div class="sec">Today's strike list <span style="font:500 .8rem Inter;color:var(--body)">— ranked by claim value</span></div>
+  <div id="list"><div class="empty"><div class="big">Loading live storm data…</div>Pulling National Weather Service alerts for Maryland, Virginia &amp; DC.</div></div>
+</div>
+
+<div class="foot">
+  Data: National Weather Service public API (api.weather.gov), refreshed on load.<br/>
+  Storm-claim window: most carriers allow ~12 months from the storm date. Canvass hot zones within 5–7 days, before competitors mobilize.<br/>
+  United Developers — MHIC #111971 · VA #2705183185 · PA #192325
+</div>
+
+<script>
+// UD service territory — FIPS-ish county name match + rough household counts (Census-scale planning figures)
+var TERRITORY = {
+  'Montgomery':{homes:380000,core:true},'Anne Arundel':{homes:230000,core:true},'Howard':{homes:120000,core:true},
+  'Prince George':{homes:340000,core:true},'Frederick':{homes:100000,core:true},'Baltimore':{homes:320000,core:false},
+  'Baltimore City':{homes:240000,core:false},'Carroll':{homes:65000,core:false},'Charles':{homes:60000,core:false},
+  'Fairfax':{homes:415000,core:true},'Arlington':{homes:110000,core:true},'Alexandria':{homes:80000,core:true},
+  'Prince William':{homes:160000,core:true},'Loudoun':{homes:140000,core:true},'District of Columbia':{homes:310000,core:true}
+};
+var AVG_JOB = 14000;          // UD average ticket
+var DAMAGE_RATE = 0.06;       // ~6% of homes in a severe-hail/wind footprint file a roof claim and convert over the window (planning estimate)
+var UD_CAPTURE = 0.02;        // UD realistic capture of those, canvassing hard
+
+function money(n){ if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M'; if(n>=1e3) return '$'+Math.round(n/1e3)+'K'; return '$'+n; }
+function num(n){ return n.toLocaleString('en-US'); }
+
+function scoreAlert(p){
+  var ev=(p.event||'').toLowerCase(), desc=(p.description||'').toLowerCase(), txt=ev+' '+desc;
+  var hail=/hail|quarter|half dollar|ping pong|golf ball|\d(\.\d+)?\s*inch/.test(txt);
+  var wind=/(6\d|7\d|8\d|9\d)\s*mph|damaging wind|destructive|derecho|tornado/.test(txt);
+  var sev=1;
+  if(ev.indexOf('warning')>-1) sev=2;
+  if((hail||wind) && ev.indexOf('warning')>-1) sev=3;
+  if(ev.indexOf('tornado')>-1) sev=3;
+  return {sev:sev,hail:hail,wind:wind};
+}
+
+function matchTerritory(areaDesc){
+  var hits=[], homes=0, core=false;
+  for(var county in TERRITORY){
+    if(areaDesc.indexOf(county)>-1){ hits.push(county); homes+=TERRITORY[county].homes; if(TERRITORY[county].core) core=true; }
+  }
+  return {counties:hits,homes:homes,core:core};
+}
+
+function render(features){
+  var rows=[], totalHomes=0, totalRev=0, hailCount=0, activeCount=0;
+  features.forEach(function(f){
+    var p=f.properties;
+    if(!/thunderstorm|tornado|wind|hail/i.test(p.event||'')) return;
+    var t=matchTerritory(p.areaDesc||'');
+    if(!t.counties.length) return;
+    var s=scoreAlert(p);
+    activeCount++;
+    if(s.hail||s.wind) hailCount++;
+    // revenue model only counts damaging events
+    var rev=0, dmgHomes=0;
+    if(s.sev>=2){ dmgHomes=Math.round(t.homes*DAMAGE_RATE); rev=Math.round(t.homes*DAMAGE_RATE*UD_CAPTURE*AVG_JOB); }
+    totalHomes+=dmgHomes; totalRev+=rev;
+    rows.push({p:p,s:s,t:t,rev:rev,dmgHomes:dmgHomes});
+  });
+  rows.sort(function(a,b){ return b.rev-a.rev || b.s.sev-a.s.sev; });
+
+  document.getElementById('k-active').textContent=activeCount;
+  document.getElementById('k-hail').textContent=hailCount;
+  document.getElementById('k-homes').textContent=totalHomes?num(totalHomes):'0';
+  document.getElementById('k-rev').textContent=totalRev?money(totalRev):'$0';
+
+  var el=document.getElementById('list');
+  if(!rows.length){
+    el.innerHTML='<div class="empty"><div class="big">No active storms in UD territory right now.</div>'
+      +'That is normal between systems. This board flips the moment NWS issues a thunderstorm, hail, wind, or tornado alert for any UD county — check it each morning in storm season (May–Sept). '
+      +'<br/><br/>Meanwhile: work the June 6 strike list (Glen Burnie / Pasadena / Brooklyn Park) and the database reactivation sequence — those leads are already on the ground.'
+      +'<br/><a class="btn" href="../growth/JUNE-MONEY-PLAN.md">Open the June plan</a></div>';
+    return;
+  }
+  el.innerHTML=rows.map(function(r){
+    var sev=r.s.sev, badge= sev>=3?'<span class="badge b-hot">HOT — canvass now</span>': sev===2?'<span class="badge b-warm">WARM — inspect soon</span>':'<span class="badge b-watch">WATCH</span>';
+    var hw=[]; if(r.s.hail) hw.push('hail'); if(r.s.wind) hw.push('damaging wind'); var hwTxt=hw.length?hw.join(' + '):'severe storm';
+    var exp=r.p.expires?new Date(r.p.expires).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'—';
+    var val = sev>=2 ? '<div class="val">~<b>'+num(r.dmgHomes)+'</b> homes likely to qualify in these zones · UD capture potential <strong>'+money(r.rev)+'</strong> over the claim window</div>' : '';
+    return '<div class="card sev'+sev+'"><div class="top"><span class="ev">'+(r.p.event||'Alert')+'</span>'+badge+'</div>'
+      +'<div class="area">'+(r.p.areaDesc||'').slice(0,180)+'</div>'
+      +'<div class="row"><span>Hazard: <b>'+hwTxt+'</b></span><span>Counties in play: <b>'+r.t.counties.length+'</b></span><span>Expires: <b>'+exp+'</b></span>'+(r.t.core?'<span><b style="color:#C53030">CORE TERRITORY</b></span>':'')+'</div>'
+      +val+'</div>';
+  }).join('');
+}
+
+function load(){
+  document.getElementById('ts').textContent='loading…';
+  var urls=['https://api.weather.gov/alerts/active?area=MD','https://api.weather.gov/alerts/active?area=VA','https://api.weather.gov/alerts/active?area=DC'];
+  Promise.all(urls.map(function(u){return fetch(u,{headers:{'Accept':'application/geo+json'}}).then(function(r){return r.json()}).catch(function(){return {features:[]}})}))
+  .then(function(res){
+    var all=[]; res.forEach(function(j){ (j.features||[]).forEach(function(f){all.push(f)}); });
+    // dedupe by id
+    var seen={}, uniq=[]; all.forEach(function(f){ if(!seen[f.id]){seen[f.id]=1;uniq.push(f);} });
+    render(uniq);
+    document.getElementById('ts').textContent='updated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  })
+  .catch(function(e){
+    document.getElementById('ts').textContent='NWS unreachable';
+    document.getElementById('list').innerHTML='<div class="empty"><div class="big">Could not reach the National Weather Service.</div>Refresh in a moment — the NWS API occasionally rate-limits. Your strike list from the June plan is still live.</div>';
+  });
+}
+load();
+setInterval(load, 300000); // auto-refresh every 5 min
+</script>
+</body>
+</html>
