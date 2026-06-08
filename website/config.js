@@ -15,8 +15,11 @@ window.UD_CONFIG = {
   GOOGLE_ADS_LEAD_LABEL: "", // conversion label for a booked-lead event
 
   // --- Lead delivery (where every form on the site sends to) ---
-  LEAD_EMAIL:    "trainyouragent@gmail.com",   // FormSubmit inbox (swap to office@udroofing.com after activation)
-  LEAD_CC:       "",   // optional: also copy a second inbox on every lead (e.g. "sales@udroofing.com")
+  // TURN-KEY SWITCH TO THE COMPANY: change LEAD_EMAIL to the company inbox (e.g. "office@udroofing.com"),
+  // then set LEAD_CC to "trainyouragent@gmail.com" so the Notion auto-sync (which reads that connected
+  // inbox) keeps filing every lead. That's the whole handover for lead routing — two lines, nothing else.
+  LEAD_EMAIL:    "trainyouragent@gmail.com",   // TEST inbox for now. -> swap to company inbox at launch.
+  LEAD_CC:       "",   // at launch set this to "trainyouragent@gmail.com" to keep the Notion pipeline fed.
   // AUTORESPONSE is OFF during testing so the site never auto-emails real people.
   // At launch, paste the confirmation message below and it instantly emails every lead who gives an email. Leave "" to keep it off.
   AUTORESPONSE: "",  // e.g. "Thanks for reaching out to United Developers — a specialist will call you shortly from (240) 880-2108."
