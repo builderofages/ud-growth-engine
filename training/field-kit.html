@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UD Rep Field Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#081B30;--red:#C53030;--red-d:#9B1C1C;--line:#E4EAF4;--body:#4A5872;--green:#10B981;--amber:#F5B82E;--ice:#FBF1F1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#EEF2F9;color:#0E1B2C;line-height:1.5;padding-bottom:74px}
+.bar{background:linear-gradient(135deg,#0E2A4D,#081B30);color:#fff;padding:.9rem 1rem;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.6rem;box-shadow:0 6px 20px -12px rgba(0,0,0,.6)}
+.bar::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C53030,#E89A9A,#C53030)}
+.bar h1{font:800 1.05rem/1 'Sora',sans-serif;letter-spacing:-.02em}
+.bar small{color:#9DB3D6;font-size:.72rem;margin-left:auto}
+.wrap{max-width:560px;margin:0 auto;padding:1rem}
+.tabs{display:flex;gap:.4rem;overflow-x:auto;padding:.2rem 0 .6rem;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:.5rem .95rem;font:600 .82rem Inter;color:var(--body);cursor:pointer;white-space:nowrap}
+.tab.on{background:linear-gradient(160deg,#C53030,#9B1C1C);color:#fff;border-color:transparent}
+.panel{display:none}.panel.on{display:block;animation:f .25s}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:.8rem;box-shadow:0 6px 20px -16px rgba(8,27,48,.3)}
+.card h3{font:800 1rem/1.2 'Sora',sans-serif;color:var(--navy);margin-bottom:.5rem}
+.card h3 .pill{font:700 .62rem Inter;letter-spacing:.05em;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;vertical-align:middle;margin-left:.4rem}
+.p-hot{background:var(--ice);color:var(--red-d)}.p-warm{background:#FFF6E0;color:#9A6800}
+.q{background:var(--ice);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:.7rem .9rem;margin:.5rem 0;font-size:.92rem;color:#3A2222}
+.obj{margin:.7rem 0}.obj .t{font-weight:700;color:var(--navy);font-size:.9rem}.obj .a{color:var(--body);font-size:.9rem;margin-top:.15rem}
+label{display:block;font-size:.74rem;font-weight:700;color:#536084;text-transform:uppercase;letter-spacing:.05em;margin:.6rem 0 .25rem}
+input,select{width:100%;padding:.8rem .9rem;border:1.5px solid var(--line);border-radius:12px;font-size:1.05rem;font-family:inherit}
+input:focus,select:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(197,48,48,.1)}
+.big{font:900 2.2rem/1 'Sora',sans-serif;color:var(--green);margin:.2rem 0}
+.muted{color:var(--body);font-size:.85rem}
+.ref{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.ref:last-child{border:none}.ref b{color:var(--navy)}
+.dock{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;gap:.5rem;padding:.6rem .7rem calc(.6rem + env(safe-area-inset-bottom));z-index:20}
+.dock a{flex:1;text-align:center;text-decoration:none;border-radius:12px;padding:.8rem;font:700 .9rem Inter}
+.dock .c{background:#0E2A4D;color:#fff}.dock .l{background:linear-gradient(160deg,#C53030,#9B1C1C);color:#fff}
+.szone{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.szone:last-child{border:none}
+.ok{display:none;background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:12px;padding:.8rem;text-align:center;font-size:.9rem;margin-top:.6rem}
+</style>
+</head>
+<body>
+<div class="bar"><h1>UD Rep Field Kit</h1><small id="hello">on the clock</small></div>
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="tab(0,this)">Commission</button>
+  <button class="tab" onclick="tab(1,this)">Storm Zones</button>
+  <button class="tab" onclick="tab(2,this)">Door Script</button>
+  <button class="tab" onclick="tab(3,this)">Objections</button>
+  <button class="tab" onclick="tab(4,this)">Measure</button>
+  <button class="tab" onclick="tab(5,this)">Log Lead</button>
+</div>
+
+<!-- 0 COMMISSION -->
+<div class="panel on">
+  <div class="card">
+    <h3>What this job pays you</h3>
+    <label>Job size (collected revenue)</label>
+    <input id="cjJob" type="number" inputmode="numeric" value="14000" oninput="cjCalc()"/>
+    <label>Your YTD collected revenue</label>
+    <input id="cjYtd" type="number" inputmode="numeric" value="0" oninput="cjCalc()"/>
+    <div style="margin-top:1rem"><div class="muted">Your commission on this job</div><div class="big" id="cjOut">—</div><div class="muted" id="cjTier"></div></div>
+    <p class="muted" style="margin-top:.7rem;font-size:.78rem">Tiered: 10% to $250K YTD, 12% $250K–500K, 15% above. Paid 50% on ACV check, 50% on final.</p>
+  </div>
+</div>
+
+<!-- 1 STORM ZONES -->
+<div class="panel">
+  <div class="card"><h3>Live storm alerts <span id="szTs" class="muted" style="font-size:.72rem"></span></h3>
+  <div id="szList" class="muted">Loading NWS data…</div>
+  <p class="muted" style="margin-top:.7rem;font-size:.78rem">Knock the freshest hit zone first. 60mph+ creases shingles; hail dents soft metal — that's the claim.</p></div>
+</div>
+
+<!-- 2 DOOR SCRIPT -->
+<div class="panel">
+  <div class="card"><h3>Storm-fresh opener <span class="pill p-hot">use first</span></h3>
+  <div class="q">"Hey — quick heads up, not a sales pitch. That storm a few days back pushed sixty-plus mile-an-hour gusts right through this street. We're United Developers, the roofing company over in Bethesda — licensed MHIC one-one-one-nine-seven-one. Wind that speed creases shingles even when nothing looks missing, and the hail dents the vents — that's what insurance actually pays on. We're doing free twenty-minute inspections on the block today, photo report's yours either way. Want me to take a look while I'm here?"</div></div>
+  <div class="card"><h3>Cold / no-storm opener</h3>
+  <div class="q">"Afternoon — we're doing free roof check-ups in the neighborhood this week. No cost, no obligation, takes twenty minutes and you keep the photos. When was the last time anyone actually looked at your roof up close?"</div></div>
+  <div class="card"><h3>The booking close</h3>
+  <div class="q">"Tell you what — I've got tomorrow morning or Thursday afternoon open. Which is easier? ... Perfect. You'll get a text from two-four-zero, eight-eight-zero, twenty-one-oh-eight to confirm. And hey — anyone else on the block catch that storm? We pay two-fifty per neighbor that ends up doing a project."</div></div>
+</div>
+
+<!-- 3 OBJECTIONS -->
+<div class="panel">
+  <div class="card"><h3>Objection handlers</h3>
+    <div class="obj"><div class="t">"My roof's fine."</div><div class="a">"From the driveway it always looks fine — the crease is up at the seal line, you can't see it from down here. That's exactly why the look is free. Twenty minutes and you'll know for sure."</div></div>
+    <div class="obj"><div class="t">"My rates will go up."</div><div class="a">"Storm claims are Act-of-God — carriers rate the whole region, not you personally. The storm already happened; your rate moves either way. Not filing just leaves money on the table."</div></div>
+    <div class="obj"><div class="t">"I need to talk to my spouse."</div><div class="a">"Totally — what would they want to know? Let's get the facts photographed now so you're showing them something real, and I'll set a time you're both home."</div></div>
+    <div class="obj"><div class="t">"Getting other quotes."</div><div class="a">"Smart. One thing most folks don't know: on a claim the insurance scope sets the price — a cheaper bid usually means they cut scope or skip code items. Compare who fights for the full scope, not who's cheapest."</div></div>
+    <div class="obj"><div class="t">"What's it cost?"</div><div class="a">"If it's storm damage, your number is your deductible — usually a grand or two, insurance covers the rest. If it's not, you get a real written quote instead of a guess. Free either way. And we've got $0-down financing if you want it."</div></div>
+    <div class="obj"><div class="t">"Not interested."</div><div class="a">"Fair enough — I'll leave you my card. One thing: claims have about a one-year window from the storm. If you wait and it starts leaking this winter, that window may be closed. The free look protects you either way."</div></div>
+  </div>
+</div>
+
+<!-- 4 MEASURE -->
+<div class="panel">
+  <div class="card"><h3>Quick estimate from the ground</h3>
+    <label>Roof footprint (length × width, sq ft)</label>
+    <input id="mFt" type="number" inputmode="numeric" value="2000" oninput="mCalc()"/>
+    <label>Pitch</label>
+    <select id="mPitch" onchange="mCalc()">
+      <option value="18.4">4/12 (low, walkable)</option>
+      <option value="22.6" selected>5/12 (common)</option>
+      <option value="26.6">6/12 (common)</option>
+      <option value="30.3">7/12 (steep)</option>
+      <option value="33.7">8/12 (steep)</option>
+      <option value="39.8">10/12 (very steep)</option>
+    </select>
+    <label>Complexity</label>
+    <select id="mCx" onchange="mCalc()"><option value="1.10">Simple (gable, few cuts)</option><option value="1.12" selected>Moderate</option><option value="1.15">Complex (hips, valleys, dormers)</option></select>
+    <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div><div class="muted">Roof surface</div><div style="font:800 1.3rem 'Sora'" id="mSurf">—</div></div>
+      <div><div class="muted">Squares</div><div style="font:800 1.3rem 'Sora'" id="mSq">—</div></div>
+    </div>
+    <div style="margin-top:.8rem"><div class="muted">Ballpark replacement range</div><div class="big" style="font-size:1.7rem;color:var(--navy)" id="mPrice">—</div></div>
+    <p class="muted" style="margin-top:.5rem;font-size:.78rem">Field ballpark only. Real number comes off the inspection + insurance scope. Never quote this as final.</p>
+  </div>
+  <div class="card"><h3>Damage reference</h3>
+    <div class="ref"><span>Hail that bruises asphalt</span><b>1" +</b></div>
+    <div class="ref"><span>Near-certain shingle damage</span><b>1.25" +</b></div>
+    <div class="ref"><span>Soft metal (vents) dents</span><b>0.75" +</b></div>
+    <div class="ref"><span>Wind that creases shingles</span><b>60 mph +</b></div>
+    <div class="ref"><span>Test-square qualifying hits</span><b>8 in 10×10 ft</b></div>
+    <div class="ref"><span>MD code supplement items</span><b>ice &amp; water, drip edge</b></div>
+  </div>
+</div>
+
+<!-- 5 LOG LEAD -->
+<div class="panel">
+  <div class="card"><h3>Log a lead from the door</h3>
+    <form id="lf" onsubmit="return logLead(event)">
+      <label>Homeowner name</label><input id="lName" required/>
+      <label>Mobile</label><input id="lPhone" type="tel" required/>
+      <label>Address</label><input id="lAddr" required/>
+      <label>Status</label>
+      <select id="lStatus"><option>Inspection booked</option><option>Active leak — URGENT</option><option>Interested, follow up</option><option>Storm damage likely</option><option>Not now — nurture</option></select>
+      <label>Notes (optional)</label><input id="lNote" placeholder="e.g. hail dents on gutters, files w/ State Farm"/>
+      <button class="dock l" type="submit" style="width:100%;border:none;margin-top:1rem;cursor:pointer">Send to office →</button>
+    </form>
+    <div class="ok" id="lOk">Lead sent to the office. They'll confirm and schedule. Nice work.</div>
+  </div>
+</div>
+</div>
+
+<div class="dock">
+  <a class="c" href="tel:+12408802108">Call Office</a>
+  <a class="l" href="#" onclick="tab(5,document.querySelectorAll('.tab')[5]);window.scrollTo(0,0);return false">+ Log Lead</a>
+</div>
+
+<script>
+function tab(i,btn){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});btn.classList.add('on');document.querySelectorAll('.panel').forEach(function(p,j){p.classList.toggle('on',j===i)});}
+function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+
+// commission
+function cjCalc(){
+  var job=+document.getElementById('cjJob').value||0, ytd=+document.getElementById('cjYtd').value||0;
+  function rate(x){return x>=500000?0.15:x>=250000?0.12:0.10;}
+  // commission on this job = blended across whatever tiers it spans
+  var start=ytd,end=ytd+job,c=0;
+  [[0,250000,0.10],[250000,500000,0.12],[500000,1e12,0.15]].forEach(function(t){
+    var lo=Math.max(start,t[0]),hi=Math.min(end,t[1]); if(hi>lo)c+=(hi-lo)*t[2];
+  });
+  document.getElementById('cjOut').textContent=money(c);
+  var r=rate(ytd);
+  document.getElementById('cjTier').innerHTML='At your current tier ('+(r*100)+'%). '+(ytd<250000?'$'+((250000-ytd)/1000).toFixed(0)+'K more collected to hit 12%.':ytd<500000?'$'+((500000-ytd)/1000).toFixed(0)+'K more to hit 15%.':'Top tier — 15%.');
+}
+cjCalc();
+
+// measure
+function mCalc(){
+  var ft=+document.getElementById('mFt').value||0, deg=+document.getElementById('mPitch').value, waste=+document.getElementById('mCx').value;
+  var mult=1/Math.cos(deg*Math.PI/180), surf=ft*mult, sq=Math.max(8,Math.round(surf*waste/100));
+  var steep=deg>=33, cx=waste>=1.15;
+  var lo=450,hi=600; if(steep){lo+=90;hi+=130;} if(cx){lo+=60;hi+=95;} else if(waste>=1.12){lo+=30;hi+=48;}
+  var L=Math.round(sq*lo/250)*250,H=Math.round(sq*hi/250)*250;
+  document.getElementById('mSurf').textContent=Math.round(surf).toLocaleString()+' sf';
+  document.getElementById('mSq').textContent=sq;
+  document.getElementById('mPrice').textContent=money(L)+' – '+money(H);
+}
+mCalc();
+
+// storm zones (live NWS, UD counties)
+var CO={'Montgomery':1,'Anne Arundel':1,'Howard':1,'Prince George':1,'Frederick':1,'Baltimore':1,'Carroll':1,'Charles':1,'Fairfax':1,'Arlington':1,'Alexandria':1,'Prince William':1,'Loudoun':1,'District of Columbia':1};
+function loadStorms(){
+  var urls=['https://api.weather.gov/alerts/active?area=MD','https://api.weather.gov/alerts/active?area=VA','https://api.weather.gov/alerts/active?area=DC'];
+  Promise.all(urls.map(function(u){return fetch(u,{headers:{'Accept':'application/geo+json'}}).then(function(r){return r.json()}).catch(function(){return{features:[]}})}))
+  .then(function(res){
+    var seen={},rows=[];
+    res.forEach(function(j){(j.features||[]).forEach(function(f){
+      var p=f.properties; if(seen[f.id]||!/thunderstorm|tornado|wind|hail/i.test(p.event||''))return; seen[f.id]=1;
+      var ad=p.areaDesc||'',hit=Object.keys(CO).some(function(c){return ad.indexOf(c)>-1}); if(!hit)return;
+      var warn=(p.event||'').toLowerCase().indexOf('warning')>-1;
+      rows.push({ev:p.event,area:ad.slice(0,70),warn:warn});
+    });});
+    var el=document.getElementById('szList');
+    document.getElementById('szTs').textContent='· '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    if(!rows.length){el.innerHTML='No active storms in UD territory right now. Work the assigned route — and check this before every shift in storm season.';return;}
+    rows.sort(function(a,b){return b.warn-a.warn});
+    el.innerHTML=rows.map(function(r){return '<div class="szone"><span><b>'+r.ev+'</b><br><span class="muted">'+r.area+'</span></span><span class="pill '+(r.warn?'p-hot':'p-warm')+'">'+(r.warn?'KNOCK':'WATCH')+'</span></div>';}).join('');
+  }).catch(function(){document.getElementById('szList').textContent='NWS unreachable — refresh in a sec.';});
+}
+loadStorms();
+
+// log lead -> office email
+function logLead(e){
+  e.preventDefault();
+  var d={rep_logged:true,name:val('lName'),phone:val('lPhone'),address:val('lAddr'),status:val('lStatus'),notes:val('lNote'),ts:new Date().toISOString()};
+  fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(Object.assign({_subject:'UD FIELD LEAD ['+d.status+']: '+d.name,_template:'table'},d))}).catch(function(){});
+  document.getElementById('lf').style.display='none';document.getElementById('lOk').style.display='block';
+  return false;
+}
+function val(id){return document.getElementById(id).value;}
+</script>
+</body>
+</html>
