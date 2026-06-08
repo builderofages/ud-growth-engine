@@ -16,6 +16,8 @@ window.UD_CONFIG = {
 
   // --- Lead delivery (where every form on the site sends to) ---
   LEAD_EMAIL:    "trainyouragent@gmail.com",   // FormSubmit inbox (swap to office@udroofing.com after activation)
+  LEAD_CC:       "",   // optional: also copy a second inbox on every lead (e.g. "sales@udroofing.com")
+  AUTORESPONSE: "Thanks for reaching out to United Developers — we've got your request and a roofing specialist will call you shortly from (240) 880-2108. If it's urgent storm damage, call us now at (240) 880-2108 and we'll get a free 24-hour inspection on the calendar. — United Developers / UD Roofing (MHIC #111971 · VA #2705183185)",
   CRM_WEBHOOK:   "",   // GoHighLevel / ServiceTitan / JobNimbus / Zapier inbound webhook URL
   SMS_WEBHOOK:   "",   // optional: webhook that fires an instant SMS auto-reply to the lead
 
@@ -89,11 +91,16 @@ window.UD_CONFIG = {
   UD.lead = function (data, subject) {
     data = data || {};
     data.page = location.pathname; data.ts = data.ts || new Date().toISOString();
-    // a) email via FormSubmit
+    // a) email via FormSubmit — with instant auto-reply to the lead + optional CC fan-out
     if (C.LEAD_EMAIL) {
+      var payload = Object.assign({ _subject: subject || 'UD WEBSITE LEAD', _template: 'table' }, data);
+      if (C.LEAD_CC) payload._cc = C.LEAD_CC;
+      // instant branded auto-reply — only when the lead gave a real email (FormSubmit replies to the _replyto address)
+      var leadEmail = data.email || data.Email || '';
+      if (C.AUTORESPONSE && /@/.test(leadEmail)) { payload._replyto = leadEmail; payload._autoresponse = C.AUTORESPONSE; }
       fetch('https://formsubmit.co/ajax/' + C.LEAD_EMAIL, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(Object.assign({ _subject: subject || 'UD WEBSITE LEAD', _template: 'table' }, data))
+        body: JSON.stringify(payload)
       }).catch(function () {});
     }
     // b) CRM webhook (GHL / ServiceTitan / JobNimbus / Zapier)
