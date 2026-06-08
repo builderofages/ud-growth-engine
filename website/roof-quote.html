@@ -4,213 +4,251 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Instant Roof Quote from Satellite | United Developers</title>
-<meta name="description" content="Type your address. We measure your roof from satellite imagery and give you an instant estimate range — in under 30 seconds. Free, no obligation. United Developers, DMV's storm restoration experts." />
+<meta name="description" content="Type your address. We pull live high-resolution satellite imagery, you trace your roof, and we measure it and price it instantly. Free, no obligation. United Developers — DMV storm restoration." />
 <meta property="og:title" content="Instant Roof Quote from Satellite | United Developers"/>
-<meta property="og:description" content="Type your address. We measure your roof from satellite imagery and give you an instant estimate range — in under 30 seconds. Free, no obligation. United Developers, DMV's storm res"/>
+<meta property="og:description" content="Type your address. Live satellite imagery, real roof measurement, instant estimate. Free. United Developers, DMV storm restoration experts."/>
 <meta property="og:image" content="https://builderofages.github.io/ud-growth-engine/website/assets/job-roof-5.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="theme-color" content="#0a2540" />
+<meta name="theme-color" content="#081B30" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
-<style> :root{--navy:#0a2540;--blue:#C53030;--blue-600:#9B1C1C;--ice:#FBF1F1;--ink:#0b1727;--line:#e3e9f4;--gold:#ffb020;--green:#16a34a;--shadow:0 18px 50px -18px rgba(10,37,64,.35)}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style> :root{--navy:#081B30;--navy2:#0C2440;--blue:#C53030;--blue-600:#9B1C1C;--ice:#FBF1F1;--ink:#0b1727;--line:#e3e9f4;--gold:#F5B82E;--green:#16a34a;--shadow:0 18px 50px -18px rgba(8,27,48,.45)}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;background:linear-gradient(160deg,#071c33,#0a2540 50%,#0d3a73);min-height:100vh}
-  h1,h2,h3{font-family:'Plus Jakarta Sans','Inter',sans-serif;line-height:1.15;letter-spacing:-.02em}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;background:linear-gradient(160deg,#06182c,#081B30 55%,#0C2440);min-height:100vh}
+  h1,h2,h3{font-family:'Sora','Inter',sans-serif;line-height:1.15;letter-spacing:-.02em}
   a{color:inherit;text-decoration:none}
   .wrap{width:min(1080px,93%);margin:0 auto}
-  .btn{display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;font-weight:700;font-size:1rem;padding:.95rem 1.7rem;border-radius:999px;transition:.25s;font-family:inherit}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;cursor:pointer;font-weight:700;font-size:1rem;padding:.95rem 1.7rem;border-radius:999px;transition:.25s;font-family:inherit}
   .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-600));color:#fff;box-shadow:0 12px 30px -10px rgba(197,48,48,.7)}
   .btn-primary:hover{transform:translateY(-2px)}
-  .btn-primary:disabled{opacity:.6;cursor:wait;transform:none}
-
+  .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25)}
   header{padding:1rem 0}
   nav{display:flex;align-items:center;justify-content:space-between}
-  .logo{display:flex;align-items:center;gap:.6rem;font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.15rem;color:#fff}
-  .logo .mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#143a66,var(--blue));display:grid;place-items:center;color:#fff}
+  .logo img{height:44px;width:auto}
   .nav-phone{color:#fff;font-weight:700}
-
-  .hero{text-align:center;color:#fff;padding:2.6rem 0 1.8rem}
+  .hero{text-align:center;color:#fff;padding:2.4rem 0 1.4rem}
   .eyebrow{display:inline-flex;gap:.5rem;font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#E89A9A}
-  .hero h1{font-size:clamp(2rem,4.4vw,3.2rem);font-weight:800;margin:.8rem auto;max-width:18ch}
-  .hero h1 span{color:#E89A9A}
-  .hero p{color:#c9d8f0;font-size:1.12rem;max-width:52ch;margin:0 auto}
-
-  .tool{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:2rem;margin:1.6rem auto 3rem;max-width:880px}
+  .hero h1{font-size:clamp(2rem,4.4vw,3.1rem);font-weight:800;margin:.7rem auto;max-width:18ch}
+  .hero h1 span{background:linear-gradient(92deg,#E89A9A,#D04545);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:#c9d8f0;font-size:1.1rem;max-width:54ch;margin:0 auto}
+  .tool{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:1.7rem;margin:1.4rem auto 3rem;max-width:920px}
   .addr-row{display:flex;gap:.7rem}
   .addr-row input{flex:1;padding:1.05rem 1.1rem;border:2px solid var(--line);border-radius:14px;font-size:1.05rem;font-family:inherit}
   .addr-row input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(197,48,48,.12)}
   @media(max-width:640px){.addr-row{flex-direction:column}}
   .hint{font-size:.82rem;color:#8a93a8;margin-top:.6rem;text-align:center}
-
-  .scanning{display:none;text-align:center;padding:2.4rem 0 1.6rem}
-  .radar{width:120px;height:120px;border-radius:50%;margin:0 auto 1.2rem;position:relative;background:radial-gradient(circle,#0d3a73 30%,#0a2540);overflow:hidden;border:3px solid #C5303044}
-  .radar::before{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 0 300deg,rgba(197,48,48,.85) 360deg);animation:spin 1.6s linear infinite}
-  .radar::after{content:"";position:absolute;inset:0;display:grid;place-items:center;font-size:2rem}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .scan-msg{font-weight:700;color:var(--navy)}
-  .scan-sub{color:#64708c;font-size:.92rem}
-
-  .result{display:none}
-  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start}
-  @media(max-width:760px){.res-grid{grid-template-columns:1fr}}
-  .sat-box{border-radius:16px;overflow:hidden;border:1px solid var(--line);position:relative;background:#0a2540;min-height:300px}
-  .sat-box img{width:100%;display:block}
-  .sat-demo{height:340px;background:
-    repeating-linear-gradient(45deg,#15324f 0 22px,#173a5c 22px 44px);
-    position:relative}
-  .sat-demo .house{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);width:200px;height:150px;background:#2d4a66;border:2.5px dashed var(--gold);box-shadow:0 0 0 6px rgba(255,176,32,.15)}
-  .sat-demo .house::after{content:"YOUR ROOF";position:absolute;inset:0;display:grid;place-items:center;color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.12em}
-  .sat-tag{position:absolute;top:.8rem;left:.8rem;background:rgba(10,37,64,.85);color:#E89A9A;font-size:.72rem;font-weight:700;padding:.3rem .7rem;border-radius:999px;letter-spacing:.08em}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:.2rem 0 1rem}
-  .stat{background:var(--ice);border-radius:14px;padding:.9rem 1rem}
-  .stat .v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.45rem;color:var(--navy)}
-  .stat .l{font-size:.78rem;color:#64708c;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-  .price-card{background:linear-gradient(135deg,var(--navy),#0d3a73);color:#fff;border-radius:16px;padding:1.4rem;margin-bottom:1rem}
-  .price-card .rng{font-family:'Plus Jakarta Sans';font-weight:900;font-size:2rem;color:#E89A9A}
+  /* globe stage */
+  .stage{display:none;position:relative;height:420px;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#0C2440,#06182c)}
+  #globe{width:100%;height:100%;display:block}
+  .stage-msg{position:absolute;left:0;right:0;bottom:1.2rem;text-align:center;color:#E89A9A;font-weight:700;font-size:.95rem;letter-spacing:.02em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  /* map */
+  .mapwrap{display:none}
+  #map{height:420px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#0C2440}
+  .leaflet-container{font-family:inherit}
+  .tracebar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.8rem;background:var(--ice);border:1px solid #f0d9d9;border-radius:12px;padding:.7rem .9rem}
+  .tracebar .t{font-size:.9rem;color:var(--navy);font-weight:600;flex:1;min-width:180px}
+  .tracebar .t b{color:var(--blue)}
+  .mini{padding:.5rem .9rem;font-size:.85rem;border-radius:10px}
+  .mini.ghost{background:#fff;border:1.5px solid var(--line);color:var(--navy);cursor:pointer}
+  /* result */
+  .result{display:none;margin-top:1.4rem}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+  @media(max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--ice);border-radius:14px;padding:.85rem .95rem;text-align:center}
+  .stat .v{font-family:'Sora';font-weight:800;font-size:1.35rem;color:var(--navy)}
+  .stat .l{font-size:.72rem;color:#64708c;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .price-card{background:linear-gradient(135deg,var(--navy),#0C2440);color:#fff;border-radius:16px;padding:1.4rem;margin:1rem 0}
+  .price-card .rng{font-family:'Sora';font-weight:900;font-size:2rem;color:#E89A9A}
   .price-card .note{font-size:.85rem;color:#c9d8f0;margin-top:.3rem}
-  .ins-note{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:.9rem 1rem;font-size:.92rem;color:#14532d;margin-bottom:1.2rem}
-  .claim-form .field{margin-bottom:.7rem}
-  .claim-form label{display:block;font-size:.76rem;font-weight:700;color:#46506b;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em}
+  .ins-note{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:.9rem 1rem;font-size:.92rem;color:#14532d;margin-bottom:1rem}
+  .claim-form{display:grid;grid-template-columns:1fr 1fr auto;gap:.7rem;align-items:end}
+  @media(max-width:640px){.claim-form{grid-template-columns:1fr}}
+  .claim-form label{display:block;font-size:.74rem;font-weight:700;color:#46506b;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em}
   .claim-form input{width:100%;padding:.8rem .9rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit}
   .claim-form input:focus{outline:none;border-color:var(--blue)}
-  .ok{display:none;text-align:center;padding:1.6rem 0}
-  .ok .c{width:62px;height:62px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:2rem;margin:0 auto 1rem}
-
-  .how{color:#c9d8f0;text-align:center;padding-bottom:3.5rem}
-  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem}
-  .how-c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.4rem}
-  .how-c .ic{font-size:1.8rem}
-  .how-c h3{color:#fff;font-size:1.05rem;margin:.5rem 0 .3rem}
+  .ok{display:none;text-align:center;padding:1.4rem 0}
+  .ok .c{width:58px;height:58px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:1.8rem;margin:0 auto .8rem}
+  .how{color:#c9d8f0;text-align:center;padding-bottom:3.2rem}
+  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1.4rem}
+  .how-c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.3rem}
+  .how-c h3{color:#fff;font-size:1.02rem;margin:.2rem 0 .3rem}
   .how-c p{font-size:.9rem}
   @media(max-width:700px){.how-grid{grid-template-columns:1fr}}
-  footer{color:#7f93b3;text-align:center;font-size:.82rem;padding:0 0 2rem}
+  footer{color:#7f93b3;text-align:center;font-size:.8rem;padding:0 0 2rem}
 </style>
 <link rel="canonical" href="https://udroofing.com/roof-quote.html"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"RoofingContractor","name":"United Developers","alternateName":"UD Roofing","url":"https://udroofing.com/","logo":"https://uniteddevelopersmdva.com/wp-content/uploads/2025/09/united-developers-2.png","image":"https://udroofing.com/wp-content/uploads/2025/07/home-page.jpg","telephone":"+12408802108","email":"office@udroofing.com","priceRange":"$$","description":"Family-owned roofing, siding, gutters, windows and storm restoration contractor serving Maryland, Virginia and Pennsylvania. GAF factory-certified, A+ BBB accredited. Free 24-hour inspections and full insurance claim assistance.","address":[{"@type":"PostalAddress","streetAddress":"4915 St Elmo Ave Ste 403","addressLocality":"Bethesda","addressRegion":"MD","postalCode":"20814","addressCountry":"US"},{"@type":"PostalAddress","streetAddress":"2000 Duke St Suite 300","addressLocality":"Alexandria","addressRegion":"VA","postalCode":"22314","addressCountry":"US"}],"areaServed":["Gaithersburg MD","Silver Spring MD","Wheaton MD","Bethesda MD","Rockville MD","Germantown MD","Potomac MD","Alexandria VA","Arlington VA","Fairfax VA","Washington DC"],"hasCredential":["Maryland MHIC #111971","Virginia DPOR Class A #2705183185","Pennsylvania #192325","GAF Factory-Certified","OSHA Certified","EPA Certified"],"knowsLanguage":["en","es","hi","ru"],"sameAs":["https://www.facebook.com/UnitedDevelopersUS/","https://www.instagram.com/uniteddevelopers_mdva/","https://x.com/UnitedD68863","https://www.pinterest.com/uniteddevelopersmdva/"]}</script>
-<script>
-/* === UD ANALYTICS — paste GA4 id (G-XXXX) to activate site-wide === */
-window.UD_GA4 = "";
-if (window.UD_GA4) {
-  var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id='+UD_GA4;document.head.appendChild(s);
-  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());gtag('config',UD_GA4);
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"RoofingContractor","name":"United Developers","alternateName":"UD Roofing","url":"https://udroofing.com/","telephone":"+12408802108","email":"office@udroofing.com","priceRange":"$$","areaServed":["Maryland","Virginia","Washington DC"],"hasCredential":["Maryland MHIC #111971","Virginia DPOR Class A #2705183185","GAF Factory-Certified"]}</script>
 <script src="config.js"></script>
 </head>
-<body><header><div class="wrap"><nav><a class="logo" href="index.html"><img src="assets/logo-white.png" alt="United Developers" style="height:44px;width:auto;max-width:none;flex:none"/></a><a class="nav-phone" href="tel:+12408802108">(240) 880-2108</a>
-</nav></div></header><div class="hero"><div class="wrap"><span class="eyebrow">Satellite Roof Analysis</span><h1>See your roof from space. <span>Get a real estimate in 30 seconds.</span></h1><p>Type your address. We measure your roof using aerial imagery — square footage, complexity, and an instant estimate range. Free, no ladder, no salesperson on your porch.</p>
-</div></div><div class="wrap"><div class="tool" id="tool"><!-- STEP 1: ADDRESS --><div id="stepAddr"><div class="addr-row"><input id="addr" placeholder="Enter your home address — e.g. 123 Main St, Gaithersburg, MD 20877" autocomplete="street-address" /><button class="btn btn-primary" id="scanBtn" onclick="scan()">Scan My Roof →</button></div><p class="hint">Works for homes across Maryland, Virginia &amp; DC. Powered by satellite + aerial measurement data.</p></div><!-- SCANNING --><div class="scanning" id="scanning"><div class="radar"></div><p class="scan-msg" id="scanMsg">Locating your property…</p><p class="scan-sub">Pulling aerial imagery and roof geometry</p></div><!-- RESULT --><div class="result" id="result"><div class="res-grid"><div><div class="sat-box" id="satBox"><div class="sat-demo"><div class="house"></div></div><span class="sat-tag">SATELLITE VIEW</span></div><p class="hint" id="addrEcho"></p></div><div><div class="stats"><div class="stat"><div class="v" id="sArea">—</div><div class="l">Roof Area (sq ft)</div></div><div class="stat"><div class="v" id="sSquares">—</div><div class="l">Roofing Squares</div></div><div class="stat"><div class="v" id="sPitch">—</div><div class="l">Avg Pitch</div></div><div class="stat"><div class="v" id="sComplex">—</div><div class="l">Complexity</div></div></div><div class="price-card"><div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;color:#9fb2d2">ESTIMATED REPLACEMENT RANGE*</div><div class="rng" id="sPrice">—</div><div class="note">Architectural asphalt shingles, installed. Metal &amp; premium systems quoted on inspection.</div></div><div class="ins-note"><strong>Storm damage?</strong> If your roof qualifies for an insurance claim, your out-of-pocket is often <strong>just your deductible</strong> — we handle the claim with you.</div><form class="claim-form" id="claimForm" onsubmit="return claimReport(event)"><div class="field"><label>Name</label><input id="cname" required placeholder="Your name" /></div><div class="field"><label>Mobile phone</label><input id="cphone" type="tel" required placeholder="(240) 555-0199" /></div><button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Get My Full Roof Report + Exact Quote →</button><p class="hint">A specialist verifies measurements on-site and locks your exact price. Free.</p></form><div class="ok" id="claimOk"><div class="c">✓</div><h3 style="color:var(--navy)">Report claimed!</h3><p style="color:#64708c;font-size:.95rem">We'll text you from <strong>(240) 880-2108</strong> to schedule your free on-site verification and exact quote.</p></div></div></div></div>
-</div></div><div class="how"><div class="wrap"><h2 style="color:#fff;font-size:1.7rem">How it works</h2><div class="how-grid"><div class="how-c"><div class="ic"></div><h3>1. Enter your address</h3><p>We locate your home using satellite and aerial imagery data.</p></div><div class="how-c"><div class="ic"></div><h3>2. We measure your roof</h3><p>Roof area, pitch, and complexity — computed from above, no visit needed.</p></div><div class="how-c"><div class="ic"></div><h3>3. Instant estimate</h3><p>A real price range on the spot. Then a free on-site inspection locks your exact quote.</p></div></div>
-</div></div><footer><div class="wrap"> *Estimate ranges use real Maryland pricing — architectural asphalt runs about $4.50–$6 per sq ft installed (market range $4–$8.50/sq ft; Fixr, This Old House, 2025); typical MD replacements land $8,500–$18,000. Preliminary aerial measurement; final pricing follows a free on-site inspection. © United Developers · MHIC #111971 · VA DPOR #2705183185 · <a href="index.html" style="color:#E89A9A">udroofing.com</a>
-</div></footer><script>
-/* =========================================================
-   CONFIG — TrainYourAgent / United Developers
-   1) Add a Google Cloud API key with these APIs enabled:
-      - Geocoding API  - Solar API  - Maps Static API
-   2) Leads POST to LEAD_WEBHOOK (GHL / ServiceTitan / TYA agent).
-   With no key, the tool runs in DEMO MODE (realistic sample data)
-   so you can show ownership the full experience today.
-========================================================= */
-const GOOGLE_API_KEY = (window.UD_CONFIG&&window.UD_CONFIG.GOOGLE_MAPS_KEY) || "";  // central: edit config.js GOOGLE_MAPS_KEY
-const LEAD_WEBHOOK   = (window.UD_CONFIG&&window.UD_CONFIG.CRM_WEBHOOK) || "";  // central: edit config.js CRM_WEBHOOK
-/* DMV architectural-asphalt installed pricing, per roofing square (100 sq ft of ROOF surface).
-   Reflects real 2026 DMV retail: full tear-off, synthetic underlayment, ice & water, drip edge,
-   ridge vent, GAF Timberline HDZ, labor, permit, haul-off. Insurance scope often lands in range. */
-const BASE_PER_SQ    = { low: 450, high: 600 };
-const STEEP_PREMIUM  = { low: 90,  high: 130 };  // added per square for steep (8/12+) — safety, staging, slower install
-const COMPLEX_PREMIUM= { low: 60,  high: 95  };  // added per square for cut-up roofs — more flashing, valleys, waste
+<body><header><div class="wrap"><nav><a class="logo" href="index.html"><img src="assets/logo-white.png" alt="United Developers"/></a><a class="nav-phone" href="tel:+12408802108">(240) 880-2108</a></nav></div></header>
+<div class="hero"><div class="wrap"><span class="eyebrow">Satellite Roof Analysis</span><h1>See your roof from space. <span>Measure it. Price it.</span></h1><p>Type your address. We pull live high-resolution satellite imagery, you trace your roof outline, and we measure the real area and give you an instant estimate — no ladder, no salesperson on your porch.</p></div></div>
 
-let scanData = {};
+<div class="wrap"><div class="tool" id="tool">
+  <!-- STEP 1 -->
+  <div id="stepAddr"><div class="addr-row"><input id="addr" placeholder="Enter your home address — e.g. 123 Main St, Gaithersburg, MD 20877" autocomplete="street-address" /><button class="btn btn-primary" id="scanBtn" onclick="scan()">Scan My Roof →</button></div><p class="hint">Live satellite imagery + real measurement. Works across Maryland, Virginia &amp; DC.</p></div>
 
-/* Pitch ratio (x/12) -> angle degrees -> roof-surface multiplier (1/cos θ).
-   A flat plan-area footprint understates real roof material; pitch multiplies it. */
-function pitchMultiplier(deg){ return 1/Math.cos(deg*Math.PI/180); }
-function degToRatio(deg){ return Math.max(2, Math.round(Math.tan(deg*Math.PI/180)*12)); }
-function wasteFactor(segCount){ return segCount>8 ? 1.15 : segCount>5 ? 1.12 : 1.10; } // industry 10–15% by cut-up
+  <!-- GLOBE -->
+  <div class="stage" id="stage"><canvas id="globe"></canvas><div class="stage-msg" id="stageMsg">Locating your property…</div></div>
 
-async function scan(){
-  const addr = document.getElementById('addr').value.trim();
-  if(!addr){ document.getElementById('addr').focus(); return; }
-  document.getElementById('stepAddr').style.display='none';
-  document.getElementById('scanning').style.display='block';
-  const msgs = ["Locating your property…","Pulling satellite imagery…","Measuring roof geometry…","Calculating your estimate…"];
-  let i=0; const tick = setInterval(()=>{ i=(i+1)%msgs.length; document.getElementById('scanMsg').textContent=msgs[i]; }, 1100);
+  <!-- MAP + TRACE -->
+  <div class="mapwrap" id="mapwrap">
+    <div id="map"></div>
+    <div class="tracebar"><div class="t" id="traceMsg">Tap each corner of your roof, then press <b>Done</b>. Tip: trace the full outline including the garage.</div><button class="mini ghost" id="undoBtn" onclick="undoPt()">Undo</button><button class="mini ghost" onclick="resetTrace()">Reset</button><button class="btn btn-primary mini" id="doneBtn" onclick="finishTrace()">Done — Measure →</button></div>
+    <p class="hint" id="addrEcho"></p>
+  </div>
 
-  try{
-    if(GOOGLE_API_KEY){
-      const g = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${GOOGLE_API_KEY}`).then(r=>r.json());
-      const loc = g.results[0].geometry.location;
-      const fmt = g.results[0].formatted_address;
-      const s = await fetch(`https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${loc.lat}&location.longitude=${loc.lng}&requiredQuality=MEDIUM&key=${GOOGLE_API_KEY}`).then(r=>r.json());
-      const segs = s.solarPotential?.roofSegmentStats || [];
-      // Solar API wholeRoofStats.areaMeters2 is the SLANTED roof surface already — use directly, do not re-multiply.
-      const roofSurfaceM2 = s.solarPotential?.wholeRoofStats?.areaMeters2 || 0;
-      const pitchDeg = segs.length ? (segs.reduce((a,x)=>a+(x.pitchDegrees||22),0)/segs.length) : 22;
-      let roofSqft;
-      if(roofSurfaceM2 > 10){ roofSqft = roofSurfaceM2*10.7639; }            // true surface from Solar API
-      else { roofSqft = 2300 * pitchMultiplier(pitchDeg); }                  // fallback: typical footprint × pitch
-      const img = `https://maps.googleapis.com/maps/api/staticmap?center=${loc.lat},${loc.lng}&zoom=20&size=640x420&maptype=satellite&key=${GOOGLE_API_KEY}`;
-      document.getElementById('satBox').innerHTML = `<img src="${img}" alt="Satellite view of your roof"/><span class="sat-tag">SATELLITE VIEW</span>`;
-      render(fmt, roofSqft, pitchDeg, segs.length, true);
-    } else {
-      // DEMO MODE — deterministic from address. Models FOOTPRINT, then applies real pitch multiplier.
-      await new Promise(r=>setTimeout(r, 3600));
-      const seed = [...addr].reduce((a,c)=>a+c.charCodeAt(0),0);
-      const footprint = 1450 + (seed % 1150);     // 1,450–2,600 sq ft ground footprint (typical DMV SFH)
-      const pitchDeg  = 18 + (seed % 15);          // 18–33° (≈ 4/12 to 8/12)
-      const segs      = 4 + (seed % 7);
-      const roofSqft  = footprint * pitchMultiplier(pitchDeg);  // footprint -> true roof surface
-      render(addr + "  ·  preliminary aerial estimate", roofSqft, pitchDeg, segs, false);
-    }
-  }catch(e){
-    const roofSqft = 2300 * pitchMultiplier(24);
-    render(addr + "  ·  preliminary estimate", roofSqft, 24, 6, false);
-  }finally{
-    clearInterval(tick);
-    document.getElementById('scanning').style.display='none';
-    document.getElementById('result').style.display='block';
+  <!-- RESULT -->
+  <div class="result" id="result">
+    <div class="stats"><div class="stat"><div class="v" id="sArea">—</div><div class="l">Roof Area (sq ft)</div></div><div class="stat"><div class="v" id="sSquares">—</div><div class="l">Roofing Squares</div></div><div class="stat"><div class="v" id="sPitch">—</div><div class="l">Est. Pitch</div></div><div class="stat"><div class="v" id="sComplex">—</div><div class="l">Complexity</div></div></div>
+    <div style="margin:1rem 0;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap"><label style="font-size:.8rem;font-weight:700;color:#46506b">Roof pitch:</label><select id="pitchSel" onchange="recalc()" style="padding:.6rem .8rem;border:1.5px solid var(--line);border-radius:10px;font-family:inherit"><option value="18.4">4/12 — low/walkable</option><option value="22.6" selected>5/12 — common</option><option value="26.6">6/12 — common</option><option value="30.3">7/12 — steep</option><option value="33.7">8/12 — steep</option><option value="39.8">10/12 — very steep</option></select><span class="hint" style="margin:0">adjust if you know it — changes true surface area</span></div>
+    <div class="price-card"><div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;color:#9fb2d2">ESTIMATED REPLACEMENT RANGE*</div><div class="rng" id="sPrice">—</div><div class="note">Architectural asphalt, installed, real Maryland pricing. Metal &amp; premium quoted on inspection.</div></div>
+    <div class="ins-note"><strong>Storm damage?</strong> If your roof qualifies for an insurance claim, your out-of-pocket is often <strong>just your deductible</strong> — we document it and handle the claim with you.</div>
+    <form class="claim-form" id="claimForm" onsubmit="return claimReport(event)"><div><label>Name</label><input id="cname" required placeholder="Your name" /></div><div><label>Mobile phone</label><input id="cphone" type="tel" required placeholder="(240) 555-0199" /></div><button class="btn btn-primary" type="submit">Get Exact Quote →</button></form>
+    <p class="hint">A specialist verifies the measurement on-site and locks your exact price. Free.</p>
+    <div class="ok" id="claimOk"><div class="c">✓</div><h3 style="color:var(--navy)">Report claimed!</h3><p style="color:#64708c;font-size:.95rem">We'll text you from <strong>(240) 880-2108</strong> to schedule your free on-site verification and exact quote.</p></div>
+  </div>
+</div></div>
+
+<div class="how"><div class="wrap"><h2 style="color:#fff;font-size:1.6rem">How it works</h2><div class="how-grid"><div class="how-c"><h3>1. Enter your address</h3><p>A live 3D flyover locates your home, then loads high-resolution satellite imagery.</p></div><div class="how-c"><h3>2. Trace your roof</h3><p>Tap the corners on the real image. We compute the true area from the map's geographic scale.</p></div><div class="how-c"><h3>3. Instant estimate</h3><p>A real price range on the spot, using current Maryland pricing. A free on-site inspection locks the exact number.</p></div></div></div></div>
+
+<footer><div class="wrap"> *Estimate uses real Maryland pricing — architectural asphalt ~$4.50–$6/sq ft installed (market $4–$8.50/sq ft; Fixr, This Old House, 2025); typical MD replacements $8,500–$18,000. Measurement from traced satellite imagery is preliminary; final pricing follows a free on-site inspection. Imagery: Esri World Imagery. Geocoding: OpenStreetMap. © United Developers · MHIC #111971 · VA DPOR #2705183185 · <a href="index.html" style="color:#E89A9A">udroofing.com</a></div></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---- pricing (matches field kit + careers, real MD data) ---- */
+var BASE={low:450,high:600}, STEEP={low:90,high:130}, CMPLX={low:60,high:95};
+var map, traceLayer, polyLayer, pts=[], scanData={}, geo={};
+
+function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+
+/* ---- 3D globe intro (Three.js wireframe, on-theme, flies to the point) ---- */
+function runGlobe(lat,lng,done){
+  var stage=document.getElementById('stage'); stage.style.display='block';
+  if(typeof THREE==='undefined'){ setTimeout(done,400); return; }   // graceful skip
+  var cv=document.getElementById('globe'), W=stage.clientWidth, H=stage.clientHeight;
+  var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  var scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(45,W/H,0.1,100); cam.position.z=3.2;
+  var R=1.2;
+  var sphere=new THREE.Mesh(new THREE.SphereGeometry(R,40,40), new THREE.MeshBasicMaterial({color:0x0E2A4D}));
+  var wire=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.SphereGeometry(R,24,18)), new THREE.LineBasicMaterial({color:0x1f4f86,transparent:true,opacity:.55}));
+  var glow=new THREE.Mesh(new THREE.SphereGeometry(R*1.06,40,40), new THREE.MeshBasicMaterial({color:0xC53030,transparent:true,opacity:.06}));
+  scene.add(sphere); scene.add(wire); scene.add(glow);
+  // target marker at lat/lng
+  function toXYZ(la,lo,r){var p=(90-la)*Math.PI/180,t=(lo+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(p)*Math.cos(t), r*Math.cos(p), r*Math.sin(p)*Math.sin(t));}
+  var mk=new THREE.Mesh(new THREE.SphereGeometry(0.05,16,16), new THREE.MeshBasicMaterial({color:0xC53030}));
+  var pos=toXYZ(lat,lng,R*1.02); mk.position.copy(pos); scene.add(mk);
+  var ring=new THREE.Mesh(new THREE.RingGeometry(0.06,0.09,24), new THREE.MeshBasicMaterial({color:0xE89A9A,side:THREE.DoubleSide,transparent:true,opacity:.9}));
+  ring.position.copy(pos); ring.lookAt(pos.clone().multiplyScalar(2)); scene.add(ring);
+  // rotate sphere so the marker faces camera
+  var targetRotY=Math.atan2(pos.x,pos.z), t0=performance.now(), dur=2600, startRot=0.0; sphere.rotation.y=wire.rotation.y=glow.rotation.y=startRot; var holder=new THREE.Group();
+  var raf;
+  function frame(now){
+    var k=Math.min((now-t0)/dur,1), e=1-Math.pow(1-k,3);
+    var ry=startRot + (-targetRotY-startRot)*e + (1-e)*2.2; // spin then settle facing target
+    sphere.rotation.y=wire.rotation.y=glow.rotation.y=ry; mk.position.copy(toXYZ(lat,lng,R*1.02).applyAxisAngle(new THREE.Vector3(0,1,0),ry)); ring.position.copy(mk.position); ring.lookAt(0,0,0);
+    cam.position.z=3.2-(1.0*e); ring.scale.setScalar(1+0.6*Math.sin(now/180));
+    renderer.render(scene,cam);
+    if(k<1) raf=requestAnimationFrame(frame); else { cancelAnimationFrame(raf); setTimeout(function(){stage.style.display='none'; done();},250); }
   }
+  raf=requestAnimationFrame(frame);
 }
 
-function render(fmt, roofSqft, pitchDeg, segCount, live){
-  const ratio = degToRatio(pitchDeg);
-  const steep = pitchDeg >= 33;                                  // 8/12 and up
-  const complexity = segCount>8 ? "Complex" : segCount>5 ? "Moderate" : "Simple";
-  const waste = wasteFactor(segCount);
-  const squares = Math.max(8, Math.round((roofSqft * waste) / 100));
-  let loSq = BASE_PER_SQ.low,  hiSq = BASE_PER_SQ.high;
-  if(steep){ loSq += STEEP_PREMIUM.low; hiSq += STEEP_PREMIUM.high; }
-  if(complexity==="Complex"){ loSq += COMPLEX_PREMIUM.low; hiSq += COMPLEX_PREMIUM.high; }
-  else if(complexity==="Moderate"){ loSq += COMPLEX_PREMIUM.low*0.5; hiSq += COMPLEX_PREMIUM.high*0.5; }
-  const lo = Math.round(squares * loSq / 250) * 250;             // round to nearest $250
-  const hi = Math.round(squares * hiSq / 250) * 250;
-  scanData = {address:fmt, roof_surface_sqft:Math.round(roofSqft), roofing_squares:squares,
-              pitch:`${ratio}/12`, complexity, waste_factor:waste, source_quality:live?'satellite':'aerial-estimate',
-              est_low:lo, est_high:hi};
-  document.getElementById('addrEcho').textContent = fmt;
-  document.getElementById('sArea').textContent = Math.round(roofSqft).toLocaleString();
-  document.getElementById('sSquares').textContent = squares;
-  document.getElementById('sPitch').textContent = ratio + "/12";
-  document.getElementById('sComplex').textContent = complexity;
-  document.getElementById('sPrice').textContent = `$${lo.toLocaleString()} – $${hi.toLocaleString()}`;
+async function scan(){
+  var addr=document.getElementById('addr').value.trim();
+  if(!addr){document.getElementById('addr').focus();return;}
+  document.getElementById('stepAddr').style.display='none';
+  var stageMsg=document.getElementById('stageMsg'); stageMsg.textContent='Locating your property…';
+  try{
+    // FREE geocode via OpenStreetMap Nominatim (no key)
+    var r=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q='+encodeURIComponent(addr),{headers:{'Accept':'application/json'}});
+    var j=await r.json();
+    if(!j.length){ throw new Error('not found'); }
+    geo={lat:+j[0].lat, lng:+j[0].lon, label:j[0].display_name};
+  }catch(e){
+    // fallback to DMV center so the tool still demonstrates
+    geo={lat:39.1438, lng:-77.2014, label:addr+' (approx — confirm on map)'};
+  }
+  runGlobe(geo.lat, geo.lng, openMap);
+}
+
+function openMap(){
+  document.getElementById('mapwrap').style.display='block';
+  document.getElementById('addrEcho').textContent=geo.label;
+  if(!map){
+    map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([geo.lat,geo.lng],20);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,attribution:'Imagery &copy; Esri'}).addTo(map);
+    traceLayer=L.layerGroup().addTo(map);
+    map.on('click', addPt);
+  } else { map.setView([geo.lat,geo.lng],20); }
+  setTimeout(function(){map.invalidateSize();},120);
+  resetTrace();
+}
+
+function addPt(e){
+  pts.push(e.latlng);
+  redraw();
+  document.getElementById('traceMsg').innerHTML = pts.length<3 ? 'Keep tapping corners — <b>'+pts.length+'</b> set (need at least 3).' : '<b>'+pts.length+'</b> corners set. Add more or press <b>Done</b>.';
+}
+function undoPt(){ pts.pop(); redraw(); }
+function resetTrace(){ pts=[]; redraw(); document.getElementById('result').style.display='none'; document.getElementById('traceMsg').innerHTML='Tap each corner of your roof, then press <b>Done</b>. Include the garage.'; }
+function redraw(){
+  traceLayer.clearLayers();
+  pts.forEach(function(p){ L.circleMarker(p,{radius:6,color:'#fff',weight:2,fillColor:'#C53030',fillOpacity:1}).addTo(traceLayer); });
+  if(pts.length>1) L.polygon(pts,{color:'#F5B82E',weight:3,fillColor:'#C53030',fillOpacity:.18}).addTo(traceLayer);
+}
+
+/* geodesic-ish plan area from traced latlngs (equirectangular at mean lat, shoelace) */
+function planSqft(latlngs){
+  if(latlngs.length<3) return 0;
+  var Rm=6378137, mlat=latlngs.reduce(function(a,p){return a+p.lat;},0)/latlngs.length;
+  var xy=latlngs.map(function(p){return {x:Rm*(p.lng*Math.PI/180)*Math.cos(mlat*Math.PI/180), y:Rm*(p.lat*Math.PI/180)};});
+  var a=0; for(var i=0;i<xy.length;i++){var j=(i+1)%xy.length; a+=xy[i].x*xy[j].y - xy[j].x*xy[i].y;}
+  return Math.abs(a)/2 * 10.7639;
+}
+
+function finishTrace(){
+  if(pts.length<3){ document.getElementById('traceMsg').innerHTML='<b style="color:#C53030">Tap at least 3 corners</b> to outline the roof.'; return; }
+  scanData.footprint = planSqft(pts);
+  scanData.segments = pts.length;   // proxy for complexity from outline detail
+  document.getElementById('result').style.display='block';
+  recalc();
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'center'});
+  if(window.UD&&UD.track) UD.track('roof_traced',{footprint:Math.round(scanData.footprint)});
+}
+
+function recalc(){
+  var footprint=scanData.footprint||0;
+  var deg=+document.getElementById('pitchSel').value;
+  var mult=1/Math.cos(deg*Math.PI/180), surf=footprint*mult;
+  var ptsN=scanData.segments||4;
+  var complexity = ptsN>10?'Complex':ptsN>6?'Moderate':'Simple';
+  var waste = complexity==='Complex'?1.15:complexity==='Moderate'?1.12:1.10;
+  var sq=Math.max(8,Math.round(surf*waste/100));
+  var steep=deg>=33, lo=BASE.low,hi=BASE.high;
+  if(steep){lo+=STEEP.low;hi+=STEEP.high;}
+  if(complexity==='Complex'){lo+=CMPLX.low;hi+=CMPLX.high;} else if(complexity==='Moderate'){lo+=CMPLX.low*.5;hi+=CMPLX.high*.5;}
+  var L=Math.round(sq*lo/250)*250, H=Math.round(sq*hi/250)*250, ratio=Math.max(2,Math.round(Math.tan(deg*Math.PI/180)*12));
+  scanData=Object.assign(scanData,{address:geo.label,roof_surface_sqft:Math.round(surf),roofing_squares:sq,pitch:ratio+'/12',complexity:complexity,est_low:L,est_high:H});
+  document.getElementById('sArea').textContent=Math.round(surf).toLocaleString();
+  document.getElementById('sSquares').textContent=sq;
+  document.getElementById('sPitch').textContent=ratio+'/12';
+  document.getElementById('sComplex').textContent=complexity;
+  document.getElementById('sPrice').textContent=money(L)+' – '+money(H);
 }
 
 function claimReport(e){
   e.preventDefault();
-  const lead = {...scanData, name:document.getElementById('cname').value, phone:document.getElementById('cphone').value, source:"satellite-roof-quote", ts:new Date().toISOString()};
-  // 1) Live email delivery (FormSubmit) — FIXED: was referencing undefined 'data'
-  fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify(Object.assign({_subject:'UD SATELLITE QUOTE LEAD: '+lead.name+' — '+(lead.address||'').slice(0,40),_template:'table'},lead))
-  }).catch(function(){});
-  // 2) Optional CRM webhook
-  if(LEAD_WEBHOOK){ fetch(LEAD_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(lead)}).catch(()=>{}); }
+  var lead=Object.assign({},scanData,{name:document.getElementById('cname').value,phone:document.getElementById('cphone').value,source:'satellite-roof-quote'});
+  if(window.UD&&UD.lead){ UD.lead(lead,'UD SATELLITE QUOTE: '+lead.name+' — '+(lead.address||'').slice(0,40)); }
+  else { fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign({_subject:'UD SATELLITE QUOTE: '+lead.name,_template:'table'},lead))}).catch(function(){}); }
   document.getElementById('claimForm').style.display='none';
   document.getElementById('claimOk').style.display='block';
   return false;
 }
-document.getElementById('addr').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();scan();} });
+document.getElementById('addr').addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();scan();} });
 </script>
 <!-- AI Sales Specialist — Dex (United Developers) -->
 <elevenlabs-convai agent-id="agent_0701ktfcsjtkfw3rtja6nbf06ns7"></elevenlabs-convai>
