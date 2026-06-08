@@ -12,7 +12,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(120% 90
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1080px;margin:0 auto;padding:2rem 1.4rem 4rem}
 .top{display:flex;align-items:center;gap:.9rem;margin-bottom:.4rem}
-.top img{height:40px}
+.logo-plaque{display:inline-flex;align-items:center;background:#fff;padding:.5rem .85rem;border-radius:13px;box-shadow:0 8px 22px -10px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+.logo-plaque img{height:36px;display:block}
 .top::after{content:"";flex:1}
 .top .live{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.4);color:#6ee7b7;font-size:.72rem;font-weight:700;padding:.4rem .85rem;border-radius:999px;letter-spacing:.05em}
 h1{font:900 2rem/1.1 'Sora',sans-serif;letter-spacing:-.025em;margin:.8rem 0 .3rem}
@@ -52,7 +53,7 @@ section h2{font:800 .8rem/1 'Sora',sans-serif;text-transform:uppercase;letter-sp
 </head>
 <body>
 <div class="wrap">
-<div class="top"><img src="website/assets/logo-white.png" alt="United Developers"/><span class="live">SYSTEM LIVE</span></div>
+<div class="top"><span class="logo-plaque"><img src="website/assets/logo-white.png" alt="United Developers"/></span><span class="live">SYSTEM LIVE</span></div>
 <span class="eyebrow">United Developers · Growth Engine</span>
 <h1>Control Center</h1>
 <p class="sub">One front door for the entire operation — the public website, the AI agents, the live lead pipeline, and the owner tools. Everything below is built, deployed, and running. <span id="today"></span></p>
