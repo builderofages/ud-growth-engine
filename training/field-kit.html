@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>UD Rep Field Kit</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="../website/config.js"></script>
 <style>
 :root{--navy:#081B30;--red:#C53030;--red-d:#9B1C1C;--line:#E4EAF4;--body:#4A5872;--green:#10B981;--amber:#F5B82E;--ice:#FBF1F1}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -207,8 +208,9 @@ loadStorms();
 function logLead(e){
   e.preventDefault();
   var d={rep_logged:true,name:val('lName'),phone:val('lPhone'),address:val('lAddr'),status:val('lStatus'),notes:val('lNote'),ts:new Date().toISOString()};
-  fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify(Object.assign({_subject:'UD FIELD LEAD ['+d.status+']: '+d.name,_template:'table'},d))}).catch(function(){});
+  var _subj='UD FIELD LEAD ['+d.status+']: '+d.name;
+  if(window.UD&&UD.lead){ UD.lead(d,_subj); }
+  else { fetch('https://formsubmit.co/ajax/'+((window.UD_CONFIG&&UD_CONFIG.LEAD_EMAIL)||'trainyouragent@gmail.com'),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign({_subject:_subj,_template:'table'},d))}).catch(function(){}); }
   document.getElementById('lf').style.display='none';document.getElementById('lOk').style.display='block';
   return false;
 }
