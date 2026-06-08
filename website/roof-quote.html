@@ -96,6 +96,7 @@ if (window.UD_GA4) {
   gtag('js',new Date());gtag('config',UD_GA4);
 }
 </script>
+<script src="config.js"></script>
 </head>
 <body><header><div class="wrap"><nav><a class="logo" href="index.html"><img src="assets/logo-white.png" alt="United Developers" style="height:44px;width:auto;max-width:none;flex:none"/></a><a class="nav-phone" href="tel:+12408802108">(240) 880-2108</a>
 </nav></div></header><div class="hero"><div class="wrap"><span class="eyebrow">Satellite Roof Analysis</span><h1>See your roof from space. <span>Get a real estimate in 30 seconds.</span></h1><p>Type your address. We measure your roof using aerial imagery — square footage, complexity, and an instant estimate range. Free, no ladder, no salesperson on your porch.</p>
@@ -111,8 +112,8 @@ if (window.UD_GA4) {
    With no key, the tool runs in DEMO MODE (realistic sample data)
    so you can show ownership the full experience today.
 ========================================================= */
-const GOOGLE_API_KEY = "";            // <-- paste key to go live (Geocoding + Solar + Maps Static)
-const LEAD_WEBHOOK   = "";            // <-- paste GHL/ServiceTitan webhook URL
+const GOOGLE_API_KEY = (window.UD_CONFIG&&window.UD_CONFIG.GOOGLE_MAPS_KEY) || "";  // central: edit config.js GOOGLE_MAPS_KEY
+const LEAD_WEBHOOK   = (window.UD_CONFIG&&window.UD_CONFIG.CRM_WEBHOOK) || "";  // central: edit config.js CRM_WEBHOOK
 /* DMV architectural-asphalt installed pricing, per roofing square (100 sq ft of ROOF surface).
    Reflects real 2026 DMV retail: full tear-off, synthetic underlayment, ice & water, drip edge,
    ridge vent, GAF Timberline HDZ, labor, permit, haul-off. Insurance scope often lands in range. */
