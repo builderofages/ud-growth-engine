@@ -54,12 +54,9 @@ function sendRef(e){
   e.preventDefault();
   var v=function(id){return document.getElementById(id).value};
   var data={referrer_name:v('rn'),referrer_phone:v('rp'),neighbor_name:v('nn'),neighbor_phone:v('np'),roof_issue:v('nw'),ts:new Date().toISOString()};
-  fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify(Object.assign({_subject:'UD REFERRAL ($250): '+data.neighbor_name+' from '+data.referrer_name,_template:'table'},data))
-  }).catch(function(){});
-  var UD_WEBHOOK='';
-  if(UD_WEBHOOK){fetch(UD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+  var _subj='UD REFERRAL ($250): '+data.neighbor_name+' from '+data.referrer_name;
+  if(window.UD&&UD.lead){ UD.lead(data,_subj); }
+  else { fetch('https://formsubmit.co/ajax/'+((window.UD_CONFIG&&UD_CONFIG.LEAD_EMAIL)||'trainyouragent@gmail.com'),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign({_subject:_subj,_template:'table'},data))}).catch(function(){}); }
   document.getElementById('refForm').style.display='none';
   document.getElementById('refOk').style.display='block';
   return false;

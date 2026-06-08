@@ -119,11 +119,12 @@
     if (!m) return;
     leadSent = true; try { sessionStorage.setItem('udcLead', '1'); } catch (_) {}
     var transcript = hist.slice(-14).map(function (x) { return (x.w === 'u' ? 'Visitor: ' : NAME + ': ') + x.t; }).join('\n');
-    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com', { method: 'POST',
+    var ld = { phone: m[1], agent: NAME, page: location.pathname, transcript: transcript, ts: new Date().toISOString() };
+    var sj = 'UD CHAT LEAD: phone captured by ' + NAME;
+    if (window.UD && UD.lead) { UD.lead(ld, sj); }
+    else { fetch('https://formsubmit.co/ajax/' + ((window.UD_CONFIG && UD_CONFIG.LEAD_EMAIL) || 'trainyouragent@gmail.com'), { method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ _subject: 'UD CHAT LEAD: phone captured by ' + NAME, _template: 'table',
-        phone: m[1], agent: NAME, page: location.pathname, transcript: transcript, ts: new Date().toISOString() })
-    }).catch(function () {});
+      body: JSON.stringify(Object.assign({ _subject: sj, _template: 'table' }, ld)) }).catch(function () {}); }
   }
 
   function el(cls, txt) { var d = document.createElement('div'); d.className = cls; if (txt) d.textContent = txt; return d; }

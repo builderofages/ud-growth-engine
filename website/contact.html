@@ -47,13 +47,30 @@ if (window.UD_GA4) {
 <h1>Let's look at your roof — for free.</h1><p>Call, email, or stop by. A specialist responds within the hour during business hours.</p>
 <div style="margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap"><a class="btn btn-primary" href="index.html#quote">Get a Free Inspection →</a><a class="btn btn-ghost" href="tel:+12408802108">(240) 880-2108</a></div>
 </div></div>
-<section class="block"><div class="wrap"><div class="grid2" style="align-items:start">
+<section class="block"><div class="wrap"><div class="grid2" style="align-items:start;gap:2.5rem">
+<div>
+<span class="eyebrow">Request a Free Inspection</span>
+<h2 style="color:var(--navy);font-size:1.9rem;margin:.6rem 0 1.2rem">Tell us about your roof</h2>
+<form id="cForm" onsubmit="return sendContact(event)" style="background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:1.8rem;box-shadow:0 12px 34px -18px rgba(8,27,48,.22)">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+<div><label style="display:block;font-size:.74rem;font-weight:600;color:#536084;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Name</label><input id="cn" required style="width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit"/></div>
+<div><label style="display:block;font-size:.74rem;font-weight:600;color:#536084;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Phone</label><input id="cp" type="tel" required style="width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit"/></div>
+<div><label style="display:block;font-size:.74rem;font-weight:600;color:#536084;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">Email</label><input id="ce" type="email" style="width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit"/></div>
+<div><label style="display:block;font-size:.74rem;font-weight:600;color:#536084;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">ZIP / City</label><input id="cz" style="width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit"/></div>
+</div>
+<div style="margin-top:1rem"><label style="display:block;font-size:.74rem;font-weight:600;color:#536084;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em">How can we help?</label><textarea id="cm" rows="3" placeholder="Storm damage, leak, aging roof, quote request…" style="width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;font-family:inherit;resize:vertical"></textarea></div>
+<button class="btn btn-primary" type="submit" style="width:100%;margin-top:1.2rem">Request My Free Inspection →</button>
+<p style="font-size:.73rem;color:#8C97AF;text-align:center;margin-top:.8rem">By submitting you agree we may contact you about your request by phone, text or email, including via automated systems. <a href="privacy.html" style="text-decoration:underline;color:inherit">Privacy</a></p>
+</form>
+<div id="cOk" style="display:none;text-align:center;padding:2.5rem 1rem"><div style="width:60px;height:60px;border-radius:50%;background:#10B981;color:#fff;font-size:1.8rem;display:grid;place-items:center;margin:0 auto 1rem">✓</div><h3 style="color:var(--navy)">Got it — we'll be in touch fast.</h3><p style="color:var(--body)">A specialist responds within the hour during business hours. Need us now? Call (240) 880-2108.</p></div>
+</div>
 <div>
 <h2 style="color:var(--navy);font-size:1.9rem;margin-bottom:1.2rem">Talk to a real person</h2>
 <div class="card" style="margin-bottom:1rem"><h3 style="color:var(--navy);font-size:1.05rem">Phone</h3><p style="color:var(--body)"><a href="tel:+12408802108" style="color:var(--blue);font-weight:700">(240) 880-2108</a> — fastest way to book your free inspection.</p></div>
 <div class="card" style="margin-bottom:1rem"><h3 style="color:var(--navy);font-size:1.05rem">Email</h3><p style="color:var(--body)"><a href="mailto:office@udroofing.com" style="color:var(--blue);font-weight:700">office@udroofing.com</a></p></div>
 <div class="card" style="margin-bottom:1rem"><h3 style="color:var(--navy);font-size:1.05rem">Maryland Office</h3><p style="color:var(--body)">4915 St Elmo Ave Ste 403, Bethesda, MD 20814</p></div>
-<div class="card"><h3 style="color:var(--navy);font-size:1.05rem">Virginia Office</h3><p style="color:var(--body)">2000 Duke St Suite 300, Alexandria, VA 22314</p></div>
+<div class="card" style="margin-bottom:1rem"><h3 style="color:var(--navy);font-size:1.05rem">Virginia Office</h3><p style="color:var(--body)">2000 Duke St Suite 300, Alexandria, VA 22314</p></div>
+<div class="card"><h3 style="color:var(--navy);font-size:1.05rem">Hours</h3><p style="color:var(--body)">Mon–Sat, 8am–7pm. After a storm we answer 24/7 — and our AI assistant catches every call and message around the clock so you never reach a dead end.</p></div>
 </div>
 <div class="photo-r" style="min-height:420px"><iframe title="United Developers on Google Maps" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12404.664636637319!2d-77.097905!3d38.988704!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7d04f2c7e3b8b%3A0x40d8d18cd1950ef8!2sUnited%20Developers!5e0!3m2!1sen!2s!4v1769663148728!5m2!1sen!2s" style="border:0;width:100%;height:480px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
 </div></div></section>
@@ -84,7 +101,19 @@ if (window.UD_GA4) {
 <span>MHIC #111971 · VA Class A #2705183185 · PA #192325 · Licensed &amp; Bonded MD/VA/PA</span>
 </div></div></footer>
 <div class="sticky-call"><a class="btn" style="background:#EFF5FF;color:var(--navy)" href="tel:+12408802108">Call Now</a><a class="btn btn-primary" href="index.html#quote">Free Inspection</a></div>
-<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();
+function sendContact(e){
+  e.preventDefault();
+  var g=function(id){return (document.getElementById(id)||{}).value||'';};
+  var data={name:g('cn'),phone:g('cp'),email:g('ce'),zip:g('cz'),message:g('cm'),source:'contact-page',ts:new Date().toISOString()};
+  var _subj='UD CONTACT: '+data.name+(data.zip?(' ('+data.zip+')'):'');
+  if(window.UD&&UD.lead){ UD.lead(data,_subj); }
+  else { fetch('https://formsubmit.co/ajax/'+((window.UD_CONFIG&&UD_CONFIG.LEAD_EMAIL)||'office@udroofing.com'),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign({_subject:_subj,_template:'table'},data))}).catch(function(){}); }
+  document.getElementById('cForm').style.display='none';
+  document.getElementById('cOk').style.display='block';
+  return false;
+}
+</script>
 <!-- AI Receptionist — Riley (United Developers) -->
 <elevenlabs-convai agent-id="agent_2801ktf0hpcefj1bmz3gp0akkxp1"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>

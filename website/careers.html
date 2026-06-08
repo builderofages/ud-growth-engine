@@ -151,19 +151,11 @@ if (window.UD_GA4) {
     const apt=(+v('q1'))+(+v('q2'))+(+v('q3'));
     const tier=apt>=8?'A-PLAYER (interview within 24h)':apt>=5?'PROMISING (phone screen)':'WEAK (pass unless experienced)';
     const data={name:v('aname'),phone:v('aphone'),email:v('aemail'),exp:v('aexp'),car:v('acar'),aptitude_score:apt+'/9',screen_verdict:tier,ts:new Date().toISOString()};
-    // === INTEGRATION POINT: send to AI recruiting screener / ATS / GHL webhook ===
-    
-    // === LIVE LEAD DELIVERY ===
-    // 1) FormSubmit -> email (active after one-time activation click)
-    fetch('https://formsubmit.co/ajax/trainyouragent@gmail.com',{method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(Object.assign({_subject:'UD APPLICANT ['+tier.split(' ')[0]+']: '+data.name,_template:'table'},data))
-    }).catch(function(){});
-    // 2) Optional CRM webhook (paste GHL/ServiceTitan URL)
-    var UD_WEBHOOK='';
-    if(UD_WEBHOOK){fetch(UD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+    // === LIVE APPLICANT DELIVERY — routes through config.js. One switch reassigns it all. ===
+    var _subj='UD APPLICANT ['+tier.split(' ')[0]+']: '+data.name;
+    if(window.UD&&UD.lead){ UD.lead(data,_subj); }
+    else { fetch('https://formsubmit.co/ajax/'+((window.UD_CONFIG&&UD_CONFIG.LEAD_EMAIL)||'trainyouragent@gmail.com'),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign({_subject:_subj,_template:'table'},data))}).catch(function(){}); }
 
-    console.log('APPLICANT ',data);
     document.getElementById('applyForm').style.display='none';
     document.getElementById('aok').style.display='block';
   }
