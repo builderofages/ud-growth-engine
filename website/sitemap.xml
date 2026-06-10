@@ -44,4 +44,5 @@
 <url><loc>https://udroofing.com/areas/mclean.html</loc><changefreq>monthly</changefreq></url>
 <url><loc>https://udroofing.com/financing-calculator.html</loc><changefreq>monthly</changefreq></url>
 <url><loc>https://udroofing.com/commercial.html</loc><changefreq>monthly</changefreq></url>
+<url><loc>https://udroofing.com/es.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
 </urlset>
