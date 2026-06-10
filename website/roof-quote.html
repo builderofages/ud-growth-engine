@@ -33,9 +33,14 @@
   .hero h1 span{background:linear-gradient(92deg,#E89A9A,#D04545);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero p{color:#c9d8f0;font-size:1.1rem;max-width:54ch;margin:0 auto}
   .tool{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:1.7rem;margin:1.4rem auto 3rem;max-width:920px}
-  .addr-row{display:flex;gap:.7rem}
+  .addr-row{display:flex;gap:.7rem;position:relative}
   .addr-row input{flex:1;padding:1.05rem 1.1rem;border:2px solid var(--line);border-radius:14px;font-size:1.05rem;font-family:inherit}
   .addr-row input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(197,48,48,.12)}
+  .sug-box{display:none;background:#fff;border:1.5px solid var(--line);border-radius:14px;margin-top:.5rem;overflow:hidden;box-shadow:0 18px 40px -18px rgba(8,27,48,.4)}
+  .sug-item{padding:.8rem 1.05rem;font-size:.95rem;color:var(--ink);cursor:pointer;border-bottom:1px solid #f0f2f7;display:flex;align-items:center;gap:.6rem}
+  .sug-item:last-child{border-bottom:none}
+  .sug-item:hover{background:var(--ice);color:var(--navy)}
+  .sug-item::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--blue);flex:none}
   @media(max-width:640px){.addr-row{flex-direction:column}}
   .hint{font-size:.82rem;color:#8a93a8;margin-top:.6rem;text-align:center}
   /* globe stage */
@@ -86,7 +91,7 @@
 
 <div class="wrap"><div class="tool" id="tool">
   <!-- STEP 1 -->
-  <div id="stepAddr"><div class="addr-row"><input id="addr" placeholder="Enter your home address — e.g. 123 Main St, Gaithersburg, MD 20877" autocomplete="street-address" /><button class="btn btn-primary" id="scanBtn" onclick="scan()">Scan My Roof →</button></div><p class="hint">Live satellite imagery + real measurement. Works across Maryland, Virginia &amp; DC.</p></div>
+  <div id="stepAddr"><div class="addr-row"><input id="addr" placeholder="Start typing your address — e.g. 123 Main St, Gaithersburg, MD" autocomplete="off" autocapitalize="words" /><button class="btn btn-primary" id="scanBtn" onclick="scan()">Scan My Roof →</button></div><div id="sugBox" class="sug-box"></div><p class="hint">Pick your address from the list for an exact match. Live satellite imagery + real measurement across Maryland, Virginia &amp; DC.</p></div>
 
   <!-- GLOBE -->
   <div class="stage" id="stage"><canvas id="globe"></canvas><div class="stage-msg" id="stageMsg">Locating your property…</div></div>
@@ -112,7 +117,7 @@
 
 <div class="how"><div class="wrap"><h2 style="color:#fff;font-size:1.6rem">How it works</h2><div class="how-grid"><div class="how-c"><h3>1. Enter your address</h3><p>A live 3D flyover locates your home, then loads high-resolution satellite imagery.</p></div><div class="how-c"><h3>2. Trace your roof</h3><p>Tap the corners on the real image. We compute the true area from the map's geographic scale.</p></div><div class="how-c"><h3>3. Instant estimate</h3><p>A real price range on the spot, using current Maryland pricing. A free on-site inspection locks the exact number.</p></div></div></div></div>
 
-<footer><div class="wrap"> *Estimate uses real Maryland pricing — architectural asphalt ~$4.50–$6/sq ft installed (market $4–$8.50/sq ft; Fixr, This Old House, 2025); typical MD replacements $8,500–$18,000. Measurement from traced satellite imagery is preliminary; final pricing follows a free on-site inspection. Imagery: Esri World Imagery. Geocoding: OpenStreetMap. © United Developers · MHIC #111971 · VA DPOR #2705183185 · <a href="index.html" style="color:#E89A9A">udroofing.com</a></div></footer>
+<footer><div class="wrap"> *Estimate uses real Maryland pricing — architectural asphalt ~$4.50–$6/sq ft installed (market $4–$8.50/sq ft; Fixr, This Old House, 2025); typical MD replacements $8,500–$18,000. Measurement from traced satellite imagery is preliminary; final pricing follows a free on-site inspection. Imagery: Esri World Imagery (Maxar / Earthstar). Geocoding: Esri World Geocoder + US Census + OpenStreetMap (Google rooftop when enabled). © United Developers · MHIC #111971 · VA DPOR #2705183185 · <a href="index.html" style="color:#E89A9A">udroofing.com</a></div></footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -156,38 +161,99 @@ function runGlobe(lat,lng,done){
   raf=requestAnimationFrame(frame);
 }
 
+/* ---------- Accurate geocoding cascade ---------- */
+var GKEY=(window.UD_CONFIG&&window.UD_CONFIG.GOOGLE_MAPS_KEY)||'';
+var ESRI_GEO='https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
+var marker=null, pendingMagicKey=null;
+
+async function geocodeAddress(addr, magicKey){
+  // 1) Google rooftop geocoding (only if a key is configured) — most precise
+  if(GKEY){
+    try{
+      var gr=await fetch('https://maps.googleapis.com/maps/api/geocode/json?key='+GKEY+'&address='+encodeURIComponent(addr));
+      var gj=await gr.json();
+      if(gj.status==='OK'&&gj.results.length){var GL=gj.results[0].geometry.location;return {lat:GL.lat,lng:GL.lng,label:gj.results[0].formatted_address};}
+    }catch(e){}
+  }
+  // 2) Esri World Geocoder — CORS-enabled, rooftop-grade, returns a parcel extent (matches our Esri imagery)
+  try{
+    var u=ESRI_GEO+'/findAddressCandidates?f=json&maxLocations=1&outFields=Match_addr&countryCode=USA&'+(magicKey?('magicKey='+encodeURIComponent(magicKey)):('SingleLine='+encodeURIComponent(addr)));
+    var er=await fetch(u); var ej=await er.json();
+    if(ej.candidates&&ej.candidates.length){var c=ej.candidates[0];return {lat:c.location.y,lng:c.location.x,label:c.address,extent:c.extent};}
+  }catch(e){}
+  // 3) US Census geocoder — free, US address interpolation
+  try{
+    var cr=await fetch('https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=Public_AR_Current&format=json&address='+encodeURIComponent(addr));
+    var cj=await cr.json();
+    var m=cj.result&&cj.result.addressMatches&&cj.result.addressMatches[0];
+    if(m){return {lat:+m.coordinates.y,lng:+m.coordinates.x,label:m.matchedAddress};}
+  }catch(e){}
+  // 4) OpenStreetMap Nominatim — last resort
+  try{
+    var nr=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q='+encodeURIComponent(addr),{headers:{'Accept':'application/json'}});
+    var nj=await nr.json();
+    if(nj.length){return {lat:+nj[0].lat,lng:+nj[0].lon,label:nj[0].display_name};}
+  }catch(e){}
+  return null;
+}
+
 async function scan(){
   var addr=document.getElementById('addr').value.trim();
   if(!addr){document.getElementById('addr').focus();return;}
+  hideSug();
   document.getElementById('stepAddr').style.display='none';
-  var stageMsg=document.getElementById('stageMsg'); stageMsg.textContent='Locating your property…';
-  try{
-    // FREE geocode via OpenStreetMap Nominatim (no key)
-    var r=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q='+encodeURIComponent(addr),{headers:{'Accept':'application/json'}});
-    var j=await r.json();
-    if(!j.length){ throw new Error('not found'); }
-    geo={lat:+j[0].lat, lng:+j[0].lon, label:j[0].display_name};
-  }catch(e){
-    // fallback to DMV center so the tool still demonstrates
-    geo={lat:39.1438, lng:-77.2014, label:addr+' (approx — confirm on map)'};
-  }
+  document.getElementById('stageMsg').textContent='Locating your property…';
+  var mk=pendingMagicKey; pendingMagicKey=null;
+  var g=await geocodeAddress(addr, mk);
+  if(!g){ g={lat:39.1438,lng:-77.2014,label:addr+' (approx — drag the red pin to your roof)',approx:true}; }
+  geo=g;
   runGlobe(geo.lat, geo.lng, openMap);
 }
 
 function openMap(){
   document.getElementById('mapwrap').style.display='block';
-  document.getElementById('addrEcho').textContent=geo.label;
+  document.getElementById('addrEcho').innerHTML='<b>Showing:</b> '+(geo.label||'')+' &nbsp;·&nbsp; <a href="#" onclick="editAddr();return false" style="color:#C53030;font-weight:700">Not your home? Edit address</a>';
   if(!map){
-    map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([geo.lat,geo.lng],20);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,attribution:'Imagery &copy; Esri'}).addTo(map);
+    map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([geo.lat,geo.lng],21);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,maxNativeZoom:19,attribution:'Imagery &copy; Esri, Maxar, Earthstar Geographics'}).addTo(map);
     traceLayer=L.layerGroup().addTo(map);
     map.on('click', addPt);
-  } else { map.setView([geo.lat,geo.lng],20); }
+  }
+  // Frame the parcel: fit to the geocoder's extent when available, else high zoom on the point
+  if(geo.extent){ map.fitBounds([[geo.extent.ymin,geo.extent.xmin],[geo.extent.ymax,geo.extent.xmax]]); var z=map.getZoom(); if(z>21)map.setZoom(21); if(z<20)map.setZoom(20); }
+  else { map.setView([geo.lat,geo.lng], geo.approx?19:21); }
+  // Draggable confirm pin — homeowner nudges it onto their exact roof if needed
+  if(marker){ map.removeLayer(marker); }
+  marker=L.marker([geo.lat,geo.lng],{draggable:true,title:'Drag onto your roof if needed'}).addTo(map);
+  marker.on('dragend',function(){ var ll=marker.getLatLng(); geo.lat=ll.lat; geo.lng=ll.lng; map.panTo(ll); });
   setTimeout(function(){map.invalidateSize();},120);
   resetTrace();
 }
+function editAddr(){ document.getElementById('mapwrap').style.display='none'; document.getElementById('result').style.display='none'; document.getElementById('stepAddr').style.display='block'; var a=document.getElementById('addr'); a.focus(); a.select(); }
+
+/* ---------- Address autocomplete (Esri suggest) — user picks the exact address ---------- */
+var sugBox, sugTimer;
+function fetchSug(t){
+  fetch(ESRI_GEO+'/suggest?f=json&countryCode=USA&category=Address,Postal&maxSuggestions=5&text='+encodeURIComponent(t))
+    .then(function(r){return r.json();}).then(function(j){ renderSug((j.suggestions||[]).slice(0,5)); }).catch(function(){});
+}
+function renderSug(list){
+  sugBox=sugBox||document.getElementById('sugBox');
+  if(!list.length){ hideSug(); return; }
+  sugBox.innerHTML=list.map(function(s){return '<div class="sug-item" data-mk="'+(s.magicKey||'')+'" data-text="'+(s.text||'').replace(/"/g,'&quot;')+'">'+(s.text||'')+'</div>';}).join('');
+  sugBox.style.display='block';
+  [].forEach.call(sugBox.querySelectorAll('.sug-item'),function(el){
+    el.onclick=function(){ document.getElementById('addr').value=el.getAttribute('data-text'); pendingMagicKey=el.getAttribute('data-mk')||null; hideSug(); scan(); };
+  });
+}
+function hideSug(){ sugBox=sugBox||document.getElementById('sugBox'); if(sugBox) sugBox.style.display='none'; }
+(function(){
+  var inp=document.getElementById('addr');
+  inp.addEventListener('input',function(){ clearTimeout(sugTimer); pendingMagicKey=null; var t=inp.value.trim(); if(t.length<4){hideSug();return;} sugTimer=setTimeout(function(){fetchSug(t);},200); });
+})();
 
 function addPt(e){
+  if(marker){ map.removeLayer(marker); marker=null; }  // clear confirm pin once tracing begins
   pts.push(e.latlng);
   redraw();
   document.getElementById('traceMsg').innerHTML = pts.length<3 ? 'Keep tapping corners — <b>'+pts.length+'</b> set (need at least 3).' : '<b>'+pts.length+'</b> corners set. Add more or press <b>Done</b>.';
