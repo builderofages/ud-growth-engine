@@ -3,6 +3,49 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Page not found — United Developers</title>
+<script>
+/* Migration safety net: route legacy udroofing.com (WordPress) URLs to their new pages
+   so no ranked page ever dead-ends after the domain moves. Falls through to the 404 below if unmatched. */
+(function(){
+  var map={
+    "expert-general-contracting-in-md-va":"index.html#services",
+    "trusted-roofing-contractors-md":"services/roofing.html",
+    "roof-installation":"services/roofing.html",
+    "roof-replacement":"services/roofing.html",
+    "roof-shingles":"services/roofing.html",
+    "flat-roofing":"services/roofing.html",
+    "tpo-roofing":"services/roofing.html",
+    "metal-roofing-installation-contractors":"services/metal-roofing.html",
+    "siding-contractors-md-va":"services/siding.html",
+    "siding-installation":"services/siding.html",
+    "vinyl-siding-contractors":"services/siding.html",
+    "clapboard-siding":"services/siding.html",
+    "dutch-lap-siding":"services/siding.html",
+    "board-and-batten-siding":"services/siding.html",
+    "gutter-installation":"services/gutters.html",
+    "gutter-replacement":"services/gutters.html",
+    "best-gutter-guards":"services/gutters.html",
+    "professional-downspout-installation":"services/gutters.html",
+    "5-inch-gutters":"services/gutters.html",
+    "6-inch-gutters":"services/gutters.html",
+    "window-contractor":"services/windows.html",
+    "professional-painters-md":"services/painting.html",
+    "completed-construction-work":"projects.html",
+    "blog":"resources/",
+    "licensed-roofing-company":"about.html",
+    "contact-us":"contact.html",
+    "get-a-free-inspection":"index.html#quote"
+  };
+  try{
+    var seg=location.pathname.replace(/\/+$/,"").split("/").pop().toLowerCase();
+    if(map[seg]){
+      var gh=location.hostname.indexOf("github.io")>-1;
+      var base=gh?"/ud-growth-engine/website/":"/website/";
+      location.replace(base+map[seg]);
+    }
+  }catch(e){}
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora:wght@800&display=swap" rel="stylesheet"/>
 <style>
 body{margin:0;font-family:'Inter',system-ui,sans-serif;background:linear-gradient(160deg,#071424,#0A1F38 60%,#1A0D0D);color:#EDF2FA;min-height:100vh;display:grid;place-items:center;text-align:center;padding:1rem}
