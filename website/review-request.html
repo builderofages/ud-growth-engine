@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD Review Request Engine (Internal) | United Developers</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script src="config.js"></script>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--line:#E4EAF4;--ice:#FBF1F1;--body:#4A5872;--green:#10B981}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:#0E1B2C;background:#F4F7FC}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .bar{background:var(--navy);color:#fff;padding:.9rem 1.3rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .bar img{height:34px;filter:brightness(0) invert(1)}
+  .bar .tag{background:#C53030;font-size:.66rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;letter-spacing:.05em}
+  .bar h1{font-size:1.05rem;font-weight:700}
+  .wrap{max-width:980px;margin:0 auto;padding:1.4rem}
+  .lead{color:var(--body);margin-bottom:1.2rem;font-size:.95rem}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.4rem;margin-bottom:1.2rem}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+  @media(max-width:760px){.row{grid-template-columns:1fr}}
+  label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#67748E;margin-bottom:.3rem}
+  input,select{width:100%;padding:.7rem .9rem;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:.95rem;background:#FBFCFE}
+  input:focus,select:focus{outline:none;border-color:var(--blue)}
+  .msg{background:#FBFCFE;border:1.5px dashed var(--line);border-radius:12px;padding:1rem;margin-top:.8rem;white-space:pre-wrap;font-size:.95rem;line-height:1.55}
+  .msg-head{display:flex;justify-content:space-between;align-items:center;margin-top:1.1rem}
+  .msg-head h3{font-size:.95rem;color:var(--navy)}
+  .btn{background:linear-gradient(180deg,#C53030,var(--blued));color:#fff;border:none;border-radius:10px;padding:.5rem 1rem;font-weight:700;font-size:.82rem;font-family:inherit;cursor:pointer}
+  .btn.alt{background:#0C2440}
+  .btn.copied{background:var(--green)}
+  .reviewbar{background:var(--ice);border:1px solid #f0d9d9;border-radius:12px;padding:.9rem 1.1rem;font-size:.88rem;margin-bottom:1.2rem;color:var(--navy)}
+  .reviewbar a{color:#C53030;font-weight:700}
+  .pill{display:inline-block;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:600;margin-right:.4rem;cursor:pointer}
+  .pill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .note{font-size:.78rem;color:#8C97AF;margin-top:.5rem}
+</style>
+</head><body>
+<div class="bar"><img src="assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL</span><h1>Review Request Engine</h1></div>
+<div class="wrap">
+<p class="lead">After every completed job, send the customer a review request while they're happiest. More 5-star Google reviews = higher local ranking = more leads. Fill in the details, pick the channel and language, copy, and send from your phone.</p>
+
+<div class="reviewbar" id="reviewbar"></div>
+
+<div class="panel">
+<div class="row">
+<div><label>Customer first name</label><input id="cname" placeholder="Maria" oninput="gen()"/></div>
+<div><label>Rep / crew name</label><input id="rep" placeholder="the United Developers crew" oninput="gen()"/></div>
+<div><label>City</label><input id="city" placeholder="Silver Spring" oninput="gen()"/></div>
+</div>
+<div style="margin-top:1rem">
+<span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#67748E">Language</span><br/>
+<span class="pill on" id="pEn" onclick="setLang('en')">English</span>
+<span class="pill" id="pEs" onclick="setLang('es')">Español</span>
+</div>
+</div>
+
+<div class="panel">
+<div class="msg-head"><h3>📱 Text message (SMS)</h3><button class="btn" onclick="copyMsg('sms',this)">Copy SMS</button></div>
+<div class="msg" id="sms"></div>
+
+<div class="msg-head"><h3>✉️ Email</h3><button class="btn alt" onclick="copyMsg('email',this)">Copy Email</button></div>
+<div class="msg" id="email"></div>
+<p class="note">Tip: text gets the highest response. Send within 24 hours of finishing the job, when satisfaction is highest.</p>
+</div>
+</div>
+<script>
+var LANG='en';
+var REVIEW_URL=(window.UD_CONFIG&&window.UD_CONFIG.REVIEW_URL)||'';
+var GOOGLE_FALLBACK='https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID';
+function reviewLink(){ return REVIEW_URL || 'https://maps.app.goo.gl/4JEkF6abLfYPMey18'; }
+function setLang(l){ LANG=l; document.getElementById('pEn').classList.toggle('on',l==='en'); document.getElementById('pEs').classList.toggle('on',l==='es'); gen(); }
+function gen(){
+  var n=document.getElementById('cname').value.trim()||(LANG==='es'?'vecino':'there');
+  var rep=document.getElementById('rep').value.trim()||(LANG==='es'?'el equipo de United Developers':'the United Developers crew');
+  var city=document.getElementById('city').value.trim();
+  var link=reviewLink();
+  var sms, email;
+  if(LANG==='es'){
+    sms='Hola '+n+', soy '+rep+' de United Developers. ¡Gracias por confiarnos su techo'+(city?(' en '+city):'')+'! Si quedó contento, ¿nos haría el favor de dejar una reseña rápida? Nos ayuda muchísimo: '+link+' — ¡Gracias! (240) 880-2108';
+    email='Asunto: Gracias por elegir a United Developers\n\nHola '+n+',\n\nFue un placer trabajar en su techo'+(city?(' en '+city):'')+'. Su confianza significa todo para nuestra familia.\n\nSi quedó satisfecho con el trabajo de '+rep+', una reseña de 5 estrellas en Google nos ayudaría enormemente a servir a más familias en su comunidad. Solo toma un minuto:\n\n👉 '+link+'\n\nY recuerde: si conoce a alguien que necesite un techo, le pagamos $250 por cada referido completado.\n\nCon gratitud,\nUnited Developers\n(240) 880-2108 · office@udroofing.com';
+  } else {
+    sms='Hi '+n+', it’s '+rep+' from United Developers. Thanks for trusting us with your roof'+(city?(' in '+city):'')+'! If you were happy, would you mind leaving a quick review? It really helps us: '+link+' — Thank you! (240) 880-2108';
+    email='Subject: Thank you for choosing United Developers\n\nHi '+n+',\n\nIt was a pleasure working on your roof'+(city?(' in '+city):'')+'. Your trust means everything to our family business.\n\nIf you were happy with '+rep+', a quick 5-star Google review would help us serve more families in your neighborhood. It takes about a minute:\n\n👉 '+link+'\n\nAnd remember — if you know anyone who needs a roof, we pay $250 for every referral that completes a project.\n\nWith gratitude,\nUnited Developers\n(240) 880-2108 · office@udroofing.com';
+  }
+  document.getElementById('sms').textContent=sms;
+  document.getElementById('email').textContent=email;
+}
+function copyMsg(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(function(){
+    var t=btn.textContent; btn.textContent='Copied ✓'; btn.classList.add('copied');
+    setTimeout(function(){btn.textContent=t; btn.classList.remove('copied');},1500);
+  });
+}
+function initBar(){
+  var rb=document.getElementById('reviewbar');
+  if(REVIEW_URL){ rb.innerHTML='✓ Review link is live: <a href="'+REVIEW_URL+'" target="_blank">'+REVIEW_URL+'</a>'; }
+  else { rb.innerHTML='⚙ Using the Google Maps profile link for now. For a 1-click 5-star form, add <b>REVIEW_URL</b> to config.js (Google "write a review" link with your Place ID). Until then this uses your public Google Maps profile — still works.'; }
+}
+initBar(); gen();
+</script>
+</body>
+</html>
