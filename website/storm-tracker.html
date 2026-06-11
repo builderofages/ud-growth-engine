@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DMV Storm Tracker — Live Hail &amp; Wind Map | United Developers</title>
+<meta name="description" content="Live hail and wind storm tracker for Maryland, Virginia & DC. Real NOAA/NWS storm reports plotted on a map. Find out if a storm hit your neighborhood and book a free roof inspection — most homeowners pay only their deductible."/>
+<meta name="theme-color" content="#081B30"/>
+<meta property="og:title" content="DMV Storm Tracker — Live Hail & Wind Map | United Developers"/>
+<meta property="og:description" content="Real NOAA storm data for the DMV. See if hail or wind hit your street, then book a free roof inspection."/>
+<meta property="og:image" content="https://builderofages.github.io/ud-growth-engine/website/assets/job-roof-5.jpg"/>
+<link rel="canonical" href="https://udroofing.com/storm-tracker.html"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="ud.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"DMV Storm Tracker","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Live hail and wind storm report map for Maryland, Virginia and Washington DC using NOAA/NWS data, with free roof inspection booking.","provider":{"@type":"RoofingContractor","name":"United Developers","telephone":"+12408802108"}}</script>
+<script src="config.js"></script>
+<style>
+  .st-hero{position:relative;color:#fff;background:var(--navy,#081B30);overflow:hidden}
+  .st-hero .bg{position:absolute;inset:0;background:url('assets/job-roof-5.jpg') center/cover;opacity:.18}
+  .st-hero .wrap{position:relative;padding:3rem 0 2rem}
+  .st-hero h1{font-family:'Sora',sans-serif;font-size:clamp(1.9rem,4vw,3rem);font-weight:800;letter-spacing:-.03em;margin:.6rem 0 .7rem;text-wrap:balance}
+  .st-hero p{color:#C5D4EC;font-size:1.08rem;max-width:60ch}
+  .live-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#34D399;box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulse 2s infinite;margin-right:.4rem}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.6)}70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .alert-banner{background:linear-gradient(92deg,#9B1C1C,#C53030);color:#fff;padding:.8rem 0;font-weight:600;font-size:.95rem;display:none}
+  .alert-banner.show{display:block}
+  .alert-banner .wrap{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+  .st-tools{background:#fff;border-bottom:1px solid var(--line,#E4EAF4);padding:1.1rem 0}
+  .st-tools .wrap{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .st-search{flex:1;min-width:260px;display:flex;gap:.5rem;position:relative}
+  .st-search input{flex:1;padding:.85rem 1rem;border:1.5px solid var(--line,#E4EAF4);border-radius:12px;font-size:1rem;font-family:inherit;background:#FBFCFE}
+  .st-search input:focus{outline:none;border-color:#B32424;box-shadow:0 0 0 4px rgba(179,36,36,.12);background:#fff}
+  .sug-box{display:none;position:absolute;top:100%;left:0;right:90px;background:#fff;border:1.5px solid var(--line,#E4EAF4);border-radius:12px;margin-top:.4rem;z-index:1200;box-shadow:0 18px 40px -18px rgba(8,27,48,.35);overflow:hidden}
+  .sug-item{padding:.7rem 1rem;cursor:pointer;font-size:.92rem;border-bottom:1px solid #F0F3F9}
+  .sug-item:hover{background:var(--ice,#FBF1F1)}
+  .st-filters{display:flex;gap:.5rem;flex-wrap:wrap}
+  .chip-btn{border:1.5px solid var(--line,#E4EAF4);background:#fff;border-radius:999px;padding:.55rem 1rem;font-size:.86rem;font-weight:600;cursor:pointer;color:#3D4D6B;display:flex;align-items:center;gap:.45rem}
+  .chip-btn.active{background:var(--navy,#081B30);color:#fff;border-color:var(--navy,#081B30)}
+  .chip-btn .sw{width:11px;height:11px;border-radius:50%}
+  .st-grid{display:grid;grid-template-columns:1fr 340px;gap:0;min-height:560px}
+  @media(max-width:900px){.st-grid{grid-template-columns:1fr}}
+  #map{height:620px;width:100%;background:#0C2440}
+  @media(max-width:900px){#map{height:440px}}
+  .st-side{background:#F7FAFF;border-left:1px solid var(--line,#E4EAF4);display:flex;flex-direction:column;max-height:620px}
+  @media(max-width:900px){.st-side{max-height:none;border-left:none;border-top:1px solid var(--line,#E4EAF4)}}
+  .st-stats{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;padding:1rem}
+  .st-stat{background:#fff;border:1px solid var(--line,#E4EAF4);border-radius:14px;padding:.9rem;text-align:center}
+  .st-stat .n{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;color:var(--navy,#081B30)}
+  .st-stat .n b{color:#C53030}
+  .st-stat .l{font-size:.72rem;color:#67748E;text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
+  .st-result{margin:0 1rem 1rem;background:linear-gradient(135deg,#0C2440,#081B30);color:#fff;border-radius:16px;padding:1.2rem;display:none}
+  .st-result.show{display:block}
+  .st-result h3{font-family:'Sora',sans-serif;font-size:1.1rem;margin-bottom:.4rem}
+  .st-result p{color:#C5D4EC;font-size:.9rem;margin-bottom:.9rem}
+  .st-result .btn{width:100%}
+  .st-list{flex:1;overflow-y:auto;padding:0 1rem 1rem}
+  .st-list h4{font-family:'Sora',sans-serif;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:#67748E;margin:.4rem 0 .6rem}
+  .ev{background:#fff;border:1px solid var(--line,#E4EAF4);border-radius:12px;padding:.7rem .85rem;margin-bottom:.55rem;cursor:pointer;transition:.15s}
+  .ev:hover{border-color:#C53030;transform:translateX(-2px)}
+  .ev .top{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+  .ev .tag{font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:999px;color:#fff;text-transform:uppercase;letter-spacing:.03em}
+  .ev .when{font-size:.74rem;color:#8C97AF}
+  .ev .where{font-size:.86rem;color:var(--navy,#081B30);font-weight:600;margin-top:.25rem}
+  .ev .mag{font-size:.78rem;color:#4A5872}
+  .legend{position:absolute;bottom:14px;left:14px;z-index:1000;background:rgba(255,255,255,.96);border-radius:12px;padding:.7rem .9rem;box-shadow:0 10px 28px -14px rgba(8,27,48,.4);font-size:.78rem}
+  .legend .row{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+  .legend .row:last-child{margin-bottom:0}
+  .legend .sw{width:13px;height:13px;border-radius:50%}
+  .loadwrap{position:absolute;inset:0;display:grid;place-items:center;z-index:1100;background:rgba(12,36,64,.55);color:#fff;font-weight:600}
+  .st-cta-final{background:var(--navy,#081B30);color:#fff;text-align:center;padding:3.5rem 0}
+  .st-cta-final h2{font-family:'Sora',sans-serif;font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:.7rem}
+  .st-cta-final p{color:#C5D4EC;max-width:52ch;margin:0 auto 1.4rem}
+  .src-note{font-size:.78rem;color:#8C97AF;padding:1rem 0;text-align:center}
+</style>
+</head><body>
+<div class="topbar"><div class="wrap">
+<span><strong>Storm in your area?</strong> Free 24-hour roof inspection — most homeowners pay deductible only.</span>
+<span class="right">Call <a href="tel:+12408802108">(240) 880-2108</a> · <a href="es.html" style="border-bottom:1px solid rgba(255,255,255,.3)">Español</a></span>
+</div></div>
+<header><div class="wrap"><nav>
+<a class="logo" href="index.html"><img src="assets/logo-white.png" alt="United Developers — UD Roofing" style="height:44px;width:auto;max-width:none;flex:none"/></a>
+<div class="navlinks">
+<a href="index.html#services">Services</a>
+<a href="index.html#claims">Insurance Claims</a>
+<a href="storm-tracker.html" class="hot">Storm Tracker</a>
+<a href="roof-quote.html">Instant Roof Quote</a>
+<a href="resources/index.html">Resources</a>
+</div>
+<div class="nav-cta">
+<a class="nav-phone" href="tel:+12408802108">(240) 880-2108</a>
+<a class="btn btn-primary" href="index.html#quote">Free Inspection</a>
+</div>
+</nav></div></header>
+<div class="alert-banner" id="alertBanner"><div class="wrap"><span class="live-dot"></span><span id="alertText"></span></div></div>
+<div class="st-hero"><div class="bg"></div><div class="wrap">
+<span class="eyebrow" style="color:#E89A9A"><span class="live-dot"></span>Live NOAA Storm Data · DMV</span>
+<h1>Did a storm just hit your neighborhood?</h1>
+<p>This map shows real hail and wind reports across Maryland, Virginia &amp; DC straight from the National Weather Service. Search your address to see if your street was hit — then book a free roof inspection. Most approved storm claims cost the homeowner only their deductible.</p>
+</div></div>
+<div class="st-tools"><div class="wrap">
+<div class="st-search">
+<input id="addr" placeholder="Enter your address — e.g. 12 Maple Ave, Gaithersburg MD" autocomplete="off"/>
+<button class="btn btn-primary" style="padding:.85rem 1.2rem" onclick="searchAddr()">Check</button>
+<div class="sug-box" id="sugBox"></div>
+</div>
+<div class="st-filters">
+<button class="chip-btn active" data-f="hail" onclick="toggleFilter('hail',this)"><span class="sw" style="background:#C53030"></span>Hail</button>
+<button class="chip-btn active" data-f="wind" onclick="toggleFilter('wind',this)"><span class="sw" style="background:#F59E0B"></span>Wind</button>
+<button class="chip-btn active" data-f="tornado" onclick="toggleFilter('tornado',this)"><span class="sw" style="background:#7C3AED"></span>Tornado</button>
+<select id="period" onchange="render()" style="padding:.55rem .8rem;border:1.5px solid var(--line);border-radius:999px;font-family:inherit;font-weight:600;font-size:.86rem;color:#3D4D6B;background:#fff">
+<option value="90">Last 90 days</option>
+<option value="180">Last 6 months</option>
+<option value="365" selected>Last 12 months</option>
+</select>
+</div>
+</div></div>
+<div class="st-grid">
+<div style="position:relative">
+<div id="map"></div>
+<div class="loadwrap" id="loadwrap">Loading live NOAA storm reports…</div>
+<div class="legend">
+<div class="row"><span class="sw" style="background:#C53030"></span> Hail report</div>
+<div class="row"><span class="sw" style="background:#F59E0B"></span> Wind damage / gust</div>
+<div class="row"><span class="sw" style="background:#7C3AED"></span> Tornado</div>
+<div class="row"><span class="sw" style="background:#1D4ED8"></span> Your address</div>
+</div>
+</div>
+<div class="st-side">
+<div class="st-stats">
+<div class="st-stat"><div class="n" id="statTotal">—</div><div class="l">Storm Reports</div></div>
+<div class="st-stat"><div class="n"><b id="statHail">—</b></div><div class="l">Hail Events</div></div>
+</div>
+<div class="st-result" id="result">
+<h3 id="resultTitle"></h3>
+<p id="resultBody"></p>
+<a class="btn btn-light" id="resultCta" href="index.html#quote">Book My Free Inspection →</a>
+</div>
+<div class="st-list" id="list"><h4>Recent reports near the DMV</h4></div>
+</div>
+</div>
+<div class="src-note">Source: NOAA / National Weather Service via Iowa Environmental Mesonet (live). Storm reports are preliminary public data. Updated each visit.</div>
+<section class="st-cta-final"><div class="wrap">
+<h2>Storm reports near you? Don't wait — damage gets worse.</h2>
+<p>A free 24-hour inspection documents hail and wind damage the right way. We handle the insurance claim and meet your adjuster on-site. Most homeowners pay only their deductible.</p>
+<div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+<a class="btn btn-light" href="index.html#quote">Get My Free Inspection →</a>
+<a class="btn btn-ghost" href="tel:+12408802108">(240) 880-2108</a>
+</div>
+</div></section>
+<footer><div class="wrap">
+<div class="fgrid" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem">
+<div><img src="assets/logo-white.png" alt="United Developers" style="height:48px;margin-bottom:1rem;filter:brightness(0) invert(1)"/>
+<p>Family-owned roofing &amp; exterior restoration serving Maryland, Virginia &amp; the DMV. GAF-certified. A+ BBB accredited.</p>
+<p style="margin-top:1rem;color:#fff;font-weight:700">(240) 880-2108</p></div>
+<div><h4>Tools</h4><a href="storm-tracker.html">Storm Tracker</a><a href="roof-quote.html">Instant Roof Quote</a><a href="financing-calculator.html">Payment Calculator</a><a href="resources/index.html">Roofing Guides</a></div>
+<div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="es.html">Español</a></div>
+</div>
+<div class="fbot" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
+<span>© <span id="yr"></span> United Developers / UD Roofing. All rights reserved.</span>
+<span>MHIC #111971 · VA Class A #2705183185 · PA #192325</span>
+</div>
+</div></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+var DMV={n:39.9,s:37.8,w:-78.2,e:-76.2}; // bounding box for the metro
+var map=L.map('map',{scrollWheelZoom:true}).setView([39.0,-77.1],9);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri, Maxar, Earthstar'}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,opacity:.9}).addTo(map);
+
+var ALL=[], layer=L.layerGroup().addTo(map), userMarker=null, userPt=null;
+var filters={hail:true,wind:true,tornado:true};
+var ESRI='https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
+
+function classify(tt){
+  tt=(tt||'').toUpperCase();
+  if(tt.indexOf('HAIL')>=0) return 'hail';
+  if(tt.indexOf('TORNADO')>=0||tt.indexOf('FUNNEL')>=0) return 'tornado';
+  if(tt.indexOf('WND')>=0||tt.indexOf('WIND')>=0) return 'wind';
+  return null;
+}
+var COLORS={hail:'#C53030',wind:'#F59E0B',tornado:'#7C3AED'};
+
+function magText(e){
+  if(!e.mag) return '';
+  if(e.cat==='hail') return e.mag+'" hail';
+  if(e.cat==='wind') return e.mag+' mph wind';
+  return e.mag;
+}
+function haversine(a,b,c,d){var R=3959,dLat=(c-a)*Math.PI/180,dLng=(d-b)*Math.PI/180,la=a*Math.PI/180,lc=c*Math.PI/180;var x=Math.sin(dLat/2)**2+Math.sin(dLng/2)**2*Math.cos(la)*Math.cos(lc);return 2*R*Math.asin(Math.sqrt(x));}
+
+async function loadData(){
+  try{
+    var end=new Date(), start=new Date(Date.now()-370*864e5);
+    var fmt=function(d){return d.toISOString().slice(0,10);};
+    var u='https://mesonet.agron.iastate.edu/geojson/lsr.geojson?sts='+fmt(start)+'T00:00Z&ets='+fmt(end)+'T23:59Z&states=MD,VA,DC,WV,PA';
+    var r=await fetch(u,{cache:'no-store'});
+    var j=await r.json();
+    (j.features||[]).forEach(function(f){
+      var g=f.geometry&&f.geometry.coordinates; if(!g) return;
+      var lng=g[0], lat=g[1];
+      if(lat<DMV.s||lat>DMV.n||lng<DMV.w||lng>DMV.e) return;
+      var cat=classify(f.properties.typetext); if(!cat) return;
+      ALL.push({lat:lat,lng:lng,cat:cat,type:f.properties.typetext,mag:f.properties.magnitude,city:f.properties.city,county:f.properties.county,st:f.properties.state,valid:f.properties.valid});
+    });
+    ALL.sort(function(a,b){return new Date(b.valid)-new Date(a.valid);});
+  }catch(e){ document.getElementById('loadwrap').textContent='Live data temporarily unavailable — call (240) 880-2108.'; return; }
+  document.getElementById('loadwrap').style.display='none';
+  loadAlerts();
+  render();
+}
+
+async function loadAlerts(){
+  try{
+    var events=[];
+    for(var area of ['MD','VA','DC']){
+      var r=await fetch('https://api.weather.gov/alerts/active?area='+area,{headers:{'Accept':'application/geo+json'},cache:'no-store'});
+      var j=await r.json();
+      (j.features||[]).forEach(function(f){
+        var ev=f.properties&&f.properties.event||'';
+        if(/Thunderstorm|Tornado|Wind|Hail/i.test(ev) && !/Test/i.test(ev)) events.push(ev+' — '+(f.properties.areaDesc||'').split(';')[0]);
+      });
+    }
+    if(events.length){
+      document.getElementById('alertText').textContent='ACTIVE NWS ALERT: '+events[0]+(events.length>1?(' · +'+(events.length-1)+' more across the DMV'):'')+' — if your roof is hit, call (240) 880-2108.';
+      document.getElementById('alertBanner').classList.add('show');
+    }
+  }catch(e){}
+}
+
+function render(){
+  var days=+document.getElementById('period').value;
+  var cut=Date.now()-days*864e5;
+  layer.clearLayers();
+  var shown=ALL.filter(function(e){ return filters[e.cat] && new Date(e.valid).getTime()>=cut; });
+  var hail=0;
+  shown.forEach(function(e){
+    if(e.cat==='hail') hail++;
+    L.circleMarker([e.lat,e.lng],{radius:e.cat==='hail'?6:5,color:'#fff',weight:1,fillColor:COLORS[e.cat],fillOpacity:.9})
+      .bindPopup('<b style="color:'+COLORS[e.cat]+'">'+e.type+'</b><br>'+(magText(e)||'')+(magText(e)?'<br>':'')+(e.city||'')+', '+(e.st||'')+'<br><small>'+new Date(e.valid).toLocaleDateString()+'</small><br><a href="index.html#quote" style="color:#C53030;font-weight:700">Book free inspection →</a>')
+      .addTo(layer);
+  });
+  document.getElementById('statTotal').textContent=shown.length.toLocaleString();
+  document.getElementById('statHail').textContent=hail.toLocaleString();
+  var list=document.getElementById('list');
+  list.innerHTML='<h4>'+(userPt?'Closest reports to your address':'Recent reports across the DMV')+'</h4>';
+  var arr=shown.slice();
+  if(userPt){ arr.forEach(function(e){e._d=haversine(userPt.lat,userPt.lng,e.lat,e.lng);}); arr.sort(function(a,b){return a._d-b._d;}); }
+  arr.slice(0,40).forEach(function(e){
+    var d=document.createElement('div'); d.className='ev';
+    d.innerHTML='<div class="top"><span class="tag" style="background:'+COLORS[e.cat]+'">'+e.cat+'</span><span class="when">'+new Date(e.valid).toLocaleDateString()+'</span></div>'+
+      '<div class="where">'+(e.city||'')+', '+(e.st||'')+(e._d!=null?(' · '+e._d.toFixed(1)+' mi away'):'')+'</div>'+
+      (magText(e)?('<div class="mag">'+magText(e)+'</div>'):'');
+    d.onclick=function(){ map.setView([e.lat,e.lng],12); };
+    list.appendChild(d);
+  });
+}
+
+function toggleFilter(f,btn){ filters[f]=!filters[f]; btn.classList.toggle('active',filters[f]); render(); }
+
+// ---- Address search (Esri geocoder, real, no key) + nearby-storm result ----
+var sugT=null;
+document.getElementById('addr').addEventListener('input',function(){
+  var q=this.value.trim(); clearTimeout(sugT);
+  if(q.length<4){document.getElementById('sugBox').style.display='none';return;}
+  sugT=setTimeout(function(){fetchSug(q);},220);
+});
+async function fetchSug(q){
+  try{
+    var u=ESRI+'/suggest?f=json&text='+encodeURIComponent(q)+'&countryCode=USA&category=Address&searchExtent='+DMV.w+','+DMV.s+','+DMV.e+','+DMV.n;
+    var j=await (await fetch(u)).json();
+    var box=document.getElementById('sugBox'); box.innerHTML='';
+    (j.suggestions||[]).slice(0,6).forEach(function(s){
+      var d=document.createElement('div'); d.className='sug-item'; d.textContent=s.text;
+      d.onclick=function(){ document.getElementById('addr').value=s.text; box.style.display='none'; geocodeAndShow(s.text,s.magicKey); };
+      box.appendChild(d);
+    });
+    box.style.display=(j.suggestions&&j.suggestions.length)?'block':'none';
+  }catch(e){}
+}
+function searchAddr(){ var v=document.getElementById('addr').value.trim(); if(v) geocodeAndShow(v,null); }
+async function geocodeAndShow(addr,magicKey){
+  try{
+    var u=ESRI+'/findAddressCandidates?f=json&countryCode=USA&maxLocations=1&outFields=Match_addr&'+(magicKey?('magicKey='+encodeURIComponent(magicKey)+'&singleLine='+encodeURIComponent(addr)):('singleLine='+encodeURIComponent(addr)));
+    var j=await (await fetch(u)).json();
+    var c=j.candidates&&j.candidates[0]; if(!c){alert('Address not found — try adding city and state.');return;}
+    userPt={lat:c.location.y,lng:c.location.x};
+    if(userMarker) map.removeLayer(userMarker);
+    userMarker=L.circleMarker([userPt.lat,userPt.lng],{radius:9,color:'#fff',weight:3,fillColor:'#1D4ED8',fillOpacity:1}).addTo(map).bindPopup('<b>Your address</b><br>'+(c.address||addr)).openPopup();
+    map.setView([userPt.lat,userPt.lng],12);
+    // count storms within 3 miles, last 12 months
+    var near=ALL.filter(function(e){ return haversine(userPt.lat,userPt.lng,e.lat,e.lng)<=3; });
+    var nh=near.filter(function(e){return e.cat==='hail';}).length;
+    var nw=near.filter(function(e){return e.cat==='wind';}).length;
+    var res=document.getElementById('result');
+    document.getElementById('resultCta').href='index.html#quote';
+    if(near.length){
+      document.getElementById('resultTitle').textContent='⚠ '+near.length+' storm report'+(near.length>1?'s':'')+' within 3 miles';
+      document.getElementById('resultBody').textContent=(nh?nh+' hail ':'')+(nh&&nw?'and ':'')+(nw?nw+' wind ':'')+'report'+((nh+nw)>1?'s':'')+' near your address in the last 12 months. You likely qualify for a free, no-obligation inspection.';
+    }else{
+      document.getElementById('resultTitle').textContent='No reports within 3 miles — yet';
+      document.getElementById('resultBody').textContent='No recent hail or wind reports right at your address. Damage can still be missed — a free 24-hour inspection confirms it for sure.';
+    }
+    res.classList.add('show');
+    render();
+  }catch(e){ alert('Lookup failed — call (240) 880-2108 and we will check your area.'); }
+}
+loadData();
+</script>
+<elevenlabs-convai agent-id="agent_2801ktf0hpcefj1bmz3gp0akkxp1"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script src="ud-chat.js?v=3" defer></script>
+</body>
+</html>
