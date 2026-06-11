@@ -42,7 +42,15 @@ window.UD_CONFIG = {
   LENDER_URL:  "",   // Service Finance / GreenSky / Hearth application link
 
   // --- Booking (optional Calendly/Acuity inline scheduler) ---
-  BOOKING_URL: ""
+  BOOKING_URL: "",
+
+  // --- Reviews / reputation (powers review-request.html + reviews.html) ---
+  // Paste the Google "write a review" link (search.google.com/local/writereview?placeid=...) for 1-click 5-star requests.
+  REVIEW_URL: "",
+  // Google Place ID — when set, reviews.html can pull live Google reviews via the Places API (needs GOOGLE_MAPS_KEY).
+  GOOGLE_PLACE_ID: "",
+  GOOGLE_REVIEWS_URL: "https://maps.app.goo.gl/4JEkF6abLfYPMey18", // public profile fallback (always works)
+  YELP_URL: "https://www.yelp.com/biz/united-developers-silver-spring-2"
 };
 
 (function () {
