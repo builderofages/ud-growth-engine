@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD Canvassing Walk-List Generator (Internal) | United Developers</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--line:#E4EAF4;--ice:#FBF1F1;--body:#4A5872}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:#0E1B2C;background:#F4F7FC}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .bar{background:var(--navy);color:#fff;padding:.9rem 1.3rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .bar img{height:34px;filter:brightness(0) invert(1)}
+  .bar .tag{background:#C53030;font-size:.66rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;letter-spacing:.05em}
+  .bar h1{font-size:1.05rem;font-weight:700}
+  .bar .sp{flex:1}
+  .bar a{color:#9DB3D6;font-size:.85rem;text-decoration:none}
+  .wrap{max-width:1280px;margin:0 auto;padding:1.3rem}
+  .ctrls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.3rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:end;margin-bottom:1.2rem}
+  .ctrls label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#67748E;margin-bottom:.3rem}
+  .ctrls select,.ctrls input{padding:.6rem .8rem;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:.92rem;background:#FBFCFE}
+  .btn{background:linear-gradient(180deg,#C53030,var(--blued));color:#fff;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:700;font-size:.92rem;font-family:inherit;cursor:pointer}
+  .btn.alt{background:#0C2440}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr}}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem;text-align:center}
+  .stat .n{font-family:'Sora';font-size:1.9rem;font-weight:800;color:var(--navy)}
+  .stat .n b{color:#C53030}
+  .stat .l{font-size:.72rem;color:#67748E;text-transform:uppercase;letter-spacing:.05em}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:1.2rem}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  #map{height:520px;border-radius:16px;border:1px solid var(--line)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;max-height:520px}
+  .panel h3{padding:.9rem 1.1rem;border-bottom:1px solid var(--line);font-size:.95rem}
+  .zones{overflow-y:auto;flex:1}
+  .zone{padding:.8rem 1.1rem;border-bottom:1px solid #F0F3F9;cursor:pointer}
+  .zone:hover{background:var(--ice)}
+  .zone .top{display:flex;justify-content:space-between;align-items:center}
+  .zone .city{font-weight:700;color:var(--navy);font-size:.95rem}
+  .zone .cnt{font-size:.78rem;font-weight:700;color:#fff;background:#C53030;border-radius:999px;padding:.12rem .5rem}
+  .zone .det{font-size:.78rem;color:var(--body);margin-top:.2rem}
+  .tablewrap{background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:1.2rem;overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:.86rem}
+  th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid #F0F3F9;white-space:nowrap}
+  th{background:#F7FAFF;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#67748E;position:sticky;top:0}
+  td a{color:#C53030;font-weight:600;text-decoration:none}
+  .tag2{font-size:.68rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;color:#fff}
+  .note{font-size:.78rem;color:#8C97AF;margin-top:.8rem}
+  .load{padding:2rem;text-align:center;color:#67748E}
+</style>
+</head><body>
+<div class="bar">
+<img src="assets/logo-white.png" alt="UD"/>
+<span class="tag">INTERNAL</span>
+<h1>Storm Canvassing Walk-List Generator</h1>
+<span class="sp"></span>
+<a href="storm-tracker.html">← Public Storm Tracker</a>
+</div>
+<div class="wrap">
+<div class="ctrls">
+<div><label>Storm window</label><select id="period"><option value="14">Last 14 days</option><option value="30" selected>Last 30 days</option><option value="60">Last 60 days</option><option value="120">Last 120 days</option><option value="365">Last 12 months</option></select></div>
+<div><label>Damage type</label><select id="type"><option value="all">Hail + Wind</option><option value="hail">Hail only</option><option value="wind">Wind only</option></select></div>
+<div><label>Min hail size (in)</label><select id="minhail"><option value="0">Any</option><option value="0.75">0.75"+</option><option value="1">1"+</option><option value="1.5">1.5"+</option></select></div>
+<button class="btn" onclick="run()">Refresh</button>
+<button class="btn alt" id="csvBtn" onclick="exportCSV()" disabled>⬇ Export Walk-List CSV</button>
+</div>
+<div class="stats">
+<div class="stat"><div class="n" id="sTotal">—</div><div class="l">Reports</div></div>
+<div class="stat"><div class="n"><b id="sHail">—</b></div><div class="l">Hail</div></div>
+<div class="stat"><div class="n" id="sWind">—</div><div class="l">Wind</div></div>
+<div class="stat"><div class="n" id="sZones">—</div><div class="l">Hit Zones</div></div>
+</div>
+<div class="grid">
+<div id="map"></div>
+<div class="panel"><h3>Hit zones — most reports first</h3><div class="zones" id="zones"><div class="load">Loading live NOAA data…</div></div></div>
+</div>
+<div class="tablewrap"><table id="tbl"><thead><tr><th>Date</th><th>Type</th><th>Size/Speed</th><th>City</th><th>County</th><th>Navigate</th></tr></thead><tbody id="tbody"></tbody></table></div>
+<p class="note">Source: NOAA / National Weather Service Local Storm Reports via Iowa Environmental Mesonet (live). Reports are preliminary. "Navigate" opens Google Maps at the report location so reps can drive the street. Canvass legally — door-to-door is permitted; do not cold-call/text occupants.</p>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var DMV={n:39.9,s:37.8,w:-78.2,e:-76.2};
+var map=L.map('map').setView([39.05,-77.1],9);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Maxar'}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,opacity:.9}).addTo(map);
+var layer=L.layerGroup().addTo(map);
+var RAW=[], SHOWN=[];
+var COL={hail:'#C53030',wind:'#F59E0B',tornado:'#7C3AED'};
+function cls(tt){tt=(tt||'').toUpperCase();if(tt.indexOf('HAIL')>=0)return'hail';if(tt.indexOf('TORNADO')>=0)return'tornado';if(tt.indexOf('WND')>=0||tt.indexOf('WIND')>=0)return'wind';return null;}
+async function load(){
+  try{
+    var end=new Date(),start=new Date(Date.now()-370*864e5);var f=function(d){return d.toISOString().slice(0,10);};
+    var u='https://mesonet.agron.iastate.edu/geojson/lsr.geojson?sts='+f(start)+'T00:00Z&ets='+f(end)+'T23:59Z&states=MD,VA,DC,WV,PA';
+    var j=await (await fetch(u,{cache:'no-store'})).json();
+    (j.features||[]).forEach(function(ft){var g=ft.geometry&&ft.geometry.coordinates;if(!g)return;var lng=g[0],lat=g[1];if(lat<DMV.s||lat>DMV.n||lng<DMV.w||lng>DMV.e)return;var c=cls(ft.properties.typetext);if(!c)return;RAW.push({lat:lat,lng:lng,cat:c,type:ft.properties.typetext,mag:parseFloat(ft.properties.magnitude)||'',city:ft.properties.city||'',county:ft.properties.county||'',st:ft.properties.state||'',valid:ft.properties.valid});});
+    RAW.sort(function(a,b){return new Date(b.valid)-new Date(a.valid);});
+  }catch(e){document.getElementById('zones').innerHTML='<div class="load">Live data unavailable. Retry shortly.</div>';return;}
+  run();
+}
+function run(){
+  var days=+document.getElementById('period').value, type=document.getElementById('type').value, minh=+document.getElementById('minhail').value;
+  var cut=Date.now()-days*864e5;
+  SHOWN=RAW.filter(function(e){
+    if(new Date(e.valid).getTime()<cut)return false;
+    if(type!=='all'&&e.cat!==type)return false;
+    if(minh>0&&!(e.cat==='hail'&&e.mag&&e.mag>=minh))return false;
+    return true;
+  });
+  layer.clearLayers();
+  var hail=0,wind=0,zones={};
+  SHOWN.forEach(function(e){
+    if(e.cat==='hail')hail++;if(e.cat==='wind')wind++;
+    var key=(e.city||'?')+', '+(e.st||'');
+    if(!zones[key])zones[key]={city:e.city,st:e.st,county:e.county,n:0,hail:0,maxhail:0,last:e.valid,lat:e.lat,lng:e.lng};
+    var z=zones[key];z.n++;if(e.cat==='hail'){z.hail++;if(e.mag&&e.mag>z.maxhail)z.maxhail=e.mag;}
+    L.circleMarker([e.lat,e.lng],{radius:e.cat==='hail'?6:5,color:'#fff',weight:1,fillColor:COL[e.cat],fillOpacity:.9}).bindPopup('<b>'+e.type+'</b><br>'+(e.mag?(e.cat==='hail'?e.mag+'" hail':e.mag+' mph'):'')+'<br>'+e.city+', '+e.st+'<br>'+new Date(e.valid).toLocaleDateString()).addTo(layer);
+  });
+  document.getElementById('sTotal').textContent=SHOWN.length.toLocaleString();
+  document.getElementById('sHail').textContent=hail.toLocaleString();
+  document.getElementById('sWind').textContent=wind.toLocaleString();
+  var zarr=Object.values(zones).sort(function(a,b){return b.n-a.n;});
+  document.getElementById('sZones').textContent=zarr.length;
+  var zc=document.getElementById('zones');zc.innerHTML='';
+  zarr.forEach(function(z){var d=document.createElement('div');d.className='zone';d.innerHTML='<div class="top"><span class="city">'+(z.city||'Unknown')+', '+z.st+'</span><span class="cnt">'+z.n+'</span></div><div class="det">'+(z.hail?z.hail+' hail'+(z.maxhail?(' (max '+z.maxhail+'")'):'')+' · ':'')+(z.county?z.county+' Co · ':'')+'last '+new Date(z.last).toLocaleDateString()+'</div>';d.onclick=function(){map.setView([z.lat,z.lng],12);};zc.appendChild(d);});
+  var tb=document.getElementById('tbody');tb.innerHTML='';
+  SHOWN.slice(0,400).forEach(function(e){var tr=document.createElement('tr');tr.innerHTML='<td>'+new Date(e.valid).toLocaleDateString()+'</td><td><span class="tag2" style="background:'+COL[e.cat]+'">'+e.cat+'</span></td><td>'+(e.mag?(e.cat==='hail'?e.mag+'"':e.mag+' mph'):'—')+'</td><td>'+e.city+'</td><td>'+e.county+'</td><td><a href="https://www.google.com/maps/search/?api=1&query='+e.lat+','+e.lng+'" target="_blank">Drive →</a></td>';tb.appendChild(tr);});
+  document.getElementById('csvBtn').disabled=SHOWN.length===0;
+}
+function exportCSV(){
+  var rows=[['date','type','magnitude','unit','city','county','state','lat','lng','google_maps']];
+  SHOWN.forEach(function(e){rows.push([new Date(e.valid).toISOString().slice(0,10),e.cat,e.mag||'',e.cat==='hail'?'in':'mph',e.city,e.county,e.st,e.lat,e.lng,'https://www.google.com/maps/search/?api=1&query='+e.lat+','+e.lng]);});
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var b=new Blob([csv],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='UD-canvassing-walklist-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+load();
+</script>
+</body>
+</html>
