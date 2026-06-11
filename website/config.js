@@ -50,7 +50,12 @@ window.UD_CONFIG = {
   // Google Place ID — when set, reviews.html can pull live Google reviews via the Places API (needs GOOGLE_MAPS_KEY).
   GOOGLE_PLACE_ID: "",
   GOOGLE_REVIEWS_URL: "https://maps.app.goo.gl/4JEkF6abLfYPMey18", // public profile fallback (always works)
-  YELP_URL: "https://www.yelp.com/biz/united-developers-silver-spring-2"
+  YELP_URL: "https://www.yelp.com/biz/united-developers-silver-spring-2",
+
+  // --- Auto-indexing (IndexNow — instant crawl on Bing & Yandex, free, no waiting) ---
+  // Key file a3f9c1e74b2d48e6905c7f1a2b8d6e30.txt is already published at the site root.
+  // The SEO Command Center + daily content engine submit new/updated pages automatically.
+  INDEXNOW_KEY: "a3f9c1e74b2d48e6905c7f1a2b8d6e30"
 };
 
 (function () {

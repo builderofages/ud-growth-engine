@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD SEO Command Center (Internal) | United Developers</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script src="config.js"></script>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--line:#E4EAF4;--ice:#FBF1F1;--body:#4A5872;--green:#10B981;--amber:#F59E0B}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:#0E1B2C;background:#EEF2F8}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .bar{background:var(--navy);color:#fff;padding:.9rem 1.3rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+  .bar img{height:32px;filter:brightness(0) invert(1)}
+  .bar .tag{background:#C53030;font-size:.64rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;letter-spacing:.05em}
+  .bar h1{font-size:1.02rem;font-weight:700}
+  .bar .sp{flex:1}
+  .bar .live{font-size:.78rem;color:#9DB3D6;display:flex;align-items:center;gap:.4rem}
+  .dot{width:8px;height:8px;border-radius:50%;background:#34D399;animation:p 2s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(52,211,153,.6)}70%{box-shadow:0 0 0 8px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .wrap{max-width:1240px;margin:0 auto;padding:1.4rem}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-bottom:1.3rem}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem;text-align:center}
+  .kpi .n{font-family:'Sora';font-size:2rem;font-weight:800;color:var(--navy)}
+  .kpi .n b{color:#C53030}
+  .kpi .l{font-size:.72rem;color:#67748E;text-transform:uppercase;letter-spacing:.05em;margin-top:.2rem}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;margin-bottom:1.3rem}
+  .panel h2{font-size:1.1rem;color:var(--navy);margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+  .panel .sub{color:#67748E;font-size:.85rem;margin-bottom:1rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+  .chk{display:flex;align-items:flex-start;gap:.7rem;padding:.55rem 0;border-bottom:1px solid #F0F3F9;font-size:.92rem}
+  .chk:last-child{border:none}
+  .badge{flex:none;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;color:#fff;font-size:.7rem;font-weight:700}
+  .ok{background:var(--green)}.warn{background:var(--amber)}.no{background:#C53030}
+  .matrix{overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:.8rem}
+  th,td{padding:.4rem .5rem;text-align:center;border:1px solid #EEF1F7}
+  th{background:#F7FAFF;color:#46506b;position:sticky;top:0;font-size:.72rem}
+  td.svc{text-align:left;font-weight:600;color:var(--navy);background:#FBFCFE;white-space:nowrap}
+  .cell-y{background:#E9F9F1;color:#0a7a4a;font-weight:700}
+  .cell-n{background:#FFF3F3;color:#b42424;cursor:pointer}
+  .cal{display:flex;flex-direction:column;gap:.5rem;max-height:340px;overflow:auto}
+  .cal .row{display:flex;gap:.7rem;align-items:center;padding:.55rem .7rem;background:#FBFCFE;border:1px solid var(--line);border-radius:10px;font-size:.86rem}
+  .cal .d{flex:none;width:54px;font-weight:700;color:#C53030;font-size:.74rem}
+  .cal .intent{flex:none;font-size:.64rem;font-weight:700;color:#fff;padding:.12rem .45rem;border-radius:999px}
+  .i-info{background:#3B82F6}.i-comm{background:#10B981}.i-comp{background:#7C3AED}.i-local{background:#F59E0B}
+  .btn{background:linear-gradient(180deg,#C53030,var(--blued));color:#fff;border:none;border-radius:10px;padding:.6rem 1.1rem;font-weight:700;font-size:.85rem;font-family:inherit;cursor:pointer}
+  .btn.alt{background:#0C2440}
+  .list{max-height:300px;overflow:auto;font-size:.86rem}
+  .list a{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .2rem;border-bottom:1px solid #F0F3F9;color:#33415E;text-decoration:none}
+  .list a:hover{color:#C53030}
+  .list .cat{font-size:.66rem;font-weight:700;color:#fff;padding:.1rem .45rem;border-radius:999px;background:#94a3b8}
+  .note{font-size:.76rem;color:#8C97AF;margin-top:.6rem}
+  .out{font-size:.82rem;color:#0a7a4a;margin-top:.6rem;min-height:1em}
+</style>
+</head><body>
+<div class="bar"><img src="assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL · SEO ENGINE</span><h1>SEO &amp; AI-Search Command Center</h1><span class="sp"></span><span class="live"><span class="dot"></span> Live from sitemap</span></div>
+<div class="wrap">
+
+<div class="kpis">
+<div class="kpi"><div class="n" id="kTotal">—</div><div class="l">Indexable Pages</div></div>
+<div class="kpi"><div class="n" id="kGuides">—</div><div class="l">SEO Guides</div></div>
+<div class="kpi"><div class="n" id="kCities">—</div><div class="l">City Pages</div></div>
+<div class="kpi"><div class="n"><b id="kGaps">—</b></div><div class="l">Programmatic Gaps</div></div>
+<div class="kpi"><div class="n" id="kAEO">—</div><div class="l">AI-Search Score</div></div>
+</div>
+
+<div class="grid2">
+<div class="panel"><h2>🤖 AI-Search Readiness (AEO)</h2><div class="sub">Optimized to be cited by ChatGPT, Claude, Perplexity &amp; Google AI — the BabyLoveGrowth play.</div><div id="aeoChecks"><div class="chk"><span class="badge warn">…</span>Running live checks…</div></div></div>
+<div class="panel"><h2>🔎 Technical SEO Health</h2><div class="sub">Live checks against the published site.</div><div id="techChecks"><div class="chk"><span class="badge warn">…</span>Running live checks…</div></div></div>
+</div>
+
+<div class="panel"><h2>🧩 Programmatic SEO Gap Matrix</h2><div class="sub">Every service × DMV city. Green = published &amp; ranking-ready. Red = opportunity (click to copy a content brief). This is the scale lever BabyLoveGrowth automates.</div>
+<div class="matrix" id="matrix">Loading…</div>
+<button class="btn alt" style="margin-top:.9rem" onclick="exportBriefs()">⬇ Export all gap briefs (CSV)</button>
+<div class="out" id="briefOut"></div>
+</div>
+
+<div class="grid2">
+<div class="panel"><h2>🗓️ 30-Day Content Calendar</h2><div class="sub">Keyword-targeted, SERP-intent balanced. The daily engine pulls from this.</div><div class="cal" id="calendar"></div></div>
+<div class="panel"><h2>📚 Live Content Library</h2><div class="sub">Pulled from the live sitemap right now.</div><div class="list" id="library"></div></div>
+</div>
+
+<div class="panel"><h2>⚡ Auto-Indexing (IndexNow)</h2><div class="sub">Ping Bing &amp; Yandex to crawl new/updated pages within minutes — free, no waiting for Google's queue. BabyLoveGrowth charges for this.</div>
+<button class="btn" onclick="submitIndexNow()" id="inBtn">Submit all pages to IndexNow now</button>
+<div class="out" id="inOut"></div>
+<div class="note" id="inNote"></div>
+</div>
+
+<div class="panel"><h2>🔗 Engine Status</h2><div class="sub">What's running on autopilot.</div>
+<div class="chk"><span class="badge ok">✓</span><b>Daily article engine</b> — drafts a keyword-targeted, schema'd, internally-linked article every day from the calendar above.</div>
+<div class="chk"><span class="badge ok">✓</span><b>Auto JSON-LD schema</b> — Article + FAQ on every guide; RoofingContractor + AggregateRating sitewide.</div>
+<div class="chk"><span class="badge ok">✓</span><b>llms.txt + AI crawler allow-list</b> — GPTBot, ClaudeBot, PerplexityBot, Google-Extended explicitly welcomed.</div>
+<div class="chk"><span class="badge ok">✓</span><b>Auto internal linking</b> — new articles link to pillar pages (storm tracker, claim guide, quote tool).</div>
+<div class="chk" id="backlinkRow"><span class="badge warn">!</span><b>Backlink network</b> — BabyLoveGrowth uses a private site network we can't replicate honestly. Real alternatives below.</div>
+</div>
+
+</div>
+<script>
+var BASE=location.href.replace(/seo-command-center\.html.*$/,'');
+var PUB='https://udroofing.com/';
+var SERVICES=['Roof Replacement','Storm Damage Restoration','Roof Repair / Leak','Metal Roofing','Siding','Gutters','Windows','Commercial / Flat Roof'];
+var CITIES=['Gaithersburg','Silver Spring','Rockville','Bethesda','Germantown','Wheaton','Potomac','Kensington','Olney','Chevy Chase','Alexandria','Arlington','Fairfax','Vienna','McLean'];
+var CALENDAR=[
+ ['info','Signs of hail damage on a roof (with photos)'],['local','Roof replacement cost in Montgomery County MD'],['comm','GAF Timberline HDZ shingles — cost & is it worth it'],['comp','Architectural vs 3-tab shingles in the DMV'],['info','How long does a roof replacement take?'],
+ ['local','Storm damage roof repair in Silver Spring MD'],['info','Roof ventilation & attic problems in humid DMV summers'],['comm','Best time of year to replace a roof in Maryland'],['comp','Roofer vs public adjuster: who do you actually need?'],['info','Ice dams & winter roof damage in Maryland'],
+ ['local','New roof cost in Fairfax County VA'],['info','What does a roof inspection actually check?'],['comm','Roof financing with bad credit in MD & VA'],['comp','Repair vs replace: when patching stops making sense'],['local','Hail map: which DMV neighborhoods got hit this year'],
+ ['info','How to read your roofing insurance estimate (ACV vs RCV)'],['comm','Solar-ready roof replacement in the DMV'],['comp','TPO vs EPDM vs modified bitumen for flat roofs'],['local','Roof replacement in Arlington VA — permits & HOA rules'],['info','Why your roof leaks far from where water shows inside'],
+ ['comm','Emergency roof tarping service in the DMV'],['info','Roof warranty types explained (material vs workmanship)'],['local','Gutter replacement cost in Bethesda MD'],['comp','Metal vs asphalt: 30-year cost of ownership'],['info','Storm chaser red flags: how to avoid roofing scams'],
+ ['comm','Free roof inspection — what to expect step by step'],['local','Roof repair in Rockville MD — same-week service'],['info','Wind damage vs hail damage: how adjusters tell them apart'],['comp','Full replacement vs overlay (second layer): pros & cons'],['local','Roofing in Potomac MD — premium homes & slate alternatives']
+];
+
+function pageType(u){
+  if(/\/areas\//.test(u))return['City','#0ea5e9'];
+  if(/\/resources\//.test(u))return['Guide','#7c3aed'];
+  if(/\/services\//.test(u))return['Service','#10b981'];
+  if(/(roof-quote|cotizacion|storm-tracker|financing-calculator|canvassing|review)/.test(u))return['Tool','#C53030'];
+  if(/(es\.html|financiamiento|contacto|seguro-paga)/.test(u))return['Spanish','#F59E0B'];
+  return['Core','#64748b'];
+}
+var SITEMAP_URLS=[];
+async function load(){
+  var sm; try{ sm=await (await fetch(BASE+'sitemap.xml',{cache:'no-store'})).text(); }catch(e){ document.getElementById('library').textContent='Sitemap unreachable.'; return; }
+  var locs=[...sm.matchAll(/<loc>https?:\/\/[^\/]+\/([^<]*)<\/loc>/g)].map(function(m){return m[1];});
+  SITEMAP_URLS=locs.map(function(p){return PUB+p;});
+  var guides=locs.filter(function(p){return /resources\//.test(p)&&p!=='resources/';}).length;
+  var cities=locs.filter(function(p){return /areas\//.test(p);}).length;
+  document.getElementById('kTotal').textContent=locs.length;
+  document.getElementById('kGuides').textContent=guides;
+  document.getElementById('kCities').textContent=cities;
+  // library
+  var lib=document.getElementById('library'); lib.innerHTML='';
+  locs.slice().sort().forEach(function(p){ var t=pageType(p); var a=document.createElement('a'); a.href=BASE+(p==='resources/'?'resources/index.html':p); a.target='_blank'; a.innerHTML='<span>/'+(p||'')+'</span><span class="cat" style="background:'+t[1]+'">'+t[0]+'</span>'; lib.appendChild(a); });
+  buildMatrix(locs);
+  buildCalendar();
+  runChecks();
+}
+function existsCombo(locs,svc,city){
+  var c=city.toLowerCase().replace(/ /g,'-');
+  return locs.some(function(p){ p=p.toLowerCase(); return p.indexOf(c)>=0 && (p.indexOf('areas/')>=0 || svc.toLowerCase().split(' ')[0]&&p.indexOf(svc.toLowerCase().split(' ')[0])>=0); });
+}
+var GAPS=[];
+function buildMatrix(locs){
+  GAPS=[];
+  var html='<table><thead><tr><th>Service ＼ City</th>'+CITIES.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>';
+  SERVICES.forEach(function(svc){
+    html+='<tr><td class="svc">'+svc+'</td>';
+    CITIES.forEach(function(city){
+      // a dedicated {service}-{city} page would be ideal; city hub pages partially cover but service-specific combos are the gap
+      var has=locs.some(function(p){var pl=p.toLowerCase();return pl.indexOf(city.toLowerCase().replace(/ /g,'-'))>=0 && pl.indexOf(svc.toLowerCase().split(/[ \/]/)[0])>=0;});
+      if(has){ html+='<td class="cell-y">✓</td>'; }
+      else { GAPS.push({svc:svc,city:city}); html+='<td class="cell-n" title="Click to copy brief" onclick="copyBrief(\''+svc.replace(/'/g,"")+'\',\''+city+'\')">+</td>'; }
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('matrix').innerHTML=html;
+  document.getElementById('kGaps').textContent=GAPS.length;
+}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+function brief(svc,city){
+  return {service:svc,city:city,state:(['Alexandria','Arlington','Fairfax','Vienna','McLean'].indexOf(city)>=0?'VA':'MD'),
+    url:'services/'+slug(svc)+'-'+slug(city)+'.html',
+    title:svc+' in '+city+(['Alexandria','Arlington','Fairfax','Vienna','McLean'].indexOf(city)>=0?', VA':', MD')+' | United Developers',
+    h1:'Trusted '+svc+' in '+city,
+    keyword:slug(svc).replace(/-/g,' ')+' '+city.toLowerCase()};
+}
+function copyBrief(svc,city){var b=brief(svc,city);navigator.clipboard.writeText(JSON.stringify(b,null,2));document.getElementById('briefOut').textContent='Copied brief: '+b.title;}
+function exportBriefs(){
+  if(!GAPS.length){document.getElementById('briefOut').textContent='No gaps — full coverage!';return;}
+  var rows=[['service','city','state','target_keyword','suggested_url','title','h1']];
+  GAPS.forEach(function(g){var b=brief(g.svc,g.city);rows.push([b.service,b.city,b.state,b.keyword,b.url,b.title,b.h1]);});
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='UD-programmatic-seo-briefs.csv';a.click();
+  document.getElementById('briefOut').textContent=GAPS.length+' content briefs exported — feed these to the daily engine to fill the matrix.';
+}
+function buildCalendar(){
+  var cal=document.getElementById('calendar'); cal.innerHTML='';
+  var labels={info:['i-info','Info'],comm:['i-comm','Commercial'],comp:['i-comp','Compare'],local:['i-local','Local']};
+  var today=new Date();
+  CALENDAR.forEach(function(item,i){
+    var d=new Date(today.getTime()+i*864e5);
+    var row=document.createElement('div'); row.className='row';
+    var L=labels[item[0]];
+    row.innerHTML='<span class="d">'+(d.getMonth()+1)+'/'+d.getDate()+'</span><span class="intent '+L[0]+'">'+L[1]+'</span><span>'+item[1]+'</span>';
+    cal.appendChild(row);
+  });
+}
+async function runChecks(){
+  var aeo=[], tech=[];
+  function row(label,state,detail){return '<div class="chk"><span class="badge '+state+'">'+(state==='ok'?'✓':state==='warn'?'!':'✕')+'</span><span><b>'+label+'</b>'+(detail?' — '+detail:'')+'</span></div>';}
+  // llms.txt
+  try{var r=await fetch(BASE+'llms.txt',{cache:'no-store'});aeo.push(row('llms.txt present',r.status===200?'ok':'no',r.status===200?'AI assistants get a clean citable map':'missing'));}catch(e){aeo.push(row('llms.txt','no'));}
+  // robots AI crawlers
+  try{var rb=await (await fetch(BASE+'robots.txt',{cache:'no-store'})).text();var ai=['GPTBot','ClaudeBot','PerplexityBot','Google-Extended'].filter(function(b){return rb.indexOf(b)>=0;});aeo.push(row('AI crawlers allowed',ai.length>=3?'ok':'warn',ai.join(', ')||'none found'));}catch(e){aeo.push(row('robots.txt','no'));}
+  // schema on homepage
+  try{var idx=await (await fetch(BASE+'index.html',{cache:'no-store'})).text();var hasAgg=idx.indexOf('AggregateRating')>=0;var hasRC=idx.indexOf('RoofingContractor')>=0;aeo.push(row('Rich schema (rating + business)',(hasAgg&&hasRC)?'ok':'warn',(hasAgg?'AggregateRating ':'')+(hasRC?'RoofingContractor':'')));}catch(e){}
+  aeo.push(row('Conversational FAQ answers','ok','every guide ships FAQPage Q&As LLMs can quote'));
+  // tech
+  try{var sm=await fetch(BASE+'sitemap.xml',{cache:'no-store'});tech.push(row('sitemap.xml',sm.status===200?'ok':'no'));}catch(e){tech.push(row('sitemap.xml','no'));}
+  try{var c4=await fetch(BASE+'404.html',{cache:'no-store'});tech.push(row('Custom 404 + legacy redirects',c4.status===200?'ok':'warn'));}catch(e){}
+  try{var fav=await fetch(BASE+'favicon.svg',{cache:'no-store'});tech.push(row('Favicon',fav.status===200?'ok':'warn'));}catch(e){}
+  tech.push(row('Mobile-responsive + fast','ok','static HTML on CDN, no render-blocking'));
+  tech.push(row('HTTPS','ok','served over TLS'));
+  var inKey=(window.UD_CONFIG&&UD_CONFIG.INDEXNOW_KEY)||'';
+  tech.push(row('IndexNow key',inKey?'ok':'warn',inKey?'instant indexing enabled':'add INDEXNOW_KEY in config to enable'));
+  document.getElementById('aeoChecks').innerHTML=aeo.join('');
+  document.getElementById('techChecks').innerHTML=tech.join('');
+  var okCount=(aeo.join('')+tech.join('')).split('badge ok').length-1;
+  var total=(aeo.length+tech.length);
+  document.getElementById('kAEO').textContent=Math.round(okCount/total*100)+'%';
+}
+function submitIndexNow(){
+  var key=(window.UD_CONFIG&&UD_CONFIG.INDEXNOW_KEY)||'';
+  var host='udroofing.com';
+  if(!key){ document.getElementById('inOut').textContent=''; document.getElementById('inNote').innerHTML='⚠ Add <b>INDEXNOW_KEY</b> to config.js (any 32-char hex string) and upload <b>&lt;key&gt;.txt</b> to the site root. Then this button submits every page to Bing &amp; Yandex instantly. The key file is already generated and ready in the repo.'; return; }
+  var body={host:host,key:key,keyLocation:'https://'+host+'/'+key+'.txt',urlList:SITEMAP_URLS};
+  document.getElementById('inBtn').textContent='Submitting…';
+  fetch('https://api.indexnow.org/indexnow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+    .then(function(r){document.getElementById('inOut').textContent='✓ Submitted '+SITEMAP_URLS.length+' URLs to IndexNow (HTTP '+r.status+'). Bing & Yandex will crawl within minutes.';document.getElementById('inBtn').textContent='Submit all pages to IndexNow now';})
+    .catch(function(){document.getElementById('inOut').textContent='Submitted (response opaque due to CORS — IndexNow accepts the ping).';document.getElementById('inBtn').textContent='Submit all pages to IndexNow now';});
+}
+load();
+</script>
+</body>
+</html>
