@@ -1,6 +1,16 @@
 /* UD Live Chat v2 — premium branded client for United Developers' agents. */
 (function () {
   'use strict';
+  /* ---- brand favicon injector — guarantees the UD mark on every page that loads this script ---- */
+  try {
+    if (!document.querySelector('link[rel~="icon"]')) {
+      var _sc = document.querySelector('script[src*="ud-chat.js"]');
+      var _fav = _sc ? _sc.src.replace(/ud-chat\.js.*$/, 'favicon.svg') : 'favicon.svg';
+      var _l = document.createElement('link');
+      _l.rel = 'icon'; _l.type = 'image/svg+xml'; _l.href = _fav;
+      document.head.appendChild(_l);
+    }
+  } catch (e) {}
   var host = document.querySelector('elevenlabs-convai');
   var AGENT = host ? host.getAttribute('agent-id') : 'agent_2801ktf0hpcefj1bmz3gp0akkxp1';
   var IS_DEX = AGENT === 'agent_0701ktfcsjtkfw3rtja6nbf06ns7';
