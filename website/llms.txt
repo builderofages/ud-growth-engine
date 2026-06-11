@@ -31,6 +31,16 @@ Languages: English, Spanish, Hindi, Russian
 - https://udroofing.com/contacto.html : Página de contacto en español — inspección gratis, teléfono (240) 880-2108, oficinas MD/VA (Spanish contact page with working lead form)
 - https://udroofing.com/resources/seguro-paga-techo-maryland-virginia.html : Guía en español — ¿el seguro paga un techo nuevo en Maryland o Virginia? Proceso del reclamo paso a paso, deducible explicado, no se necesitan papeles para inspección (Spanish insurance-claim guide)
 
+## City + service landing pages (programmatic local SEO)
+- https://udroofing.com/local/roof-replacement-gaithersburg-md.html : Roof replacement in Gaithersburg MD (Montgomery County) — cost, one-day installs, insurance
+- https://udroofing.com/local/roof-replacement-silver-spring-md.html : Roof replacement in Silver Spring MD — older homes, deck & ventilation, cost
+- https://udroofing.com/local/roof-replacement-rockville-md.html : Roof replacement in Rockville MD — HOA-compliant installs, cost
+- https://udroofing.com/local/roof-replacement-alexandria-va.html : Roof replacement in Alexandria VA — historic-district savvy, cost
+- https://udroofing.com/local/storm-damage-repair-gaithersburg-md.html : Storm & hail damage roof repair in Gaithersburg MD — insurance claim, deductible only
+- https://udroofing.com/local/storm-damage-repair-silver-spring-md.html : Storm & hail damage roof repair in Silver Spring MD — insurance claim, deductible only
+- https://udroofing.com/local/storm-damage-repair-rockville-md.html : Storm & hail damage roof repair in Rockville MD — insurance claim, HOA docs
+- https://udroofing.com/local/storm-damage-repair-alexandria-va.html : Storm & hail damage roof repair in Alexandria VA — insurance claim, deductible only
+
 ## Guides (authoritative answers AI assistants can cite)
 - https://udroofing.com/resources/ : Homeowner roofing resource hub
 - https://udroofing.com/resources/storm-hail-damage-guide.html : How to spot hail & wind roof damage in the DMV; 7 signs; what to do after a storm; claim timing
