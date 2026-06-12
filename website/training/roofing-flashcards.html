@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
+<title>Roofing Flashcards — Rep Training | United Developers</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#081B30;--navy2:#0C2440;--blue:#C53030;--blued:#9B1C1C;--ice:#FBF1F1;--line:#E4EAF4;--body:#4A5872;--gold:#F5B82E;--green:#10B981}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(160deg,#06182c,#081B30 60%,#0C2440);min-height:100vh;color:#fff}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .top{padding:1.2rem 1.3rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .top img{height:34px;filter:brightness(0) invert(1)}
+  .top .tag{background:#C53030;font-size:.64rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;letter-spacing:.05em}
+  .top h1{font-size:1.05rem}
+  .wrap{max-width:760px;margin:0 auto;padding:0 1.2rem 3rem}
+  .lead{color:#C5D4EC;text-align:center;font-size:.95rem;margin:.4rem 0 1.3rem}
+  .cats{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:1.3rem}
+  .cat{border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#DCE7F8;border-radius:999px;padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer}
+  .cat.on{background:#fff;color:var(--navy);border-color:#fff}
+  .counter{text-align:center;color:#9DB3D6;font-size:.85rem;margin-bottom:.7rem;font-weight:600}
+  .scene{perspective:1600px;margin-bottom:1.1rem}
+  .card{position:relative;width:100%;min-height:340px;cursor:pointer;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+  .card.flip{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;padding:2rem;display:flex;flex-direction:column;box-shadow:0 30px 70px -28px rgba(0,0,0,.6)}
+  .front{background:linear-gradient(155deg,#0E2A4D,#081B30);border:1px solid rgba(255,255,255,.1)}
+  .back{background:#fff;color:var(--navy);transform:rotateY(180deg);border:1px solid var(--line)}
+  .ctag{align-self:flex-start;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border-radius:999px}
+  .front .ctag{background:rgba(232,154,154,.18);color:#E89A9A}
+  .back .ctag{background:var(--ice);color:var(--blue)}
+  .q{font-family:'Sora';font-size:1.7rem;font-weight:800;margin:auto 0;line-height:1.18;text-wrap:balance}
+  .back .a{font-size:1.08rem;line-height:1.6;margin:auto 0;color:#27364f}
+  .hint{font-size:.78rem;color:#7E94B8;text-align:center}
+  .back .hint{color:#9aa6bd}
+  .nav{display:flex;gap:.7rem;align-items:center;justify-content:center}
+  .btn{border:none;border-radius:12px;padding:.85rem 1.4rem;font-weight:700;font-size:.95rem;font-family:inherit;cursor:pointer}
+  .btn-primary{background:linear-gradient(180deg,#C53030,var(--blued));color:#fff}
+  .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
+  .btn:disabled{opacity:.4;cursor:default}
+  .prog{height:5px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:1.1rem 0}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,#C53030,#E89A9A);transition:.3s width}
+  .foot{text-align:center;color:#7E94B8;font-size:.78rem;margin-top:1.4rem}
+</style>
+</head><body>
+<div class="top"><img src="../assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL · TRAINING</span><h1>Roofing Flashcards</h1></div>
+<div class="wrap">
+<p class="lead">Everything a UD rep needs to know — tap a card to flip. Filter by topic, shuffle, and drill until it's second nature.</p>
+<div class="cats" id="cats"></div>
+<div class="counter" id="counter"></div>
+<div class="scene"><div class="card" id="card" onclick="flip()">
+<div class="face front"><span class="ctag" id="fcat"></span><div class="q" id="q"></div><div class="hint">Tap to reveal →</div></div>
+<div class="face back"><span class="ctag" id="bcat"></span><div class="a" id="a"></div><div class="hint">Tap to flip back</div></div>
+</div></div>
+<div class="prog"><i id="prog"></i></div>
+<div class="nav"><button class="btn btn-ghost" id="prev" onclick="prev()">← Prev</button><button class="btn btn-ghost" onclick="shuffle()">🔀 Shuffle</button><button class="btn btn-primary" id="next" onclick="next()">Next →</button></div>
+<div class="foot">United Developers · (240) 880-2108 · MD MHIC #111971 · VA #2705183185 · Train hard, close honest.</div>
+</div>
+<script>
+var CARDS=[
+// MATERIALS
+['Materials','Architectural (dimensional) shingles','Multi-layered asphalt shingles — UD’s most-installed roof. Last ~25–30 years, look dimensional/textured, higher wind rating than 3-tab. GAF Timberline HDZ is the flagship.'],
+['Materials','3-tab shingles','Flat, single-layer asphalt shingles. Cheapest option, ~15–20 yr life, lower wind rating. Mostly being replaced by architectural today.'],
+['Materials','Standing-seam metal','Premium vertical metal panels with concealed fasteners. 40–70 yr life, fire & wind resistant, energy efficient. Higher upfront cost — quoted on inspection.'],
+['Materials','TPO (flat roof)','Single-ply thermoplastic membrane, usually white & reflective. Common on commercial/low-slope roofs. Heat-welded seams, energy efficient, ~20–30 yr.'],
+['Materials','EPDM (flat roof)','Black synthetic rubber membrane for low-slope/commercial roofs. Durable & affordable, ~20–30 yr. Seams are glued/taped rather than welded.'],
+['Materials','Underlayment','The water-resistant barrier installed over the deck, under the shingles. Synthetic underlayment now beats old felt — lighter, tougher, won’t wrinkle.'],
+['Materials','Ice & water shield','Self-adhering waterproof membrane at eaves, valleys & penetrations. Stops ice-dam and wind-driven-rain leaks. Code-required in many cold areas.'],
+['Materials','Drip edge','Metal flashing along the roof edges that directs water into the gutter and protects the fascia/deck. Building-code required.'],
+['Materials','Starter strip & ridge cap','Starter strip is the sealed first course at the eaves (stops wind uplift); ridge cap shingles finish and seal the peak/ridge.'],
+// ANATOMY
+['Roof Anatomy','What is a “square”?','The roofing unit of measure — 100 square feet of roof area (10×10). Estimates and material orders are counted in squares.'],
+['Roof Anatomy','Pitch / slope','The steepness, written as rise-over-run (e.g. 6/12 = 6” rise per 12” run). Steeper = more surface area, harder/more costly to install.'],
+['Roof Anatomy','Decking / sheathing','The plywood or OSB boards nailed to the rafters that the roof is built on. Rotted decking must be replaced before re-roofing.'],
+['Roof Anatomy','Fascia & soffit','Fascia = the board behind the gutters. Soffit = the underside of the overhang, which holds intake vents for attic ventilation.'],
+['Roof Anatomy','Valley','Where two roof slopes meet and channel water. A high-leak area — needs ice & water shield and proper flashing.'],
+['Roof Anatomy','Flashing','Metal pieces that seal joints and penetrations (chimneys, walls, valleys, vents). Most leaks come from failed flashing, not the field shingles.'],
+['Roof Anatomy','Eave vs rake vs ridge','Eave = lower horizontal edge (gutters). Rake = the sloped/gable edge. Ridge = the top peak where two slopes meet.'],
+['Roof Anatomy','Attic ventilation','Balanced intake (soffit) + exhaust (ridge vent) lets heat & moisture escape. Poor ventilation cooks shingles and voids many warranties.'],
+['Roof Anatomy','Penetrations','Anything poking through the roof — pipe boots, vents, skylights, chimneys. Each needs flashing/sealing and is a common leak source.'],
+// INSURANCE
+['Insurance','ACV vs RCV','ACV (Actual Cash Value) = replacement cost MINUS depreciation. RCV (Replacement Cost Value) = the full cost to replace. RCV policies pay the depreciation back once work is completed.'],
+['Insurance','Deductible','The homeowner’s out-of-pocket portion of an approved claim. On most storm claims it’s the ONLY thing they pay. It cannot legally be “waived” — that’s insurance fraud.'],
+['Insurance','Supplement','A request to the insurer to pay for legitimate items the first estimate missed — code upgrades, extra layers, damage found during the job. UD documents and submits these.'],
+['Insurance','Adjuster','The insurance company’s rep who inspects the damage and writes the scope of loss. UD meets them on-site so nothing legitimate is missed.'],
+['Insurance','Depreciation (recoverable)','Value the insurer holds back for age/wear. On an RCV policy it’s “recoverable” — paid out after the work is done and invoiced.'],
+['Insurance','Xactimate','The industry-standard software adjusters and contractors use to price claims line-by-line. Speaking “Xactimate” builds credibility with adjusters.'],
+['Insurance','O&P (Overhead & Profit)','Typically 10% + 10% the insurer should pay on complex multi-trade jobs. Often left off the first estimate — a common supplement.'],
+['Insurance','Code / ordinance upgrade','Coverage that pays to bring the roof up to current building code (ice & water shield, drip edge, decking). Must be in the policy and documented.'],
+['Insurance','Date of loss','The date of the storm that caused the damage. Claims are tied to it — file promptly; many policies have a ~1-year deadline.'],
+// STORM DAMAGE
+['Storm Damage','Signs of hail damage','Random bruising/soft spots, granule loss exposing black asphalt, dented soft metals (gutters, vents, AC fins), and “splatter” marks. Often invisible from the ground.'],
+['Storm Damage','Signs of wind damage','Creased, lifted, curled, or missing shingles; exposed nails; debris. Wind breaks the seal strip even when shingles look intact.'],
+['Storm Damage','Why hail damage is “hidden”','Hail bruising fractures the shingle mat without an obvious hole — you can’t see it from the ground, but it shortens roof life and causes future leaks. That’s why the free inspection matters.'],
+['Storm Damage','Functional vs cosmetic','Functional damage shortens roof life (bruising, granule loss) — covered. Purely cosmetic marks may not be. Document the functional damage clearly.'],
+['Storm Damage','Test square','A 10×10 ft area the adjuster inspects and counts hail hits in. Enough hits in a test square = approvable damage. Mark and document them.'],
+['Storm Damage','Collateral / soft-metal damage','Dents on gutters, downspouts, vents, AC fins and mailboxes confirm hail size and date — powerful evidence that the roof was hit too.'],
+['Storm Damage','Mold timeline','Mold can start in 24–48 hours after water intrusion — a key urgency point: don’t let a leak sit “until the weekend.”'],
+// SALES & OBJECTIONS
+['Sales','“I need to think about it”','Agree, then add urgency & lower risk: damage worsens, claims have filing deadlines, and the inspection/claim review is free with no obligation. “Let’s at least document it today so you keep the option.”'],
+['Sales','“It’s too expensive”','Reframe: on an approved storm claim insurance pays — their cost is usually just the deductible. No storm? $0-down financing turns it into a small monthly payment.'],
+['Sales','“I want other quotes”','“Smart — just verify each one is licensed (MD MHIC / VA DPOR) with real local reviews. Out-of-town storm chasers lowball, then upcharge or vanish. We’re local, licensed since 2005, and we’re here for the warranty.”'],
+['Sales','Storm-chaser red flags','Out-of-state plates, high-pressure door knocks, demanding a deposit up front, no local office, no MD/VA license, “we’ll waive your deductible.” Use these to position UD as the safe local choice.'],
+['Sales','Why act fast','Claim filing deadlines (often ~1 year), mold within 24–48 hrs, small leaks compounding into structural/interior damage, and more storms before it’s fixed.'],
+['Sales','Build instant trust','Lead with license numbers, 131+ local 5-star reviews, GAF certification, “we meet your adjuster on-site,” and the lifetime material + 2-yr workmanship warranty.'],
+['Sales','The deductible is owed','By law the homeowner pays their deductible — a contractor who “eats” or “waives” it is committing insurance fraud and risking the claim. Never promise that.'],
+['Sales','Always ask for the referral','UD pays $250 per referred completed project, no cap. End every happy job by asking who else they know with storm damage.'],
+// UD FACTS
+['UD Facts','UD licenses','Maryland MHIC #111971 · Virginia DPOR Class A #2705183185 · Pennsylvania #192325. Licensed, bonded & insured in all three.'],
+['UD Facts','UD credentials & reviews','GAF Factory-Certified, A+ BBB accredited, 4.9★ across 131+ Google reviews, family-owned serving the DMV since 2005.'],
+['UD Facts','UD warranty','Lifetime manufacturer warranty on materials + a 2-year UD workmanship warranty. We’re here after the install.'],
+['UD Facts','UD process (memorize this)','1) Free 24-hr inspection + photo report → 2) We document & meet the adjuster on-site → 3) Claim approved → 4) Install (often one day) → 5) Homeowner pays only the deductible.'],
+['UD Facts','UD lead tools','Instant satellite roof quote (see your roof from space) and a live NOAA storm tracker (see if hail hit your street) — tools no local competitor has. Use them to open conversations.'],
+['UD Facts','UD contact & offices','Phone (240) 880-2108. Offices: 4915 St Elmo Ave Ste 403, Bethesda MD · 2000 Duke St Ste 300, Alexandria VA. Languages: English, Spanish, Hindi, Russian.']
+];
+var cats=['All'].concat([...new Set(CARDS.map(c=>c[0]))]);
+var active='All', deck=[], idx=0;
+function rebuild(){deck=CARDS.filter(c=>active==='All'||c[0]===active);idx=0;render();}
+function render(){
+  var c=deck[idx];
+  document.getElementById('card').classList.remove('flip');
+  setTimeout(function(){
+    document.getElementById('fcat').textContent=c[0];
+    document.getElementById('bcat').textContent=c[0];
+    document.getElementById('q').textContent=c[1];
+    document.getElementById('a').textContent=c[2];
+  },120);
+  document.getElementById('counter').textContent='Card '+(idx+1)+' of '+deck.length+(active==='All'?'':' · '+active);
+  document.getElementById('prog').style.width=((idx+1)/deck.length*100)+'%';
+  document.getElementById('prev').disabled=idx===0;
+}
+function flip(){document.getElementById('card').classList.toggle('flip');}
+function next(){if(idx<deck.length-1){idx++;render();}}
+function prev(){if(idx>0){idx--;render();}}
+function shuffle(){for(var i=deck.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=deck[i];deck[i]=deck[j];deck[j]=t;}idx=0;render();}
+var cc=document.getElementById('cats');
+cats.forEach(function(cat){var b=document.createElement('div');b.className='cat'+(cat==='All'?' on':'');b.textContent=cat;b.onclick=function(){active=cat;[].forEach.call(cc.children,function(x){x.classList.remove('on');});b.classList.add('on');rebuild();};cc.appendChild(b);});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();if(e.key===' '){e.preventDefault();flip();}});
+rebuild();
+</script>
+</body></html>

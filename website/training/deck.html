@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
+<title>United Developers — Roofing Sales Playbook (Deck)</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#081B30;--navy2:#0C2440;--blue:#C53030;--blued:#9B1C1C;--ice:#FBF1F1;--line:#E4EAF4;--body:#4A5872;--gold:#F5B82E;--green:#10B981;--sky:#E89A9A}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:#04101e;color:#fff;overflow:hidden}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.03em;line-height:1.05}
+  .deck{position:relative;width:100vw;height:100vh}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:clamp(2rem,6vw,6rem);background:linear-gradient(160deg,#06182c,#081B30 60%,#0C2440)}
+  .slide.on{display:flex;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);margin-bottom:1rem}
+  .eyebrow::before{content:"";width:28px;height:2px;background:currentColor}
+  h1.big{font-size:clamp(2.4rem,6vw,4.6rem);font-weight:900}
+  h1.big em{font-style:normal;background:linear-gradient(92deg,#E89A9A,#D04545);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2.t{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:1.4rem}
+  p.sub{color:#C5D4EC;font-size:clamp(1rem,1.7vw,1.35rem);max-width:60ch}
+  .lead{color:#C5D4EC;font-size:clamp(1rem,1.6vw,1.25rem);max-width:54ch}
+  ul.pts{list-style:none;margin-top:1.4rem;display:flex;flex-direction:column;gap:.9rem}
+  ul.pts li{display:flex;gap:.9rem;align-items:flex-start;font-size:clamp(1rem,1.6vw,1.3rem);color:#DCE7F8}
+  ul.pts .ck{flex:none;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#C53030,#9B1C1C);display:grid;place-items:center;font-weight:800;font-size:.85rem;margin-top:.15rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem;margin-top:1.6rem}
+  .box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:1.4rem}
+  .box h3{color:#fff;font-size:1.15rem;margin-bottom:.4rem}
+  .box p{color:#B7C9E5;font-size:.95rem}
+  .box .big{font-family:'Sora';font-size:2.4rem;font-weight:900;color:var(--sky)}
+  .steps{display:flex;flex-direction:column;gap:.8rem;margin-top:1.4rem}
+  .step{display:flex;gap:1rem;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:1rem 1.2rem}
+  .step .n{flex:none;width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#C53030,#9B1C1C);display:grid;place-items:center;font-weight:800}
+  .step b{color:#fff}.step span{color:#B7C9E5;font-size:.95rem}
+  .logo{position:fixed;top:1.6rem;left:1.8rem;height:30px;filter:brightness(0) invert(1);z-index:5;opacity:.9}
+  .pager{position:fixed;bottom:1.4rem;right:1.8rem;color:#7E94B8;font-size:.85rem;font-weight:600;z-index:5}
+  .ctrl{position:fixed;bottom:1.4rem;left:1.8rem;display:flex;gap:.5rem;z-index:5}
+  .ctrl button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:9px;width:40px;height:40px;font-size:1.1rem;cursor:pointer}
+  .final-cta{background:linear-gradient(135deg,#0C2440,#081B30)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .tip{margin-top:1.3rem;background:rgba(245,184,46,.12);border:1px solid rgba(245,184,46,.3);border-radius:12px;padding:.9rem 1.1rem;color:#F5DCA0;font-size:.95rem}
+  .num{font-family:'Sora';font-weight:900;color:var(--sky)}
+</style>
+</head><body>
+<img class="logo" src="../assets/logo-white.png" alt="United Developers"/>
+<div class="deck" id="deck">
+
+<section class="slide on"><span class="eyebrow">United Developers · Roofing Sales Playbook</span><h1 class="big">Roofs done right.<br/><em>Claims handled. Homes protected.</em></h1><p class="sub" style="margin-top:1.4rem">The complete playbook — roofing knowledge, the storm-claim process, objection handling, and the lead machine behind it. Family-owned in the DMV since 2005.</p><p class="lead" style="margin-top:2rem;color:#7E94B8">Use ← → arrows or the buttons to advance.</p></section>
+
+<section class="slide"><span class="eyebrow">The Opportunity</span><h2 class="t">Storm restoration is a goldmine — if you move first.</h2><div class="grid"><div class="box"><div class="big">$0</div><h3>Out of pocket</h3><p>Most approved storm claims cost the homeowner only their deductible — an easy “yes.”</p></div><div class="box"><div class="big">24–48h</div><h3>To mold</h3><p>Urgency is real and honest — damage compounds fast after a storm.</p></div><div class="box"><div class="big">1 yr</div><h3>Claim deadline</h3><p>Most policies expire ~1 year after the storm. First crew on the street wins.</p></div></div><p class="tip">⚡ The play: be the trusted local who gets there first, documents it right, and handles the insurance.</p></section>
+
+<section class="slide"><span class="eyebrow">Who We Are</span><h2 class="t">Licensed, local, and here for the warranty.</h2><ul class="pts"><li><span class="ck">✓</span> Family-owned, serving Maryland, Virginia &amp; the DMV since 2005</li><li><span class="ck">✓</span> MD MHIC #111971 · VA DPOR Class A #2705183185 · PA #192325</li><li><span class="ck">✓</span> GAF Factory-Certified · A+ BBB · 4.9★ across 131+ reviews</li><li><span class="ck">✓</span> Lifetime material warranty + 2-year UD workmanship warranty</li><li><span class="ck">✓</span> We meet the adjuster on-site and handle the whole claim</li></ul></section>
+
+<section class="slide"><span class="eyebrow">The Process — Memorize This</span><h2 class="t">Five steps, every time.</h2><div class="steps"><div class="step"><span class="n">1</span><div><b>Free 24-hour inspection</b> <span>— full photo report, no obligation</span></div></div><div class="step"><span class="n">2</span><div><b>Document &amp; meet the adjuster</b> <span>— on-site, so nothing legitimate is missed</span></div></div><div class="step"><span class="n">3</span><div><b>Claim approved</b> <span>— supplements filed for code upgrades &amp; missed items</span></div></div><div class="step"><span class="n">4</span><div><b>Install</b> <span>— most roofs done in a single day</span></div></div><div class="step"><span class="n">5</span><div><b>Homeowner pays the deductible</b> <span>— insurance covers the rest, warranty registered</span></div></div></div></section>
+
+<section class="slide"><span class="eyebrow">Roofing 101</span><h2 class="t">Materials at a glance.</h2><div class="grid"><div class="box"><h3>Architectural shingles</h3><p>Most popular. Dimensional asphalt, ~25–30 yr, GAF Timberline HDZ flagship.</p></div><div class="box"><h3>3-tab shingles</h3><p>Budget, flat, ~15–20 yr. Mostly phased out.</p></div><div class="box"><h3>Standing-seam metal</h3><p>Premium. 40–70 yr, concealed fasteners, energy efficient.</p></div><div class="box"><h3>TPO / EPDM (flat)</h3><p>Commercial/low-slope membranes. TPO = white welded; EPDM = black rubber.</p></div></div><p class="tip">📏 A “square” = 100 sq ft. Pitch = rise/run (e.g. 6/12). Most leaks come from <b>flashing</b>, not field shingles.</p></section>
+
+<section class="slide"><span class="eyebrow">Reading Damage</span><h2 class="t">Hail vs wind — know the signs.</h2><div class="two"><div class="box"><h3 style="color:var(--sky)">Hail</h3><ul class="pts" style="margin-top:.6rem"><li style="font-size:1.05rem"><span class="ck">·</span> Random bruising / soft spots</li><li style="font-size:1.05rem"><span class="ck">·</span> Granule loss exposing black asphalt</li><li style="font-size:1.05rem"><span class="ck">·</span> Dented gutters, vents, AC fins (collateral)</li><li style="font-size:1.05rem"><span class="ck">·</span> Often invisible from the ground</li></ul></div><div class="box"><h3 style="color:var(--sky)">Wind</h3><ul class="pts" style="margin-top:.6rem"><li style="font-size:1.05rem"><span class="ck">·</span> Creased / lifted / curled shingles</li><li style="font-size:1.05rem"><span class="ck">·</span> Missing shingles, exposed nails</li><li style="font-size:1.05rem"><span class="ck">·</span> Broken seal strip (even if it looks intact)</li></ul></div></div></section>
+
+<section class="slide"><span class="eyebrow">Insurance Essentials</span><h2 class="t">Speak the adjuster's language.</h2><ul class="pts"><li><span class="ck">✓</span> <b>ACV</b> = replacement cost − depreciation · <b>RCV</b> = full replacement (depreciation paid back after the work)</li><li><span class="ck">✓</span> <b>Deductible</b> = the homeowner's only cost. It's owed by law — never offer to "waive" it (fraud)</li><li><span class="ck">✓</span> <b>Supplement</b> = get paid for missed items: code upgrades, O&amp;P, extra layers</li><li><span class="ck">✓</span> <b>Xactimate</b> is the pricing software — knowing it builds adjuster credibility</li><li><span class="ck">✓</span> File by the <b>date of loss</b>; document the <b>test square</b> hail hits</li></ul></section>
+
+<section class="slide"><span class="eyebrow">Objection Handling</span><h2 class="t">The four you'll hear every day.</h2><div class="grid"><div class="box"><h3>“Too expensive”</h3><p>Insurance pays — your cost is just the deductible. No storm? $0-down financing.</p></div><div class="box"><h3>“I'll think about it”</h3><p>Agree, then add honest urgency: damage worsens, claim deadlines, free to document today.</p></div><div class="box"><h3>“Other quotes”</h3><p>“Smart — just verify each is licensed with local reviews. Chasers lowball then vanish.”</p></div><div class="box"><h3>“Is it free?”</h3><p>Yes — free, no obligation. If there's no damage, we tell you honestly.</p></div></div></section>
+
+<section class="slide"><span class="eyebrow">Positioning</span><h2 class="t">Storm chasers vs United Developers.</h2><div class="two"><div class="box" style="border-color:rgba(197,48,48,.4)"><h3 style="color:#E89A9A">🚩 Storm chasers</h3><ul class="pts" style="margin-top:.6rem"><li style="font-size:1.02rem"><span class="ck">·</span> Out-of-state, here for one season</li><li style="font-size:1.02rem"><span class="ck">·</span> Pressure + deposit up front</li><li style="font-size:1.02rem"><span class="ck">·</span> No local office or license</li><li style="font-size:1.02rem"><span class="ck">·</span> Gone before the warranty matters</li></ul></div><div class="box" style="border-color:rgba(16,185,129,.4)"><h3 style="color:#34D399">✓ United Developers</h3><ul class="pts" style="margin-top:.6rem"><li style="font-size:1.02rem"><span class="ck">·</span> Licensed &amp; rooted in MD/VA since 2005</li><li style="font-size:1.02rem"><span class="ck">·</span> 131+ local 5-star reviews</li><li style="font-size:1.02rem"><span class="ck">·</span> We meet your adjuster on-site</li><li style="font-size:1.02rem"><span class="ck">·</span> Lifetime + 2-yr warranty, here to honor it</li></ul></div></div></section>
+
+<section class="slide"><span class="eyebrow">Our Unfair Advantage</span><h2 class="t">Tools no local competitor has.</h2><div class="grid"><div class="box"><h3>🛰️ Instant satellite quote</h3><p>“See your roof from space.” Homeowner types their address, traces the roof, gets a price in 60 seconds. A killer door-opener.</p></div><div class="box"><h3>🌩️ Live storm tracker</h3><p>Real NOAA hail &amp; wind map of the DMV. “Let me show you — a storm hit your street last month.” Instant credibility + urgency.</p></div></div><p class="tip">💡 Lead conversations with these. They turn a cold knock into a warm, data-backed reason to inspect.</p></section>
+
+<section class="slide"><span class="eyebrow">The Machine Behind You</span><h2 class="t">A full lead system — built and live.</h2><ul class="pts"><li><span class="ck">✓</span> Bilingual website + instant quote + online booking + reviews + gallery</li><li><span class="ck">✓</span> Live storm tracker &amp; canvassing walk-list generator (work the hit streets)</li><li><span class="ck">✓</span> Daily auto-publishing SEO engine + 16 local landing pages + IndexNow</li><li><span class="ck">✓</span> Ready-to-launch ad system: competitor-modeled copy, creatives &amp; landing page</li><li><span class="ck">✓</span> AI receptionist (Riley) answering &amp; booking 24/7 on every page</li></ul></section>
+
+<section class="slide"><span class="eyebrow">Path to Scale</span><h2 class="t">How this becomes a machine.</h2><div class="steps"><div class="step"><span class="n">1</span><div><b>Storm canvassing</b> <span>— free, immediate: work the streets the tracker maps</span></div></div><div class="step"><span class="n">2</span><div><b>Google Business Profile + reviews</b> <span>— compounding, where most local calls come from</span></div></div><div class="step"><span class="n">3</span><div><b>Local Services Ads + Meta</b> <span>— paid leads straight to the inbox, creative already built</span></div></div><div class="step"><span class="n">4</span><div><b>Organic SEO/AEO</b> <span>— the daily engine ranks you everywhere over time</span></div></div></div></section>
+
+<section class="slide final-cta"><span class="eyebrow">Go Live</span><h1 class="big">The machine is built.<br/><em>Let's turn it on.</em></h1><ul class="pts" style="margin-top:1.6rem"><li><span class="ck">1</span> Shah connects the lead inbox + domain (≈30 min)</li><li><span class="ck">2</span> Optimize Google Business Profile &amp; start review requests</li><li><span class="ck">3</span> Work the storm map · launch the ads when ready</li></ul><p class="sub" style="margin-top:1.8rem;color:#fff;font-weight:700">United Developers · (240) 880-2108 · MHIC #111971 · VA #2705183185</p></section>
+
+</div>
+<div class="ctrl"><button onclick="go(-1)">‹</button><button onclick="go(1)">›</button></div>
+<div class="pager" id="pager"></div>
+<script>
+var slides=[].slice.call(document.querySelectorAll('.slide')),i=0;
+function show(n){slides[i].classList.remove('on');i=Math.max(0,Math.min(slides.length-1,n));slides[i].classList.add('on');document.getElementById('pager').textContent=(i+1)+' / '+slides.length;}
+function go(d){show(i+d);}
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1);if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);});
+document.getElementById('pager').textContent='1 / '+slides.length;
+</script>
+</body></html>
