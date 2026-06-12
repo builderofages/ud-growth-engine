@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>UD Command Center — Pipeline · Address Intel · Quotes · Claims (Internal)</title>
+<link rel="icon" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#081B30;--navy2:#0C2440;--red:#C53030;--red2:#9B1C1C;--gold:#F5B82E;--green:#10B981;--ink:#1a2733;--mut:#5b6b7b;--bg:#f4f6f9;--line:#e3e9f0}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+h1,h2,h3{font-family:Sora,sans-serif}
+header{background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header img{height:30px}
+header h1{font-size:16px;letter-spacing:.4px}
+header .tag{background:var(--red);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:1px}
+nav{display:flex;gap:4px;background:var(--navy2);padding:0 16px}
+nav button{font:600 13px Inter;background:none;border:none;color:#9fb2c5;padding:13px 18px;cursor:pointer;border-bottom:3px solid transparent}
+nav button.on{color:#fff;border-color:var(--red)}
+main{max-width:1280px;margin:0 auto;padding:20px}
+.tab{display:none}.tab.on{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.btn{font:600 13px Inter;background:var(--red);color:#fff;border:none;border-radius:7px;padding:9px 16px;cursor:pointer}
+.btn.sec{background:var(--navy)}.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.sm{padding:4px 9px;font-size:11px;border-radius:5px}
+input,select,textarea{font:400 13px Inter;border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;background:#fff}
+label{font:600 11px Inter;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;display:block;margin:10px 0 4px}
+.grid{display:grid;gap:10px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi b{font:800 22px Sora;color:var(--navy);display:block}
+.kpi span{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.board{display:grid;grid-template-columns:repeat(7,minmax(170px,1fr));gap:10px;overflow-x:auto}
+.col{background:#eef2f7;border-radius:10px;padding:8px;min-height:120px}
+.col h3{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);padding:4px 6px;display:flex;justify-content:space-between}
+.job{background:#fff;border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:8px;padding:9px;margin:7px 0;cursor:pointer;font-size:12px}
+.job.hot{border-left-color:var(--red)}
+.job b{display:block;font-size:13px}
+.job .v{color:var(--green);font-weight:700}
+.job .meta{color:var(--mut);font-size:11px;margin-top:2px}
+.modalbg{position:fixed;inset:0;background:rgba(8,27,48,.55);display:none;align-items:flex-start;justify-content:center;padding:30px;z-index:50;overflow:auto}
+.modalbg.on{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:680px;width:100%;padding:22px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font:700 10px Inter;padding:3px 9px;border-radius:20px;letter-spacing:.5px}
+.p-hi{background:#fde8e8;color:var(--red2)}.p-md{background:#fef3d8;color:#92600a}.p-lo{background:#e7f7f0;color:#0b7a55}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font:600 10.5px Inter;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);text-align:left;padding:7px 8px;border-bottom:2px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line)}
+.note{font-size:12px;color:var(--mut);line-height:1.5}
+.verdict{border-radius:10px;padding:14px 16px;margin:12px 0;font-weight:600}
+.v-hi{background:#fde8e8;border:1px solid #f5b5b5;color:var(--red2)}
+.v-md{background:#fef3d8;border:1px solid #f3d894;color:#7a5106}
+.v-lo{background:#e7f7f0;border:1px solid #b2e6d2;color:#0b6b4b}
+.quote-doc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:28px;max-width:760px}
+.quote-doc h2{color:var(--navy)}
+pre.packet{white-space:pre-wrap;background:#0C2440;color:#dbe7f3;border-radius:10px;padding:18px;font:12.5px/1.6 ui-monospace,Menlo,monospace;max-height:480px;overflow:auto}
+@media print{header,nav,.noprint{display:none!important}body{background:#fff}main{padding:0;max-width:none}.tab{display:none}.tab.print-target{display:block}}
+@media(max-width:900px){.board{grid-template-columns:repeat(7,200px)}.g4,.g3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <img src="../assets/logo-white.png" alt="UD" onerror="this.style.display='none'">
+  <h1>UD COMMAND CENTER</h1><span class="tag">INTERNAL</span>
+  <span style="margin-left:auto" class="row noprint">
+    <button class="btn ghost sm" onclick="CC.exportJSON()">Backup JSON</button>
+    <button class="btn ghost sm" onclick="document.getElementById('imp').click()">Restore</button>
+    <input type="file" id="imp" style="display:none" accept=".json" onchange="CC.importJSON(this)">
+    <button class="btn ghost sm" onclick="CC.exportCSV()">Export CSV</button>
+  </span>
+</header>
+<nav class="noprint">
+  <button class="on" data-t="pipe" onclick="CC.tab(this)">Pipeline</button>
+  <button data-t="intel" onclick="CC.tab(this)">Address Intel</button>
+  <button data-t="quote" onclick="CC.tab(this)">Quote Builder</button>
+  <button data-t="claim" onclick="CC.tab(this)">Claim Packet</button>
+</nav>
+<main>
+
+<!-- ============ PIPELINE ============ -->
+<section class="tab on" id="t-pipe">
+  <div class="kpis" id="kpis"></div>
+  <div class="row noprint" style="margin-bottom:12px">
+    <button class="btn" onclick="CC.openJob()">+ New Lead / Job</button>
+    <span class="note">Click any card to edit. Data lives in this browser (localStorage) — use Backup JSON weekly. Multi-user/cloud upgrade path: see SAAS-BUILD-ROADMAP.md.</span>
+  </div>
+  <div class="board" id="board"></div>
+</section>
+
+<!-- ============ ADDRESS INTEL ============ -->
+<section class="tab" id="t-intel">
+  <div class="card">
+    <h2 style="margin-bottom:4px">Address Storm Intelligence</h2>
+    <p class="note">Enter any DMV address → geocode → check it against live NOAA/NWS storm reports (last 120 days, 15-mile radius) → claim-probability verdict + pre-estimate. This is the legal version of "satellite damage detection": radar/report-verified <i>exposure</i>, confirmed by on-site inspection. With a Google key in config.js it also pulls exact roof area via the Solar API.</p>
+    <div class="grid g2" style="margin-top:10px">
+      <div><label>Property address</label><input id="ix-addr" placeholder="123 Main St, Gaithersburg, MD"></div>
+      <div style="display:flex;align-items:flex-end;gap:8px">
+        <button class="btn" onclick="CC.intel()">Run Intel</button>
+        <button class="btn ghost" id="ix-add" style="display:none" onclick="CC.intelToLead()">→ Add as Lead</button>
+      </div>
+    </div>
+    <div id="ix-out"></div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="tab" id="t-quote">
+  <div class="card noprint">
+    <h2>Instant Quote Builder</h2>
+    <div class="grid g4" style="margin-top:8px">
+      <div><label>Customer</label><input id="q-name" placeholder="Homeowner name"></div>
+      <div><label>Address</label><input id="q-addr" placeholder="Property address"></div>
+      <div><label>Roof squares (1 sq = 100 sqft)</label><input id="q-sq" type="number" value="24"></div>
+      <div><label>Steepness/complexity</label><select id="q-pitch"><option value="1">Walkable (≤6/12)</option><option value="1.12">Steep (7–9/12) +12%</option><option value="1.25">Very steep (10/12+) +25%</option></select></div>
+      <div><label>System tier</label><select id="q-tier">
+        <option value="475,575,GAF Timberline HDZ — Architectural">Good — GAF Timberline HDZ</option>
+        <option value="560,680,GAF Timberline UHDZ — Ultra HD">Better — GAF Timberline UHDZ</option>
+        <option value="900,1150,Standing-Seam Metal">Best — Standing-Seam Metal</option>
+        <option value="650,850,TPO/EPDM Flat System (commercial)">Flat — TPO/EPDM</option></select></div>
+      <div><label>Gutters (linear ft, 0 = none)</label><input id="q-gut" type="number" value="0"></div>
+      <div><label>Deductible (insurance jobs)</label><input id="q-ded" type="number" value="1500"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn" onclick="CC.quote()">Generate Quote</button></div>
+    </div>
+  </div>
+  <div id="q-out"></div>
+</section>
+
+<!-- ============ CLAIM PACKET ============ -->
+<section class="tab" id="t-claim">
+  <div class="card noprint">
+    <h2>Insurance Claim Packet Generator</h2>
+    <p class="note">Produces the carrier-ready summary reps attach to every claim: NWS storm citation, scope, photo checklist, timeline. Run Address Intel first and the storm fields auto-fill. <b>Guardrails baked in:</b> documents damage, never interprets policy or negotiates (that's public adjusting), never touches the deductible.</p>
+    <div class="grid g3" style="margin-top:8px">
+      <div><label>Homeowner</label><input id="c-name"></div>
+      <div><label>Property address</label><input id="c-addr"></div>
+      <div><label>Carrier</label><input id="c-carrier" placeholder="State Farm / Allstate / USAA…"></div>
+      <div><label>Claim # (if filed)</label><input id="c-num" placeholder="pending"></div>
+      <div><label>Storm date</label><input id="c-date" type="date"></div>
+      <div><label>Event (from intel)</label><input id="c-event" placeholder="e.g. 1.00 in hail — NWS LSR, 2.1 mi away"></div>
+      <div><label>Damage observed on-site</label><input id="c-dmg" placeholder="e.g. hail bruising on S/W slopes, 11 hits per test square"></div>
+      <div><label>Inspector / rep</label><input id="c-rep"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn" onclick="CC.packet()">Generate Packet</button></div>
+    </div>
+  </div>
+  <div id="c-out"></div>
+</section>
+</main>
+
+<div class="modalbg" id="modal"><div class="modal">
+  <h2 id="m-title">New Lead</h2>
+  <div class="grid g2">
+    <div><label>Name</label><input id="m-name"></div>
+    <div><label>Phone</label><input id="m-phone"></div>
+    <div><label>Address</label><input id="m-addr"></div>
+    <div><label>Source</label><select id="m-src"><option>Door knock</option><option>Website</option><option>GBP / Google</option><option>Referral</option><option>Storm canvass</option><option>Commercial/PM</option><option>Ads</option><option>Other</option></select></div>
+    <div><label>Stage</label><select id="m-stage"></select></div>
+    <div><label>Est. value ($)</label><input id="m-val" type="number" value="14000"></div>
+    <div><label>Carrier</label><input id="m-carrier"></div>
+    <div><label>Claim #</label><input id="m-claim"></div>
+    <div><label>Deductible</label><input id="m-ded" type="number"></div>
+    <div><label>Hot lead?</label><select id="m-hot"><option value="">No</option><option value="1">🔥 Yes</option></select></div>
+  </div>
+  <label>Notes (adjuster mtg, supplements, dates…)</label><textarea id="m-notes" rows="3"></textarea>
+  <div class="row" style="margin-top:14px;justify-content:flex-end">
+    <button class="btn ghost" onclick="CC.close()">Cancel</button>
+    <button class="btn ghost" id="m-del" onclick="CC.delJob()" style="color:var(--red)">Delete</button>
+    <button class="btn" onclick="CC.saveJob()">Save</button>
+  </div>
+</div></div>
+
+<script>
+var STAGES=["Lead","Inspection","Claim Filed","Adjuster/Approved","Contract","Install","Paid"];
+var CC={
+  db:JSON.parse(localStorage.getItem('ud_cc_v1')||'{"jobs":[]}'),
+  cur:null,_intel:null,
+  save:function(){localStorage.setItem('ud_cc_v1',JSON.stringify(this.db));this.render();},
+  tab:function(b){document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});document.getElementById('t-'+b.dataset.t).classList.add('on');},
+  fmt:function(n){return '$'+(+n||0).toLocaleString();},
+  render:function(){
+    var J=this.db.jobs,k=document.getElementById('kpis');
+    var tot=J.reduce(function(s,j){return s+(+j.val||0)},0);
+    var won=J.filter(function(j){return ['Contract','Install','Paid'].indexOf(j.stage)>-1});
+    var wonV=won.reduce(function(s,j){return s+(+j.val||0)},0);
+    var post=J.filter(function(j){return j.stage!=='Lead'}).length;
+    var cr=post?Math.round(won.length/post*100):0;
+    k.innerHTML='<div class="kpi"><b>'+J.length+'</b><span>Total in pipeline</span></div>'
+      +'<div class="kpi"><b>'+this.fmt(tot)+'</b><span>Pipeline value</span></div>'
+      +'<div class="kpi"><b>'+won.length+'</b><span>Jobs won</span></div>'
+      +'<div class="kpi"><b>'+this.fmt(wonV)+'</b><span>Won value</span></div>'
+      +'<div class="kpi"><b>'+cr+'%</b><span>Close rate (post-inspection)</span></div>';
+    var B=document.getElementById('board');B.innerHTML='';
+    STAGES.forEach(function(st){
+      var col=document.createElement('div');col.className='col';
+      var inStage=J.filter(function(j){return j.stage===st});
+      var v=inStage.reduce(function(s,j){return s+(+j.val||0)},0);
+      col.innerHTML='<h3>'+st+'<span>'+inStage.length+' · '+CC.fmt(v)+'</span></h3>';
+      inStage.forEach(function(j){
+        var d=document.createElement('div');d.className='job'+(j.hot?' hot':'');
+        d.innerHTML='<b>'+(j.name||'—')+(j.hot?' 🔥':'')+'</b><span class="v">'+CC.fmt(j.val)+'</span>'
+          +'<div class="meta">'+(j.addr||'')+'</div><div class="meta">'+(j.src||'')+(j.carrier?' · '+j.carrier:'')+'</div>'
+          +'<div class="row noprint" style="margin-top:6px">'
+          +(STAGES.indexOf(st)>0?'<button class="btn ghost sm" onclick="event.stopPropagation();CC.move(\''+j.id+'\',-1)">←</button>':'')
+          +(STAGES.indexOf(st)<6?'<button class="btn sec sm" onclick="event.stopPropagation();CC.move(\''+j.id+'\',1)">Advance →</button>':'')+'</div>';
+        d.onclick=function(){CC.openJob(j.id)};col.appendChild(d);
+      });B.appendChild(col);
+    });
+  },
+  move:function(id,dir){var j=this.db.jobs.find(function(x){return x.id===id});var i=STAGES.indexOf(j.stage)+dir;
+    if(i>=0&&i<STAGES.length){j.stage=STAGES[i];this.save();}},
+  openJob:function(id){this.cur=id||null;var j=id?this.db.jobs.find(function(x){return x.id===id}):{};
+    document.getElementById('m-title').textContent=id?'Edit Job':'New Lead';
+    document.getElementById('m-del').style.display=id?'':'none';
+    var sl=document.getElementById('m-stage');sl.innerHTML=STAGES.map(function(s){return '<option'+(j.stage===s?' selected':'')+'>'+s+'</option>'}).join('');
+    ['name','phone','addr','src','val','carrier','claim','ded','hot','notes'].forEach(function(f){
+      var el=document.getElementById('m-'+f);if(el)el.value=j[f]||(f==='val'?14000:'');});
+    document.getElementById('modal').classList.add('on');},
+  close:function(){document.getElementById('modal').classList.remove('on');},
+  saveJob:function(){var j=this.cur?this.db.jobs.find(function(x){return x.id===CC.cur}):{id:'j'+Date.now(),created:new Date().toISOString()};
+    ['name','phone','addr','src','val','carrier','claim','ded','hot','notes'].forEach(function(f){j[f]=document.getElementById('m-'+f).value;});
+    j.stage=document.getElementById('m-stage').value;
+    if(!this.cur)this.db.jobs.push(j);this.close();this.save();},
+  delJob:function(){this.db.jobs=this.db.jobs.filter(function(x){return x.id!==CC.cur});this.close();this.save();},
+  exportJSON:function(){var a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(this.db,null,1));a.download='ud-pipeline-'+new Date().toISOString().slice(0,10)+'.json';a.click();},
+  importJSON:function(inp){var r=new FileReader();r.onload=function(){CC.db=JSON.parse(r.result);CC.save();};r.readAsText(inp.files[0]);},
+  exportCSV:function(){var h=['name','phone','addr','stage','src','val','carrier','claim','ded','notes','created'];
+    var rows=[h.join(',')].concat(this.db.jobs.map(function(j){return h.map(function(f){return '"'+String(j[f]||'').replace(/"/g,'""')+'"'}).join(',')}));
+    var a=document.createElement('a');a.href='data:text/csv,'+encodeURIComponent(rows.join('\n'));a.download='ud-pipeline.csv';a.click();},
+
+  /* ---------- ADDRESS INTEL ---------- */
+  intel:function(){
+    var addr=document.getElementById('ix-addr').value.trim();if(!addr)return;
+    var out=document.getElementById('ix-out');out.innerHTML='<p class="note" style="margin-top:12px">Geocoding…</p>';
+    fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&maxLocations=1&outFields=*&singleLine='+encodeURIComponent(addr))
+    .then(function(r){return r.json()}).then(function(g){
+      if(!g.candidates||!g.candidates.length)throw 'Address not found';
+      var c=g.candidates[0],lat=c.location.y,lon=c.location.x;
+      out.innerHTML='<p class="note" style="margin-top:12px">Found: '+c.address+' — pulling 120 days of NOAA storm reports…</p>';
+      var ets=new Date(),sts=new Date(Date.now()-120*864e5);
+      function f(d){return d.toISOString().slice(0,19)+'Z'}
+      return fetch('https://mesonet.agron.iastate.edu/geojson/lsr.geojson?sts='+f(sts)+'&ets='+f(ets)+'&wfos=LWX')
+      .then(function(r){return r.json()}).then(function(j){CC.intelRender(c.address,lat,lon,j.features||[])});
+    }).catch(function(e){out.innerHTML='<div class="verdict v-md">'+e+'</div>';});
+  },
+  intelRender:function(faddr,lat,lon,feats){
+    function dist(a,b,c,d){var R=3959,p=Math.PI/180,x=(c-a)*p,y=(d-b)*p;
+      var h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)*Math.sin(y/2);
+      return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));}
+    var hits=feats.map(function(x){var p=x.properties,co=x.geometry.coordinates;
+      return {t:(p.typetext||'').toUpperCase(),mag:parseFloat(p.magnitude)||0,d:dist(lat,lon,co[1],co[0]),
+        when:p.valid,city:p.city,county:p.county,raw:p};})
+      .filter(function(h){return h.d<=15&&!/^ANZ/.test(h.raw.county||'')&&(h.t.indexOf('HAIL')>-1||(h.t.indexOf('WIND')>-1&&h.mag>=50)||h.t.indexOf('TREE')>-1)})
+      .sort(function(a,b){return a.d-b.d});
+    var hail=hits.filter(function(h){return h.t.indexOf('HAIL')>-1});
+    var score=hail.some(function(h){return h.d<=5&&h.mag>=1})?'HIGH':hail.length||hits.some(function(h){return h.d<=5})?'MEDIUM':hits.length?'LOW':'NONE';
+    var vcls=score==='HIGH'?'v-hi':score==='MEDIUM'?'v-md':'v-lo';
+    var vtxt={HIGH:'HIGH claim probability — claim-grade hail within 5 miles. Book the inspection; cite the NWS report at the door.',
+      MEDIUM:'MEDIUM — storm activity nearby. Worth a free inspection; verify on the roof.',
+      LOW:'LOW — distant/weak reports only. Retail angle (age/wear), not a storm claim.',
+      NONE:'No qualifying reports within 15 mi / 120 days. Retail or maintenance (RoofShield) angle only — do NOT pitch a storm claim.'}[score];
+    var rows=hits.slice(0,12).map(function(h){return '<tr><td>'+h.when.slice(0,10)+'</td><td>'+h.t+'</td><td>'+(h.mag||'—')+'</td><td>'+h.d.toFixed(1)+' mi</td><td>'+(h.city||'')+', '+(h.county||'')+'</td></tr>'}).join('');
+    var est='';var KEY=(window.UD_CONFIG&&UD_CONFIG.GOOGLE_MAPS_KEY)||'';
+    var html='<div class="verdict '+vcls+'">'+score+': '+vtxt+'</div>'
+      +'<div class="row" style="margin:8px 0"><a class="btn sec sm" target="_blank" href="https://www.google.com/maps/@'+lat+','+lon+',20z/data=!3m1!1e3">Satellite view</a>'
+      +'<a class="btn ghost sm" target="_blank" href="https://www.google.com/maps?layer=c&cbll='+lat+','+lon+'">Street view</a></div>'
+      +(hits.length?'<table><tr><th>Date</th><th>Type</th><th>Size/Speed</th><th>Distance</th><th>Where</th></tr>'+rows+'</table>':'')
+      +'<div id="ix-est" class="note" style="margin-top:10px"></div>';
+    document.getElementById('ix-out').innerHTML=html;
+    document.getElementById('ix-add').style.display='';
+    this._intel={addr:faddr,lat:lat,lon:lon,score:score,top:hits[0]||null};
+    if(hits[0]){document.getElementById('c-addr').value=faddr;
+      document.getElementById('c-date').value=hits[0].when.slice(0,10);
+      document.getElementById('c-event').value=hits[0].t+' '+(hits[0].mag||'')+' — NWS LSR, '+hits[0].d.toFixed(1)+' mi from property ('+hits[0].city+', '+hits[0].county+')';}
+    if(KEY){fetch('https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude='+lat+'&location.longitude='+lon+'&requiredQuality=MEDIUM&key='+KEY)
+      .then(function(r){return r.json()}).then(function(s){
+        var a=s.solarPotential&&s.solarPotential.wholeRoofStats?s.solarPotential.wholeRoofStats.areaMeters2*10.764:0;
+        if(!a)return;var sq=Math.round(a*1.10/100);
+        document.getElementById('q-sq').value=sq;document.getElementById('q-addr').value=faddr;
+        document.getElementById('ix-est').innerHTML='<b>Roof (Google Solar API):</b> '+Math.round(a).toLocaleString()+' sqft ≈ '+sq+' squares w/ waste → pre-estimate <b>$'+(sq*475).toLocaleString()+'–$'+(sq*675).toLocaleString()+'</b> (asphalt). Quote Builder pre-filled.';
+      }).catch(function(){});}
+    else{document.getElementById('ix-est').innerHTML='Add GOOGLE_MAPS_KEY in config.js to auto-measure this roof (Solar API) and pre-fill the quote.';}
+  },
+  intelToLead:function(){var i=this._intel;if(!i)return;
+    this.db.jobs.push({id:'j'+Date.now(),created:new Date().toISOString(),name:'(owner TBD)',addr:i.addr,
+      src:'Storm canvass',stage:'Lead',val:14000,hot:i.score==='HIGH'?'1':'',
+      notes:'Intel: '+i.score+(i.top?' — '+i.top.t+' '+i.top.mag+' @ '+i.top.d.toFixed(1)+'mi on '+i.top.when.slice(0,10):'')});
+    this.save();alert('Added to pipeline as '+(i.score==='HIGH'?'🔥 hot ':'')+'lead.');},
+
+  /* ---------- QUOTE ---------- */
+  quote:function(){
+    var sq=+document.getElementById('q-sq').value||0,pf=+document.getElementById('q-pitch').value;
+    var t=document.getElementById('q-tier').value.split(','),lo=+t[0],hi=+t[1],sys=t[2];
+    var gut=+document.getElementById('q-gut').value||0,ded=+document.getElementById('q-ded').value||0;
+    var L=Math.round(sq*lo*pf+gut*9),H=Math.round(sq*hi*pf+gut*14);
+    var name=document.getElementById('q-name').value||'Homeowner',addr=document.getElementById('q-addr').value||'';
+    document.getElementById('q-out').innerHTML='<div class="quote-doc" id="qdoc">'
+      +'<div class="row" style="justify-content:space-between"><h2>United Developers — Preliminary Estimate</h2><span class="note">'+new Date().toLocaleDateString()+'</span></div>'
+      +'<p class="note">Prepared for <b>'+name+'</b>'+(addr?' · '+addr:'')+'</p><hr style="border:none;border-top:1px solid var(--line);margin:12px 0">'
+      +'<table><tr><th>Item</th><th>Detail</th><th style="text-align:right">Range</th></tr>'
+      +'<tr><td>Roofing system</td><td>'+sys+' — '+sq+' squares'+(pf>1?' (steep/complex +'+Math.round((pf-1)*100)+'%)':'')+'</td><td style="text-align:right">$'+Math.round(sq*lo*pf).toLocaleString()+' – $'+Math.round(sq*hi*pf).toLocaleString()+'</td></tr>'
+      +(gut?'<tr><td>Seamless gutters</td><td>'+gut+' linear ft</td><td style="text-align:right">$'+(gut*9).toLocaleString()+' – $'+(gut*14).toLocaleString()+'</td></tr>':'')
+      +'<tr><td colspan="2"><b>Estimated total (installed, incl. tear-off & disposal)</b></td><td style="text-align:right"><b>$'+L.toLocaleString()+' – $'+H.toLocaleString()+'</b></td></tr></table>'
+      +'<div class="verdict v-lo" style="margin-top:14px">If storm damage is confirmed and your insurance claim is approved, your typical out-of-pocket is your deductible'+(ded?' (≈ $'+ded.toLocaleString()+')':'')+' — insurance covers the approved scope. We document everything and meet your adjuster on-site.</div>'
+      +'<p class="note" style="margin-top:10px">Preliminary range pending on-site verification. Lifetime material warranty (GAF) + 2-year workmanship. United Developers · (240) 880-2108 · office@udroofing.com · MD MHIC #111971 · VA Class A #2705183185 · PA #192325 · GAF Factory-Certified · A+ BBB.</p>'
+      +'<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="CC.printTab(\'t-quote\')">Print / Save PDF</button></div></div>';
+  },
+
+  /* ---------- CLAIM PACKET ---------- */
+  packet:function(){
+    function v(id){return document.getElementById(id).value||'—'}
+    var txt=
+'INSURANCE CLAIM DOCUMENTATION PACKET — UNITED DEVELOPERS\n'
++'================================================================\n'
++'Prepared: '+new Date().toLocaleString()+'\n'
++'Contractor: United Developers (UD Roofing) — (240) 880-2108 · office@udroofing.com\n'
++'Licenses: MD MHIC #111971 · VA Class A #2705183185 · PA #192325 · GAF Factory-Certified · A+ BBB\n\n'
++'PROPERTY & POLICY\n'
++'  Homeowner: '+v('c-name')+'\n  Property:  '+v('c-addr')+'\n  Carrier:   '+v('c-carrier')+'\n  Claim #:   '+v('c-num')+'\n\n'
++'WEATHER EVENT (objective record)\n'
++'  Date of loss: '+v('c-date')+'\n'
++'  Verified event: '+v('c-event')+'\n'
++'  Source: National Weather Service Local Storm Reports (Iowa Environmental\n'
++'  Mesonet archive) — independently verifiable public record.\n\n'
++'ON-SITE FINDINGS ('+v('c-rep')+')\n'
++'  '+v('c-dmg')+'\n\n'
++'PHOTO DOCUMENTATION CHECKLIST (attach all)\n'
++'  [ ] Address/elevation establishing shot   [ ] Each roof slope overview\n'
++'  [ ] Test squares w/ chalk (10x10) each slope   [ ] Close-ups of each hit w/ scale\n'
++'  [ ] Soft metals (vents, flashing, gutters — directional dents)\n'
++'  [ ] Collateral (screens, AC fins, fence, mailbox)   [ ] Interior leaks if any\n\n'
++'SCOPE POSITION\n'
++'  Damage documented is consistent with the verified weather event above.\n'
++'  We request adjuster inspection and will meet on-site to walk the roof.\n\n'
++'COMPLIANCE NOTES (internal — do not remove)\n'
++'  • We document damage; the carrier determines coverage. We do not interpret\n'
++'    policy language or negotiate claim value on the insured\'s behalf.\n'
++'  • Homeowner deductible is never paid, waived, rebated, or offset (MD/VA law).\n'
++'  • Homeowner signs all claim filings; we assist with documentation only.\n';
+    document.getElementById('c-out').innerHTML='<pre class="packet" id="pk">'+txt.replace(/</g,'&lt;')+'</pre>'
+      +'<div class="row noprint" style="margin-top:10px"><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById(\'pk\').textContent).then(function(){alert(\'Copied.\')})">Copy packet</button>'
+      +'<button class="btn ghost" onclick="CC.printTab(\'t-claim\')">Print</button></div>';
+  },
+  printTab:function(id){document.getElementById(id).classList.add('print-target');window.print();
+    setTimeout(function(){document.getElementById(id).classList.remove('print-target')},500);}
+};
+CC.render();
+</script>
+<script src="../config.js"></script>
+</body>
+</html>
