@@ -206,19 +206,33 @@
 <script>
 var STAGES=['New','Contacted','Inspection Set','Inspected','Claim Filed','Approved','Install Scheduled','Completed','Lost'];
 var STAGE_COL={New:'#3B82F6',Contacted:'#0EA5E9',"Inspection Set":'#8B5CF6',Inspected:'#F59E0B','Claim Filed':'#F59E0B',Approved:'#10B981','Install Scheduled':'#10B981',Completed:'#0a7a4a',Lost:'#94a3b8'};
-var KEY='ud_crm_leads_v1';
+var KEY='ud_crm_leads_v2';
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;}}
 function save(){localStorage.setItem(KEY,JSON.stringify(LEADS));}
 var LEADS=load();
-if(!LEADS){ // seed with clearly-labeled sample leads so it's not empty
+if(!LEADS){ // REAL commercial/HOA prospects — call list for the commercial roofing division (free, legal B2B outreach). Ask for the facilities/maintenance director.
   var now=Date.now();
+  function R(n,p,c,note){return {id:'c'+Math.random().toString(36).slice(2,8),name:n,phone:p,email:'',address:c,service:'Commercial',source:'Commercial Outreach',stage:'New',rep:'Unassigned',value:0,notes:note,created:now-Math.floor(Math.random()*3*864e5)};}
   LEADS=[
-   {id:'s1',name:'(SAMPLE) James T.',phone:'(240) 555-0142',email:'',address:'12 Maple Ave, Gaithersburg MD',service:'Storm / Hail',source:'Storm Tracker',stage:'Inspection Set',rep:'Rep 1',value:16500,notes:'Hail confirmed in zone. Inspection Fri AM.',created:now-2*864e5},
-   {id:'s2',name:'(SAMPLE) Maria G.',phone:'(240) 555-0188',email:'',address:'88 Oak St, Silver Spring MD',service:'Roof replacement',source:'Website',stage:'New',rep:'Unassigned',value:14000,notes:'Web form 9:04am. CALL NOW.',created:now-1*36e5},
-   {id:'s3',name:'(SAMPLE) Priya & Dev R.',phone:'(703) 555-0110',email:'',address:'5 Pine Ct, Alexandria VA',service:'Wind damage',source:'Canvassing',stage:'Claim Filed',rep:'Rep 2',value:21000,notes:'Adjuster meeting 6/15. Supplement likely.',created:now-6*864e5},
-   {id:'s4',name:'(SAMPLE) Carlos M.',phone:'(240) 555-0199',email:'',address:'30 Birch Rd, Wheaton MD',service:'Storm / Hail',source:'Spanish',stage:'Contacted',rep:'Unassigned',value:15500,notes:'Hablamos español. Texted booking link.',created:now-9*36e5},
-   {id:'s5',name:'(SAMPLE) The Bennetts',phone:'(301) 555-0123',email:'',address:'14 Cedar Ln, Rockville MD',service:'Roof replacement',source:'Referral',stage:'Approved',rep:'Rep 1',value:18750,notes:'Claim approved $18,750. Schedule install.',created:now-11*864e5},
-   {id:'s6',name:'(SAMPLE) Working Dogs HOA',phone:'(703) 555-0177',email:'',address:'Fairfax VA',service:'Commercial',source:'Google / LSA',stage:'Completed',rep:'Shah',value:42000,notes:'TPO flat roof. Done. ASK FOR REVIEW.',created:now-20*864e5}
+   R('FirstService Residential (MD)','800-870-0010','Bethesda MD','Large HOA/condo portfolio — multiple roofs per community. Ask for facilities/capital projects.'),
+   R('Vanguard Management Associates','301-540-8600','Germantown MD','MoCo & Frederick HOAs — aging roofs + storm exposure. Bulk re-roof program.'),
+   R('Community Assoc Mgmt Pros (CAMP)','703-821-2267','Annapolis MD / Fairfax VA','MD/DC/VA condos & co-ops — recurring roof maintenance & replacement.'),
+   R('CMC Management','301-692-1700','Rockville MD','Rockville-area HOAs — reserve-study roof replacements.'),
+   R('Tidewater Property Management','443-548-0191','Maryland','200+ associations, 17,000+ homes. Multi-property re-roof + storm restoration.'),
+   R('Coakley Realty','301-340-8700','Rockville MD','350+ commercial & residential tenants, MD/DC/VA. Commercial flat roofs.'),
+   R('McKenna & Vane Property Mgmt','301-703-8608','Montgomery County MD','SFH, condos & commercial. Commercial re-roof + repair contracts.'),
+   R('Sentry Management','800-932-6636','Maryland','Accredited HOA/condo manager statewide. Vetted-vendor roofing.'),
+   R('Comsource Management','see comsource.com','Silver Spring MD','One of largest MD-based managers — condos, PUDs, HOAs, co-ops.'),
+   R('HPS Management','see hpsmanagement.com','Montgomery County MD','MoCo HOAs & condos. Free roof condition assessment.'),
+   R('Community Assoc Services (Associa)','see casinc.biz','Rockville MD','Associa company — large HOA/condo book in MoCo.'),
+   R('Access Management (MMI)','see accessmmi.com','Rockville MD','Rockville HOA & condo communities. Free roof survey.'),
+   R('Bay Property Management Group','see baymgmtgroup.com','DMV','Multifamily & residential portfolios. Multifamily re-roof + repair.'),
+   R('Paradigm Companies','see paradigmcompanies.com','Arlington VA','10,000+ multifamily/affordable units — major roof inventory.'),
+   R('The Breeden Company','see thebreedencompany.com','Virginia','Develops & manages multifamily + retail/commercial. New-construction & re-roof.'),
+   R('Evernest (Northern Virginia)','see evernest.co','Northern Virginia','22,000+ units under management — constant roof turnover.'),
+   R('KRS Holdings / KRS Nova','see krsholdings.com','Northern Virginia','Apartments, duplexes & commercial. Commercial flat-roof (TPO/EPDM).'),
+   R('ROSS Companies','see ross-companies.com','Northern Virginia','Active NoVA multifamily manager — vendor network for roof maintenance.'),
+   R('Northern Virginia Management (NVM)','see northernvirginiamanagement.com','Northern Virginia','Manages 20+ NoVA communities. Re-roof + storm restoration.')
   ];
   save();
 }
