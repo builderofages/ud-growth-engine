@@ -1,0 +1,37 @@
+# Publishes the /website folder as the SITE ROOT via GitHub Pages.
+# WHY THIS EXISTS: canonicals + sitemap assume udroofing.com/page.html, but Pages
+# currently serves the repo root, which would put everything at udroofing.com/website/page.html
+# after domain cutover — every URL would 404. This workflow fixes the structure.
+#
+# TO ACTIVATE (one-time, ~30 sec):
+#   Repo Settings → Pages → "Build and deployment" → Source: "GitHub Actions"
+# After activation the temporary URL becomes:
+#   https://builderofages.github.io/ud-growth-engine/   (website/ content served at root)
+# Old /website/ URLs will 404 → the 404.html legacy-redirect router catches them.
+name: Deploy website to GitHub Pages
+on:
+  push:
+    branches: [main]
+    paths: ['website/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./website
+      - id: deployment
+        uses: actions/deploy-pages@v4

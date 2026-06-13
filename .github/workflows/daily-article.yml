@@ -1,0 +1,41 @@
+# Cloud-run replacement for the laptop-dependent daily SEO article task.
+# Runs in GitHub's cloud — laptop can be closed, disk-full, or on fire.
+#
+# TO ACTIVATE (one-time):
+#   1. Repo Settings → Secrets and variables → Actions → New secret:
+#      ANTHROPIC_API_KEY = <key from console.anthropic.com>
+#   2. Make sure growth/keyword-queue.txt exists in the repo (one keyword/topic per line).
+#   3. Recommended cadence is 3x/week (below), not daily — Google's scaled-content
+#      policy punishes unreviewed daily AI output. Quality > volume.
+name: SEO article engine (cloud)
+on:
+  schedule:
+    - cron: '0 11 * * 1,3,5'   # Mon/Wed/Fri 7am ET
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Generate article
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          pip -q install anthropic
+          python tools/article_engine.py
+      - name: Commit & ping IndexNow
+        run: |
+          git config user.name "ud-article-bot"
+          git config user.email "actions@github.com"
+          git add website/resources website/sitemap.xml growth/keyword-queue.txt || true
+          git diff --cached --quiet && echo "No new article" && exit 0
+          git commit -m "SEO article: automated publish $(date +%F)"
+          git push
+          NEWFILE=$(git diff HEAD~1 --name-only | grep 'website/resources/.*html' | head -1 | sed 's|website/||')
+          if [ -n "$NEWFILE" ]; then
+            curl -s "https://api.indexnow.org/indexnow?url=https://udroofing.com/${NEWFILE}&key=a3f9c1e74b2d48e6905c7f1a2b8d6e30" || true
+          fi
