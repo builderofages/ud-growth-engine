@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD Setter &amp; Appointment Cockpit — United Developers</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--ice:#FBF1F1;--line:#E7ECF4;--body:#5A6781;--green:#10B981;--amber:#F59E0B;--bg:#F4F6FB}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#0E1B2C}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .top{background:var(--navy);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  .top img{height:30px;filter:brightness(0) invert(1)}
+  .top .tag{background:#C53030;font-size:.62rem;font-weight:700;padding:.2rem .5rem;border-radius:999px}
+  .top h1{font-size:1.05rem}
+  .top a{color:#A8BEE0;font-size:.85rem;margin-left:auto}
+  .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:.3rem;padding:0 1.5rem;overflow-x:auto;position:sticky;top:56px;z-index:15}
+  .tabs button{background:none;border:none;padding:1rem .9rem;font-weight:700;font-size:.9rem;color:var(--body);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;font-family:inherit}
+  .tabs button.on{color:var(--blue);border-color:var(--blue)}
+  .wrap{max-width:1000px;margin:0 auto;padding:1.5rem}
+  .view{display:none}.view.on{display:block}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.3rem}
+  .panel h2{font-size:1.1rem;color:var(--navy);margin-bottom:.3rem}
+  .panel .sub{color:var(--body);font-size:.9rem;margin-bottom:1rem}
+  .appt{border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.8rem}
+  .appt .nm{font-weight:700;color:var(--navy)}
+  .appt .meta{color:var(--body);font-size:.86rem;margin:.2rem 0 .6rem}
+  .gen{display:flex;gap:.5rem;flex-wrap:wrap;align-items:end;background:#F7F9FD;border-radius:10px;padding:.7rem;margin-bottom:.6rem}
+  .gen input{padding:.5rem .7rem;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:.85rem}
+  .btn{border:none;border-radius:9px;padding:.55rem .9rem;font-weight:700;font-size:.84rem;font-family:inherit;cursor:pointer}
+  .btn-primary{background:linear-gradient(180deg,#C53030,var(--blued));color:#fff}
+  .btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--navy)}
+  .msg{background:#FBFCFE;border:1px dashed var(--line);border-radius:10px;padding:.7rem .85rem;font-size:.88rem;white-space:pre-wrap;position:relative;margin-top:.5rem}
+  .copy{position:absolute;top:.4rem;right:.4rem;background:#0C2440;color:#fff;border:none;border-radius:6px;font-size:.68rem;font-weight:700;padding:.2rem .5rem;cursor:pointer}
+  .copy.done{background:var(--green)}
+  .step{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:.8rem}
+  .step .n{flex:none;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#C53030,#9B1C1C);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.82rem}
+  .step b{color:var(--navy)}
+  .script{background:#0E2A4D;color:#DCE7F8;border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:.9rem;font-size:.92rem;line-height:1.6}
+  .script b{color:#fff}.script .lbl{color:#E89A9A;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.4rem}
+  .note{background:var(--ice);border:1px solid #f0d9d9;border-radius:10px;padding:.85rem 1rem;font-size:.86rem;color:var(--navy);margin-bottom:.8rem}
+  .note.warn{background:#FEF9E7;border-color:#F7E4A0}
+  .ch{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1rem}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem}
+  .card .t{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:999px;display:inline-block;margin-bottom:.5rem}
+  .free{background:#E9F9F1;color:#0a7a4a}.paid{background:#FFF3E7;color:#b45309}.slow{background:#EEF2F8;color:#46506b}
+  .card h3{color:var(--navy);font-size:1.02rem;margin-bottom:.3rem}.card p{color:var(--body);font-size:.88rem;line-height:1.5}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem}
+  td,th{border:1px solid var(--line);padding:.55rem .7rem;text-align:left}
+  th{background:#F7F9FD;color:#46506b;font-size:.74rem;text-transform:uppercase}
+</style>
+</head><body>
+<div class="top"><img src="../assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL</span><h1>Setter &amp; Appointment Cockpit</h1><a href="crm.html">← CRM</a></div>
+<div class="tabs">
+  <button class="on" data-v="appts">📅 Appointments</button>
+  <button data-v="confirm">✅ No-Show Killer</button>
+  <button data-v="scripts">🎧 Setter Scripts</button>
+  <button data-v="play">🚀 Lead-Gen Playbook</button>
+  <button data-v="first20">🎯 First 20 Booked</button>
+  <button data-v="legal">⚖️ Legal Guardrails</button>
+</div>
+<div class="wrap">
+
+<!-- APPOINTMENTS -->
+<div class="view on" id="appts">
+  <div class="panel"><h2>Booked inspections (from CRM)</h2><div class="sub">Every lead in the “Inspection Set” stage shows here. Generate the confirmation + reminder texts so nobody no-shows. (Shares data with the CRM on this device.)</div><div id="apptList"></div></div>
+</div>
+
+<!-- CONFIRM CADENCE -->
+<div class="view" id="confirm">
+  <div class="panel"><h2>The no-show killer: 3-touch confirmation cadence</h2><div class="sub">Confirmed appointments show up. This is the single fix for “my rep drove out and nobody was home.” Run it on EVERY booked inspection.</div>
+    <div class="step"><span class="n">1</span><div><b>At booking (instant):</b> send the confirmation text the moment the time is set. Get a “yes 👍” reply.</div></div>
+    <div class="step"><span class="n">2</span><div><b>Day before (evening):</b> reminder text with the window + a one-tap reschedule option. This catches conflicts before the truck rolls.</div></div>
+    <div class="step"><span class="n">3</span><div><b>Morning of (2–3 hrs prior):</b> “on our way” text with the rep’s name. Final lock-in.</div></div>
+    <div class="note">📊 Benchmark: a 3-touch confirmation cadence cuts roofing inspection no-shows from ~30–40% down to ~10%. That's the difference between a wasted drive and a sit.</div>
+    <div class="note warn">⚖️ Send these as <b>manual / 1:1 texts</b> from a real number (or your CRM/GHL with the lead's consent from the form). Avoid blasting un-consented numbers with an autodialer — TCPA still requires prior express written consent for automated texts.</div>
+  </div>
+  <div class="panel"><h2>Generate the 3 texts for any appointment</h2>
+    <div class="gen"><input id="gName" placeholder="First name"/><input id="gDay" placeholder="Day (e.g. Thursday)"/><input id="gWin" placeholder="Window (e.g. 10am–12pm)"/><input id="gRep" placeholder="Rep name"/><button class="btn btn-primary" onclick="genSeq()">Generate</button><button class="btn btn-ghost" onclick="genSeq('es')">En Español</button></div>
+    <div id="seqOut"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<div class="view" id="scripts">
+  <div class="panel"><h2>Inbound / callback phone script (setter)</h2>
+    <div class="script"><span class="lbl">Open (call within 5 min)</span>“Hi, is this {Name}? This is ___ with United Developers — you just asked about your roof online, I’m calling you right back. Did I catch you okay?”</div>
+    <div class="script"><span class="lbl">Qualify</span>“Got it. So I can send the right specialist — is this for storm/hail damage, a leak, or a full replacement? … And roughly when did you first notice it?”</div>
+    <div class="script"><span class="lbl">Book (assume the appointment)</span>“Perfect. The inspection is free and takes about 45 minutes — you don’t need to be on the roof, we document everything with photos. I’ve got <b>Thursday at 10</b> or <b>Friday at 2</b> — which is easier?”</div>
+    <div class="script"><span class="lbl">Lock + confirm</span>“You’re set for {day/time}. I’m texting you a confirmation right now — reply ‘yes’ so I know you got it. We’ll also remind you the day before. Anything I should tell the specialist before they arrive?”</div>
+  </div>
+  <div class="panel"><h2>Door-to-door script (canvasser — storm zones)</h2>
+    <div class="note warn">⚖️ Before knocking: have the county/city solicitor permit, skip any home with a posted “No Soliciting” sign (enforceable in VA), and never disparage the insurer or promise to “waive the deductible.”</div>
+    <div class="script"><span class="lbl">Open (non-salesy)</span>“Hey, sorry to bother you — I’m ___ with United Developers, we’re the local roofers working this street after the storm last week. We’re finding hail damage on a lot of these roofs that you can’t see from the ground. Did anyone check yours yet?”</div>
+    <div class="script"><span class="lbl">Build (curiosity + proof)</span>“We just got off your neighbor’s roof two doors down — same age roof, real damage. Hail doesn’t skip houses. The check’s free and takes 15 minutes from a ladder — worst case you find out you’re fine.”</div>
+    <div class="script"><span class="lbl">Book on the doorstep (the goal)</span>“I can have our specialist out <b>tomorrow morning or afternoon</b> — what’s better for you? … Great, what’s the best cell to text the confirmation to? … And your name spelled correctly?”</div>
+    <div class="script"><span class="lbl">If insurance objection</span>“Totally — and to be clear, we don’t handle your claim or your money. We document the damage and meet your adjuster so nothing legit gets missed. Most folks just pay their deductible. The inspection itself costs you nothing.”</div>
+  </div>
+  <div class="panel"><h2>Spanish doorstep open</h2>
+    <div class="script"><span class="lbl">Apertura en español</span>“Hola, disculpe la molestia — soy ___ de United Developers, somos los techadores locales trabajando esta calle después de la tormenta. Estamos encontrando daño de granizo que no se ve desde abajo. La inspección es gratis y toma 15 minutos. ¿Le gustaría que revisáramos su techo mañana?”</div>
+  </div>
+</div>
+
+<!-- PLAYBOOK -->
+<div class="view" id="play">
+  <div class="panel"><h2>What the big roofers actually run (full stack)</h2><div class="sub">Top storm/restoration companies don't rely on one channel — they stack 5–6. Here's the stack, ranked by speed-to-first-booked-appointment for UD right now.</div>
+    <div class="ch">
+      <div class="card"><span class="t free">FREE · FASTEST</span><h3>Storm canvassing</h3><p>Door-knock the streets the storm tracker maps within 72 hrs of a hail/wind event. Reps book inspections on the doorstep. This is the #1 source of REAL booked appointments for storm roofers. Run it now.</p></div>
+      <div class="card"><span class="t free">FREE · COMPOUNDS</span><h3>Google Business Profile + reviews</h3><p>The map pack out-converts the website. Same-day review asks after every job (the review engine is built). 131 → 300 reviews = more inbound calls than any ad.</p></div>
+      <div class="card"><span class="t paid">PAID · HIGH-ROI</span><h3>Google Local Services Ads</h3><p>Pay-per-lead, Google-Guaranteed badge, shows above everything. The highest-ROI paid channel for roofers. Needs license + insurance + budget.</p></div>
+      <div class="card"><span class="t paid">PAID</span><h3>Meta / Facebook + retargeting</h3><p>Storm-zone “was your roof hit?” creative (built in the ad kit). Cheap reach, retargets website visitors. Feeds the setter.</p></div>
+      <div class="card"><span class="t free">FREE</span><h3>Referrals + neighborhood</h3><p>$250/referral program (built). Yard signs on every job, “we’re working your neighbor’s roof” door-hangers on the street.</p></div>
+      <div class="card"><span class="t slow">SLOW · COMPOUNDS</span><h3>SEO / AEO</h3><p>The daily content engine + 16 local pages. Free organic leads over weeks/months. Already running.</p></div>
+    </div>
+    <div class="note" style="margin-top:1rem">🏗️ The model: <b>Lead source → Setter (books + confirms in &lt;5 min) → Rep (inspects, documents, closes) → Production (installs) → Review/Referral ask.</b> The setter is the hinge — most roofers lose 50% of leads to slow response. The CRM + this cockpit make the setter unbeatable.</div>
+  </div>
+</div>
+
+<!-- FIRST 20 -->
+<div class="view" id="first20">
+  <div class="panel"><h2>🎯 The first 20 REAL booked appointments — this week, legally</h2><div class="sub">No fake leads. No aggregators. Real homeowners, set face-to-face or by a fast setter. Here's the exact play.</div>
+    <div class="step"><span class="n">1</span><div><b>Pull the live storm zones.</b> Open the <a href="canvassing.html" target="_blank" style="color:#C53030;font-weight:700">Canvassing Walk-List</a> — June 11–12 storms hit Prince William (1" hail, Bristow/Woolsey), PG County (70mph), Dulles (67mph), Arlington/DC. Export the CSV of hit streets.</div></div>
+    <div class="step"><span class="n">2</span><div><b>Get permits + brief the crew.</b> County solicitor permit where required (Fairfax, Howard, etc.), skip No-Soliciting homes, run the door script above. 2–4 canvassers × 1 neighborhood each.</div></div>
+    <div class="step"><span class="n">3</span><div><b>Knock 4pm–7:30pm</b> (people are home). Goal: not a sale — a <b>booked free inspection</b>. Realistic: a trained canvasser books 1–3 inspections per 2-hour shift in a fresh hail zone. 4 canvassers × 2 shifts = 16–24 booked inspections.</div></div>
+    <div class="step"><span class="n">4</span><div><b>Log every one in the CRM</b> as “Inspection Set” with the cell number, then fire the confirmation cadence from this cockpit. Confirmed = they’ll be there.</div></div>
+    <div class="step"><span class="n">5</span><div><b>Reps run the inspections next morning</b> → document damage → file claims → close. That’s your first 20 real, sat appointments inside 7 days — the same way every big storm roofer does it.</div></div>
+    <div class="note">Reality check: this requires <b>people knocking doors</b> (your canvass team) + the lead inbox live so web/ad leads also flow. Software books nothing by itself — it makes the people 3× more effective. The recruiting toolkit (next) staffs the knockers.</div>
+  </div>
+</div>
+
+<!-- LEGAL -->
+<div class="view" id="legal">
+  <div class="panel"><h2>Legal guardrails — MD · VA · DC · PA (June 2026)</h2><div class="sub">Real rules so you scale without complaints/fines. Not legal advice — confirm specifics with counsel, but this keeps reps on the right side.</div>
+    <table>
+      <tr><th>Topic</th><th>Rule / what to do</th></tr>
+      <tr><td><b>Door-to-door (MD)</b></td><td>Maryland Door-to-Door Sales Act: homeowner has the right to cancel until midnight of the <b>5th business day</b> (7th if elderly). Put the cancellation notice in every contract. Local solicitor permits often required (county/city).</td></tr>
+      <tr><td><b>Door-to-door (VA)</b></td><td>Posted <b>“No Soliciting” signs are legally enforcing</b> — ignoring one is a Class 1 misdemeanor (VA Code §18.2-119). Skip those homes. Counties (Fairfax, etc.) require a peddler/solicitor license — get it before knocking.</td></tr>
+      <tr><td><b>Calling / texting (TCPA)</b></td><td>The FCC one-to-one consent rule was <b>vacated Feb 2025</b> — your own lead-form consent (with clear disclosure) is valid. BUT automated/autodialed calls &amp; texts still need <b>prior express written consent</b>. Manual dials to numbers not on the DNC list are the safe path for setters. Scrub against the National DNC Registry for cold outbound.</td></tr>
+      <tr><td><b>Insurance / deductible</b></td><td>In MD &amp; VA contractors may <b>not</b> pay, waive, or rebate a homeowner's deductible, and may not <b>negotiate the claim</b> (that's unlicensed public adjusting). Document damage, meet the adjuster — never "handle the claim/negotiation." Keep this line in sales training.</td></tr>
+      <tr><td><b>D.C. service</b></td><td>⚠️ The site advertises D.C. service but lists MD/VA/PA licenses only. D.C. requires its own DLCP contractor license. Either get it or scope marketing to MD/VA. (Flagged in the audit.)</td></tr>
+      <tr><td><b>Contracts &amp; AOB</b></td><td>Use a clear written contract; avoid aggressive Assignment-of-Benefits clauses that regulators scrutinize. Itemize scope; no "contingency on insurance approval" language that crosses into claims handling.</td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+<script src="https://builderofages.github.io/ud-growth-engine/website/" onerror=""></script>
+<script>
+var KEY='ud_crm_leads_v1';
+function leads(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return [];}}
+function go(v){document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('on',x.id===v);});document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v);});if(v==='appts')renderAppts();}
+document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){go(b.dataset.v);};});
+function renderAppts(){
+  var L=leads().filter(function(l){return l.stage==='Inspection Set'||l.stage==='Contacted';});
+  var box=document.getElementById('apptList');
+  if(!L.length){box.innerHTML='<p style="color:var(--body)">No booked inspections yet. As your CRM fills with leads in the “Inspection Set” stage, they appear here with one-click confirmation texts. (Open the CRM and move a lead to “Inspection Set” to see it.)</p>';return;}
+  box.innerHTML=L.map(function(l,i){return '<div class="appt"><div class="nm">'+l.name+' · '+l.phone+'</div><div class="meta">'+l.address+' · '+l.service+' · '+l.stage+' · '+l.rep+'</div><div class="gen"><input id="d'+i+'" placeholder="Day (Thu)" style="width:90px"><input id="w'+i+'" placeholder="Window (10–12)" style="width:120px"><input id="r'+i+'" placeholder="Rep" value="'+(l.rep!=='Unassigned'?l.rep:'')+'" style="width:90px"><button class="btn btn-primary" onclick="genFor('+i+',\''+l.name.replace(/'/g,'')+'\')">Make texts</button></div><div id="o'+i+'"></div></div>';}).join('');
+}
+function texts(name,day,win,rep,lang){
+  var n=name||'there',d=day||'[day]',w=win||'[window]',r=rep||'our specialist';
+  if(lang==='es'){return [
+    'Hola '+n+', soy United Developers. ¡Su inspección GRATIS de techo está confirmada para el '+d+' ('+w+')! Responda "sí" para confirmar. Cualquier cambio: (240) 880-2108.',
+    'Hola '+n+', recordatorio: su inspección de techo gratis es mañana, '+d+' ('+w+'). ¿Sigue bien? Responda SÍ o llame al (240) 880-2108 para cambiar.',
+    'Buenos días '+n+' — '+r+' de United Developers va en camino para su inspección de hoy ('+w+'). ¡Nos vemos pronto! (240) 880-2108'
+  ];}
+  return [
+    'Hi '+n+', it’s United Developers — your FREE roof inspection is confirmed for '+d+' ('+w+'). Reply "yes" to confirm. Need to change it? Call/text (240) 880-2108.',
+    'Hi '+n+', quick reminder: your free roof inspection is tomorrow, '+d+' ('+w+'). Still good? Reply YES, or call (240) 880-2108 to reschedule.',
+    'Good morning '+n+' — '+r+' from United Developers is on the way for your inspection today ('+w+'). See you soon! (240) 880-2108'
+  ];
+}
+function block(arr){var lbl=['① At booking','② Day before','③ Morning of'];return arr.map(function(t,i){return '<div class="msg"><button class="copy" onclick="cpEl(this)">Copy</button><b style="color:#C53030">'+lbl[i]+'</b>\n'+t+'</div>';}).join('');}
+function genSeq(lang){var o=texts(val('gName'),val('gDay'),val('gWin'),val('gRep'),lang);document.getElementById('seqOut').innerHTML=block(o);}
+function genFor(i,name){var o=texts(name,val('d'+i),val('w'+i),val('r'+i),null);document.getElementById('o'+i).innerHTML=block(o);}
+function val(id){var e=document.getElementById(id);return e?e.value:'';}
+function cpEl(btn){var t=btn.parentNode.innerText.replace(/^Copy\s*[①②③][^\n]*\n?/,'').replace(/^Copy/,'').trim();var lines=btn.parentNode.innerText.split('\n');var msg=lines.slice(1).join('\n').trim();navigator.clipboard.writeText(msg).then(function(){var o=btn.textContent;btn.textContent='Copied ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=o;btn.classList.remove('done');},1300);});}
+renderAppts();
+</script>
+</body></html>

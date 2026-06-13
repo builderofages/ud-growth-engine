@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD Recruiting &amp; Hiring Toolkit — United Developers</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--ice:#FBF1F1;--line:#E7ECF4;--body:#5A6781;--green:#10B981;--amber:#F59E0B;--bg:#F4F6FB}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#0E1B2C}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .top{background:var(--navy);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  .top img{height:30px;filter:brightness(0) invert(1)}
+  .top .tag{background:#C53030;font-size:.62rem;font-weight:700;padding:.2rem .5rem;border-radius:999px}
+  .top h1{font-size:1.05rem}.top a{color:#A8BEE0;font-size:.85rem;margin-left:auto}
+  .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:.3rem;padding:0 1.5rem;overflow-x:auto;position:sticky;top:56px;z-index:15}
+  .tabs button{background:none;border:none;padding:1rem .9rem;font-weight:700;font-size:.9rem;color:var(--body);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;font-family:inherit}
+  .tabs button.on{color:var(--blue);border-color:var(--blue)}
+  .wrap{max-width:1000px;margin:0 auto;padding:1.5rem}
+  .view{display:none}.view.on{display:block}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.3rem}
+  .panel h2{font-size:1.1rem;color:var(--navy);margin-bottom:.3rem}.panel .sub{color:var(--body);font-size:.9rem;margin-bottom:1rem}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.6rem}
+  .copy{background:#0C2440;color:#fff;border:none;border-radius:8px;padding:.45rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}.copy.done{background:var(--green)}
+  .ad{background:#FBFCFE;border:1px dashed var(--line);border-radius:10px;padding:1rem 1.1rem;white-space:pre-wrap;font-size:.9rem;line-height:1.55}
+  .profile{background:#0E2A4D;color:#DCE7F8;border-radius:12px;padding:1rem 1.2rem;margin:.8rem 0;font-size:.9rem}.profile b{color:#fff}.profile .lbl{color:#E89A9A;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.4rem}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem}td,th{border:1px solid var(--line);padding:.55rem .7rem;text-align:left}th{background:#F7F9FD;color:#46506b;font-size:.74rem;text-transform:uppercase}
+  .note{background:var(--ice);border:1px solid #f0d9d9;border-radius:10px;padding:.85rem 1rem;font-size:.86rem;color:var(--navy);margin-bottom:.8rem}
+  /* scorecard */
+  .sc-row{display:flex;align-items:center;gap:.8rem;padding:.5rem 0;border-bottom:1px solid #F0F3F9}
+  .sc-row .q{flex:1;font-size:.9rem}
+  .dots{display:flex;gap:.3rem}
+  .dot{width:26px;height:26px;border-radius:7px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-weight:700;font-size:.8rem;color:var(--body)}
+  .dot.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .verdict{margin-top:1rem;padding:1rem 1.2rem;border-radius:12px;font-weight:700;text-align:center;font-size:1.05rem}
+  .step{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:.7rem}.step .n{flex:none;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#C53030,#9B1C1C);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.78rem}.step b{color:var(--navy)}
+</style>
+</head><body>
+<div class="top"><img src="../assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL</span><h1>Recruiting &amp; Hiring Toolkit</h1><a href="crm.html">← CRM</a></div>
+<div class="tabs">
+  <button class="on" data-v="ads">📣 Job Ads</button>
+  <button data-v="score">⭐ Candidate Scorecard</button>
+  <button data-v="interview">🎙️ Interview</button>
+  <button data-v="comp">💵 Comp Plans</button>
+  <button data-v="source">📍 Where to Post</button>
+</div>
+<div class="wrap">
+
+<!-- ADS -->
+<div class="view on" id="ads">
+  <div class="panel"><div class="head"><h2>Appointment Setter (inside / remote-ok)</h2><button class="copy" data-t="a1">Copy Ad</button></div>
+  <div class="ad" id="a1">📞 Appointment Setter — United Developers (Roofing) | DMV
+
+We're a licensed, family-owned roofing company growing fast, and we need a sharp, high-energy Appointment Setter to call new homeowner leads and book free roof inspections. No roofing experience needed — we train. If you're great on the phone and competitive, you'll make great money.
+
+What you'll do:
+• Call &amp; text new leads within 5 minutes (speed is everything)
+• Book free inspections onto the calendar and confirm them
+• Keep our CRM updated
+• Hit a weekly booked-inspection target
+
+You're a fit if you:
+• Are personable, persistent, and coachable
+• Have a clear phone voice and thick skin
+• Are reliable and competitive (we track everyone's numbers)
+• Bilingual (English/Spanish) = big plus
+
+Pay: $18–$22/hr base + bonus per booked inspection that shows (top setters earn $50K–$70K).
+Apply: text "SETTER" to (240) 880-2108 or email office@udroofing.com with a 30-sec voice memo of you reading our phone script.</div></div>
+
+  <div class="panel"><div class="head"><h2>Door-to-Door Canvasser (storm zones)</h2><button class="copy" data-t="a2">Copy Ad</button></div>
+  <div class="ad" id="a2">🚪 Storm Canvasser — United Developers (Roofing) | MD &amp; VA | $$$ uncapped
+
+After every storm, homeowners have roof damage they can't see — and they need someone to tell them. That's you. We give you the exact streets (we map live hail data), the script, the shirt, and the training. You knock, you book free inspections, you get paid per appointment + bonuses when they close.
+
+What you'll do:
+• Work mapped storm-damage neighborhoods (we tell you exactly where)
+• Knock doors 4pm–8pm + weekends, book free inspections on the spot
+• Hand warm appointments to our sales team
+
+You're a fit if you:
+• Are outgoing, resilient, and love being outside
+• Want uncapped income and can take a "no"
+• Are reliable with your own transportation
+• Bilingual = big plus
+
+Pay: $50–$125 per booked inspection + closing bonuses. Hungry canvassers clear $1,500–$3,000+/week in storm season.
+Apply: text "KNOCK" to (240) 880-2108 or email office@udroofing.com.</div></div>
+
+  <div class="panel"><div class="head"><h2>Field Sales Rep / Estimator (commission)</h2><button class="copy" data-t="a3">Copy Ad</button></div>
+  <div class="ad" id="a3">🏠 Roofing Sales Rep / Estimator — United Developers | DMV | Uncapped Commission
+
+Top reps at storm-restoration roofers earn $150K–$300K+. We hand you booked, confirmed inspections — you inspect the roof, document the damage, meet the adjuster, and close. GAF-certified, A+ BBB, licensed since 2005. We bring the leads; you bring the close.
+
+What you'll do:
+• Run pre-booked free inspections (we set them)
+• Document storm/hail damage with photos
+• Build the estimate, meet the insurance adjuster on-site
+• Close and hand off to production
+
+You're a fit if you:
+• Have sales experience (roofing/restoration/solar/D2D a big plus)
+• Are self-driven, organized, and great with people
+• Have reliable transportation and can climb a ladder
+• Want uncapped commission, not a salary cap
+
+Pay: Commission on gross profit (typical $750–$1,500+/closed job), uncapped. Top performers clear six figures fast.
+Apply: text "CLOSE" to (240) 880-2108 or email office@udroofing.com with your resume + why you out-close everyone.</div></div>
+</div>
+
+<!-- SCORECARD -->
+<div class="view" id="score">
+  <div class="panel"><h2>⭐ Candidate Scorecard — filter A-players from BS</h2><div class="sub">Score 1 (weak) → 5 (elite) on each trait during the interview. Hire only 4.0+ averages. This is how you stop hiring warm bodies.</div>
+    <div id="scoreCard"></div>
+    <div class="verdict" id="verdict" style="background:#EEF2F8;color:#46506b">Score the traits above to see the verdict.</div>
+  </div>
+  <div class="panel"><h2>Non-negotiable red flags (auto-pass)</h2>
+    <div class="note">🚩 Late to the interview · can't explain a time they pushed through rejection · badmouths a past employer/customer · "I just need something for now" · won't do the role-play · no reliable transportation (field roles) · dodgy on background/license questions.</div>
+  </div>
+</div>
+
+<!-- INTERVIEW -->
+<div class="view" id="interview">
+  <div class="panel"><h2>Interview flow (20–25 min)</h2>
+    <div class="step"><span class="n">1</span><div><b>Hook (2m):</b> sell the opportunity — uncapped income, we bring leads, growing company. A-players have options; make them want it.</div></div>
+    <div class="step"><span class="n">2</span><div><b>Story (5m):</b> “Tell me about a time you got told no over and over and kept going.” Listen for grit, not excuses.</div></div>
+    <div class="step"><span class="n">3</span><div><b>Numbers (3m):</b> “What did you earn last year, and what do you want to earn?” A-players want more and own their results.</div></div>
+    <div class="step"><span class="n">4</span><div><b>Role-play (8m) — THE filter:</b> hand them the phone or door script and run a live mock. Setters: cold-call you. Canvassers: knock the “door.” Reps: pitch you the deductible offer. Coachability + composure under pressure shows here.</div></div>
+    <div class="step"><span class="n">5</span><div><b>Close (3m):</b> “If we offer you this today, can you start Monday and hit the ground running?” Watch for hesitation/excuses.</div></div>
+  </div>
+  <div class="panel"><h2>Best questions to separate elite from average</h2>
+    <table><tr><th>Question</th><th>A-player answer sounds like…</th></tr>
+    <tr><td>“Walk me through your best sales month ever.”</td><td>Specific numbers, what they did differently, owns it.</td></tr>
+    <tr><td>“How do you handle a homeowner who slams the door?”</td><td>Unbothered, next door, has a system — not personal.</td></tr>
+    <tr><td>“What do you do when you're behind on your number Friday?”</td><td>Works the weekend, more activity — not “it happens.”</td></tr>
+    <tr><td>“Teach me something in 60 seconds.”</td><td>Clear, confident, engaging — that's their pitch ability.</td></tr></table>
+  </div>
+</div>
+
+<!-- COMP -->
+<div class="view" id="comp">
+  <div class="panel"><h2>Comp plans (keep it simple + uncapped)</h2>
+    <table>
+      <tr><th>Role</th><th>Structure</th><th>Realistic earnings</th></tr>
+      <tr><td>Appointment Setter</td><td>$18–22/hr base + $15–30 per inspection that <b>shows</b> (pay on show, not just booked — aligns to no-show prevention)</td><td>$50K–$70K</td></tr>
+      <tr><td>Canvasser</td><td>$50–125 per booked inspection + $250–500 bonus when it closes</td><td>$60K–$150K (storm season heavy)</td></tr>
+      <tr><td>Sales Rep / Estimator</td><td>8–12% of gross profit per closed job (≈$750–1,500+/job), uncapped. Optional small draw first 60 days.</td><td>$100K–$300K+</td></tr>
+      <tr><td>Production Manager</td><td>Salary $65–90K + completion bonus per job on-time/on-budget</td><td>$80K–$120K</td></tr>
+      <tr><td>Supplement Specialist</td><td>% of supplement $ recovered (e.g. 10–15%)</td><td>Pays for itself; $70K–$150K</td></tr>
+    </table>
+    <div class="note" style="margin-top:1rem">💡 Pay setters/canvassers on the appointment that <b>shows</b>, not just books — it makes everyone protect the confirmation cadence and kills the no-show problem at the comp level.</div>
+  </div>
+</div>
+
+<!-- SOURCE -->
+<div class="view" id="source">
+  <div class="panel"><h2>Where to post (and how to flood the pipeline)</h2>
+    <div class="step"><span class="n">1</span><div><b>Indeed + ZipRecruiter</b> — sponsored posts for Setter &amp; Rep. Paste the ads above. Screen with the 30-sec voice memo ask (filters out low-effort instantly).</div></div>
+    <div class="step"><span class="n">2</span><div><b>Facebook</b> — local job groups + your page + a $5/day “Now Hiring Canvassers — $$$” ad targeting 18–34 in the DMV. Canvassers live here.</div></div>
+    <div class="step"><span class="n">3</span><div><b>Referral bounty</b> — pay your own crew $500 for any rep/canvasser they refer who lasts 60 days. Your best people know other good people.</div></div>
+    <div class="step"><span class="n">4</span><div><b>Poach from adjacent D2D</b> — solar, pest control, alarm, fiber reps already knock doors. They convert to roofing fast and love storm season's uncapped upside.</div></div>
+    <div class="step"><span class="n">5</span><div><b>Always be recruiting</b> — keep the ads live even when fully staffed. Reps churn; the pipeline can't go cold. The training deck + flashcards (built) are your onboarding so new hires ramp in days.</div></div>
+    <div class="note">🎯 Volume math: to net 1 great rep you'll interview ~8–10. To net a great canvass team of 4, recruit continuously. Treat hiring like lead-gen — a pipeline, not an event.</div>
+  </div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('on',x.id===b.dataset.v);});document.querySelectorAll('.tabs button').forEach(function(y){y.classList.toggle('on',y===b);});};});
+document.querySelectorAll('.copy').forEach(function(b){b.onclick=function(){var el=document.getElementById(b.dataset.t);navigator.clipboard.writeText(el.innerText).then(function(){var o=b.textContent;b.textContent='Copied ✓';b.classList.add('done');setTimeout(function(){b.textContent=o;b.classList.remove('done');},1400);});};});
+var TRAITS=['Grit / handles rejection','Energy &amp; likability','Coachability','Numbers-driven / competitive','Reliability &amp; ownership','Role-play performance','Communication clarity'];
+var scores={};
+var sc=document.getElementById('scoreCard');
+sc.innerHTML=TRAITS.map(function(t,i){return '<div class="sc-row"><span class="q">'+t+'</span><div class="dots" data-i="'+i+'">'+[1,2,3,4,5].map(function(n){return '<div class="dot" data-n="'+n+'">'+n+'</div>';}).join('')+'</div></div>';}).join('');
+document.querySelectorAll('.dots').forEach(function(row){row.querySelectorAll('.dot').forEach(function(d){d.onclick=function(){row.querySelectorAll('.dot').forEach(function(x){x.classList.remove('on');});d.classList.add('on');scores[row.dataset.i]=+d.dataset.n;verdict();};});});
+function verdict(){var keys=Object.keys(scores);if(keys.length<TRAITS.length){document.getElementById('verdict').style.background='#EEF2F8';document.getElementById('verdict').style.color='#46506b';document.getElementById('verdict').textContent='Scored '+keys.length+'/'+TRAITS.length+' traits…';return;}var avg=keys.reduce(function(a,k){return a+scores[k];},0)/TRAITS.length;var v=document.getElementById('verdict');if(avg>=4.3){v.style.background='#E9F9F1';v.style.color='#0a7a4a';v.textContent='⭐ '+avg.toFixed(1)+'/5 — ELITE. Hire fast before someone else does.';}else if(avg>=4.0){v.style.background='#E9F9F1';v.style.color='#0a7a4a';v.textContent='✅ '+avg.toFixed(1)+'/5 — Strong hire.';}else if(avg>=3.3){v.style.background='#FEF9E7';v.style.color='#92660a';v.textContent='🟡 '+avg.toFixed(1)+'/5 — Maybe. Only if pipeline is thin and you'll coach hard.';}else{v.style.background='#FDEDED';v.style.color='#b42424';v.textContent='🚩 '+avg.toFixed(1)+'/5 — Pass. This is a warm body, not an A-player.';}}
+</script>
+</body></html>
