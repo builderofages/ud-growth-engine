@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UD Email Template Gallery — United Developers</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#081B30;--blue:#C53030;--blued:#9B1C1C;--line:#E7ECF4;--body:#5A6781;--bg:#F4F6FB}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#0E1B2C}
+  h1,h2,h3{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  .top{background:var(--navy);color:#fff;padding:1rem 1.6rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+  .top img{height:30px;filter:brightness(0) invert(1)}
+  .top .tag{background:#C53030;font-size:.62rem;font-weight:700;padding:.2rem .5rem;border-radius:999px}
+  .top h1{font-size:1.05rem}
+  .top a{margin-left:auto;color:#A8BEE0;font-size:.85rem}
+  .wrap{max-width:1100px;margin:0 auto;padding:1.5rem}
+  .intro{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:1.4rem;color:var(--body);font-size:.92rem}
+  .intro b{color:var(--navy)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .tpl{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+  .tpl .head{padding:1rem 1.2rem;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+  .tpl .head h3{font-size:1rem;color:var(--navy)}
+  .tpl .head small{color:var(--body);font-size:.78rem;display:block;font-weight:400;margin-top:.1rem}
+  .copy{background:#0C2440;color:#fff;border:none;border-radius:8px;padding:.45rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;flex:none}
+  .copy.done{background:#10B981}
+  .prev{padding:1rem;background:#eef1f7;max-height:420px;overflow:auto}
+  /* email preview shell */
+  .em{max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px -14px rgba(8,27,48,.4)}
+  .em .eh{background:#081B30;padding:22px 28px;text-align:center}
+  .em .eh img{height:30px}
+  .em .eh .nm{color:#fff;font-family:Arial;font-weight:bold;font-size:18px;letter-spacing:.5px}
+  .em .strip{height:4px;background:linear-gradient(90deg,#C53030,#E89A9A)}
+  .em .body{padding:30px 30px 26px}
+  .em h2{font-family:Arial;color:#081B30;font-size:23px;margin-bottom:12px;line-height:1.2}
+  .em p{font-family:Arial;color:#3A4763;font-size:15px;line-height:1.6;margin-bottom:14px}
+  .em .btn{display:inline-block;background:#C53030;color:#fff!important;font-family:Arial;font-weight:bold;font-size:15px;text-decoration:none;padding:14px 26px;border-radius:8px;margin:6px 0 14px}
+  .em .pts{margin:0 0 14px}
+  .em .pts td{font-family:Arial;color:#3A4763;font-size:14px;padding:4px 0}
+  .em .ef{background:#0C2440;padding:20px 28px;text-align:center}
+  .em .ef p{color:#9DB3D6;font-size:12px;margin:0 0 4px;font-family:Arial}
+  .em .ef a{color:#E89A9A}
+  .em .badge{display:inline-block;background:#FBF1F1;color:#9B1C1C;font-family:Arial;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:999px;margin-bottom:14px}
+</style>
+</head><body>
+<div class="top"><img src="../assets/logo-white.png" alt="UD"/><span class="tag">INTERNAL</span><h1>Email Template Gallery</h1><a href="../admin/crm.html">← Back to CRM</a></div>
+<div class="wrap">
+<div class="intro">Six modern, on-brand, mobile-friendly email templates. Click <b>Copy HTML</b> on any one and paste it into your email tool (Mailchimp, Klaviyo, GoHighLevel, Constant Contact, etc.). Replace <b>{{First}}</b>, <b>{{Address}}</b>, <b>{{Date}}</b>, <b>{{ReviewLink}}</b>, <b>{{BookLink}}</b> with merge tags. All link back to udroofing.com and (240) 880-2108.</div>
+<div class="grid" id="grid"></div>
+</div>
+<script>
+var FOOT='<tr><td class="ef" style="background:#0C2440;padding:20px 28px;text-align:center"><p style="color:#9DB3D6;font-size:12px;margin:0 0 4px;font-family:Arial">United Developers / UD Roofing · (240) 880-2108 · office@udroofing.com</p><p style="color:#9DB3D6;font-size:12px;margin:0 0 4px;font-family:Arial">MD MHIC #111971 · VA #2705183185 · GAF-Certified · A+ BBB</p><p style="color:#6E83A8;font-size:11px;margin:6px 0 0;font-family:Arial">You received this because you requested info from United Developers. <a href="#" style="color:#E89A9A">Unsubscribe</a></p></td></tr>';
+function shell(inner){return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:24px 0"><tr><td align="center"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:10px;overflow:hidden"><tr><td style="background:#081B30;padding:22px 28px;text-align:center"><span style="color:#fff;font-family:Arial;font-weight:bold;font-size:18px;letter-spacing:.5px">UNITED DEVELOPERS</span></td></tr><tr><td style="height:4px;background:#C53030"></td></tr><tr><td style="padding:30px">'+inner+'</td></tr>'+FOOT+'</table></td></tr></table>';}
+function P(t){return '<p style="font-family:Arial;color:#3A4763;font-size:15px;line-height:1.6;margin:0 0 14px">'+t+'</p>';}
+function H(t){return '<h2 style="font-family:Arial;color:#081B30;font-size:23px;margin:0 0 12px;line-height:1.2">'+t+'</h2>';}
+function BTN(t,h){return '<a href="'+(h||'https://udroofing.com')+'" style="display:inline-block;background:#C53030;color:#ffffff;font-family:Arial;font-weight:bold;font-size:15px;text-decoration:none;padding:14px 26px;border-radius:8px;margin:6px 0 16px">'+t+'</a>';}
+function BADGE(t){return '<span style="display:inline-block;background:#FBF1F1;color:#9B1C1C;font-family:Arial;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:999px;margin-bottom:14px">'+t+'</span>';}
+
+var TEMPLATES=[
+ {title:'Instant Lead Auto-Reply',sub:'Fires the moment a lead submits',subject:'We got your request — a specialist is calling you shortly',
+  inner:BADGE('FREE · NO OBLIGATION')+H('Thanks, {{First}} — we’re on it.')+P('Your free roof inspection request just came through. A United Developers specialist will call you shortly from <b>(240) 880-2108</b> to confirm a time that works for you.')+P('While you wait — most homeowners with storm damage pay only their deductible, and we handle the insurance claim with you start to finish.')+BTN('See How It Works →','https://udroofing.com')+P('Need us sooner? Just call <b>(240) 880-2108</b> — we answer.')},
+ {title:'Inspection Confirmation',sub:'Cuts no-shows',subject:'You’re booked — your free roof inspection is confirmed',
+  inner:H('See you {{Date}}, {{First}}.')+P('Your free inspection at <b>{{Address}}</b> is confirmed. Here’s what to expect:')+'<table class="pts" style="margin:0 0 14px"><tr><td style="font-family:Arial;color:#3A4763;font-size:14px;padding:4px 0">✅ A licensed UD specialist documents every slope with photos</td></tr><tr><td style="font-family:Arial;color:#3A4763;font-size:14px;padding:4px 0">✅ Takes ~45 minutes — you don’t need to be on the roof</td></tr><tr><td style="font-family:Arial;color:#3A4763;font-size:14px;padding:4px 0">✅ You get an honest assessment + photo report, no pressure</td></tr></table>'+BTN('Reschedule or Add Notes →','https://udroofing.com/booking.html')+P('Questions before then? Call or text <b>(240) 880-2108</b>.')},
+ {title:'Post-Inspection Follow-Up',sub:'Nudges the decision',subject:'Your roof report + next steps',
+  inner:H('Here’s what we found, {{First}}.')+P('Thanks for having us out to <b>{{Address}}</b>. We documented the damage and put together your options and photo report.')+P('If it’s storm-related and your claim is approved, your out-of-pocket is usually just your deductible — and we handle the adjuster and paperwork with you.')+BTN('Review My Options →','https://udroofing.com')+P('The sooner we file, the stronger the claim — damage and deadlines both work against waiting. Call <b>(240) 880-2108</b> when you’re ready.')},
+ {title:'Review Request',sub:'Same-day after completion — GBP engine',subject:'How did we do, {{First}}? (60-second favor)',
+  inner:H('Thank you for trusting United Developers. 🙏')+P('It was a pleasure restoring your roof at <b>{{Address}}</b>. If you’re happy with the work, a quick Google review helps us protect more families in your neighborhood — it truly makes our day.')+BTN('Leave a 5-Star Review →','{{ReviewLink}}')+P('And remember: we pay <b>$250 for every referral</b> that completes a project — no cap. Know a neighbor with storm damage? Just reply with their name.')},
+ {title:'Re-Engagement (cold lead)',sub:'Win back ghosts',subject:'Still thinking about your roof, {{First}}?',
+  inner:H('Your roof won’t wait — but your free inspection is still open.')+P('We never finished checking out your roof at <b>{{Address}}</b>. No pressure — but storm damage quietly gets worse, and most insurance claims have a filing deadline.')+P('Want us to take one more look, free? It’s 45 minutes and you’ll know exactly where you stand.')+BTN('Book My Free Inspection →','https://udroofing.com/booking.html')+P('Or call/text <b>(240) 880-2108</b> — we’re local, licensed since 2005, and here for the long haul.')},
+ {title:'Storm Blast (mass campaign)',sub:'After a confirmed hail/wind event',subject:'⛈ A storm just hit your area — is your roof OK?',
+  inner:BADGE('STORM ALERT · YOUR NEIGHBORHOOD')+H('Hail &amp; high winds just rolled through, {{First}}.')+P('Damage from hail is usually invisible from the ground — but it shortens your roof’s life and can void a claim if you wait too long. If the storm hit your street, it’s worth a free look.')+P('United Developers documents the damage, meets your adjuster, and handles the claim — most homeowners pay only their deductible.')+BTN('Check If My Street Was Hit →','https://udroofing.com/storm-tracker.html')+P('Free 24-hour inspection. Licensed MD &amp; VA since 2005 — not an out-of-town storm chaser. <b>(240) 880-2108</b>')}
+];
+var grid=document.getElementById('grid');
+TEMPLATES.forEach(function(t,i){
+  var full=shell(t.inner);
+  var card=document.createElement('div');card.className='tpl';
+  card.innerHTML='<div class="head"><div><h3>'+t.title+'</h3><small>'+t.sub+' · Subject: “'+t.subject+'”</small></div><button class="copy" data-i="'+i+'">Copy HTML</button></div><div class="prev">'+full+'</div>';
+  grid.appendChild(card);
+});
+document.querySelectorAll('.copy').forEach(function(b){b.onclick=function(){var t=TEMPLATES[+b.dataset.i];var html='<!-- Subject: '+t.subject+' -->\n'+shell(t.inner);navigator.clipboard.writeText(html).then(function(){var o=b.textContent;b.textContent='Copied ✓';b.classList.add('done');setTimeout(function(){b.textContent=o;b.classList.remove('done');},1400);});};});
+</script>
+</body></html>
